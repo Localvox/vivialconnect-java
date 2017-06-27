@@ -43,19 +43,39 @@ public abstract class VivialConnectResource implements Serializable
 	{
 		GET, POST, PUT
 	}
+	
+	
+	protected static String classURLWithSuffix(Class<?> clazz, String suffix)
+	{
+		return String.format("%ss/%s.json", singleClassURL(clazz), suffix);
+	}
+	
 
-
+	protected static String classURL(Class<?> clazz)
+	{
+		return String.format("%ss.json", singleClassURL(clazz));
+	}
+	
+	
 	protected static String singleClassURL(Class<?> clazz)
 	{
 		return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
 												  VivialConnectClient.getAccountId(),
 												  ReflectionUtils.className(clazz));
 	}
-
-
-	protected static String classURL(Class<?> clazz)
+	
+	
+	protected static String unmappedURL(String resourceName)
 	{
-		return String.format("%ss.json", singleClassURL(clazz));
+		return String.format("%s.json", formatURLForResource(resourceName));
+	}
+	
+	
+	protected static String formatURLForResource(String resourceName)
+	{
+		return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
+												  VivialConnectClient.getAccountId(),
+												  resourceName);
 	}
 
 	
@@ -73,9 +93,9 @@ public abstract class VivialConnectResource implements Serializable
 			Map<String, String> headers = new HashMap<String, String>();
 			headers.put("Date", requestDate);
 			headers.put("Host", endpoint.getHost());
-			/* headers.put("Accept", "application/json"); */
+			headers.put("Accept", "application/json");
 			
-			if (method == RequestMethod.POST)
+			if (requestSupportsBody(method.name()))
 			{
 				headers.put("Content-Type", "application/json");
 			}
@@ -97,8 +117,8 @@ public abstract class VivialConnectResource implements Serializable
 			headers.put("X-Auth-Date", requestTimestamp);
 			headers.put("X-Auth-SignedHeaders", signedHeaders);
 			
-			return request(endpoint, method, headers, queryParams, body, clazz);
-			/* return jerseyRequest(endpoint, method, headers, queryParams, body, clazz); */
+			/* return request(endpoint, method, headers, queryParams, body, clazz); */
+			return jerseyRequest(endpoint, method, headers, queryParams, body, clazz);
 		}
 		catch (Exception e)
 		{
@@ -106,6 +126,12 @@ public abstract class VivialConnectResource implements Serializable
 		}
 
 		return null;
+	}
+
+
+	private static boolean requestSupportsBody(String method)
+	{
+		return "POST".equals(method) || "PUT".equals(method);
 	}
 
 
@@ -284,7 +310,7 @@ public abstract class VivialConnectResource implements Serializable
 	
 	private static void setBody(HttpURLConnection connection, String body) throws IOException
 	{
-		if (connection.getRequestMethod().equals("POST") && body != null && !body.isEmpty())
+		if (requestSupportsBody(connection.getRequestMethod()) && body != null && !body.isEmpty())
 		{
 			DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
 			outputStream.writeBytes(body);

@@ -1,7 +1,6 @@
 package com.vivialconnect.model.message;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -355,22 +354,70 @@ public class Message extends VivialConnectResource
 	}
 	
 	
-	public static Message send(String fromNumber, String toNumber, String body)
+	public Message send()
 	{
-		String _body = JsonBodyBuilder.forClass(Message.class)
-								 	  .addParamPair("from_number", fromNumber)
-								      .addParamPair("to_number", toNumber)
-								      .addParamPair("body", body)
-								      .build();
+		String jsonBody = JsonBodyBuilder.forClass(Message.class)
+									 	 .addParamPair("from_number", this.fromNumber)
+									     .addParamPair("to_number", this.toNumber)
+									     .addParamPair("body", this.body)
+									     .build();
 		
-		return request(RequestMethod.POST, classURL(Message.class), _body, null, Message.class);
+		return request(RequestMethod.POST, classURL(Message.class), jsonBody, null, Message.class);
+	}
+	
+	
+	public static void getMessageById(Integer messageId)
+	{
+		request(RequestMethod.GET, classURLWithSuffix(Message.class, String.valueOf(messageId)), null, null, Integer.class);
 	}
 	
 	
 	public static void getMessages()
 	{
-		/* Message.withPage().withLimit().build().getMessages() */
-		/* Message.fromNumber().toNumber().body().build().send() */
-		request(RequestMethod.GET, classURL(Message.class), null, null, Message.class);
+		getMessages(null);
+	}
+	
+	
+	public static void getMessages(Map<String, String> queryParameters)
+	{
+		request(RequestMethod.GET, classURL(Message.class), null, queryParameters, Message.class);
+	}
+	
+	
+	public static void count()
+	{
+		request(RequestMethod.GET, classURLWithSuffix(Message.class, "count"), null, null, Integer.class);
+	}
+	
+	
+	public void getAttachments()
+	{
+		request(RequestMethod.GET,
+				classURLWithSuffix(Message.class, String.format("%d/attachments", this.getId())),
+				null,
+				null,
+				Attachment.class);
+	}
+	
+	
+	public Message redact()
+	{
+		String _body = JsonBodyBuilder.forClass(Message.class)
+								 	  .addParamPair("id", id)
+								      .addParamPair("body", "")
+								      .build();
+		return request(RequestMethod.PUT,
+				classURLWithSuffix(Message.class, String.valueOf(this.getId())),
+				_body,
+				null,
+				Message.class);
+	}
+	
+	
+	public class Attachment extends VivialConnectResource
+	{
+
+		private static final long serialVersionUID = 270125889320101149L;
+		
 	}
 }

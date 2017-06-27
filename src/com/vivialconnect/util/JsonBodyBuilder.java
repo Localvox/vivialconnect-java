@@ -82,12 +82,13 @@ public class JsonBodyBuilder
 		return translation.toString();
 	}
 	
-	class ValueFormatter
+	
+	private class ValueFormatter
 	{
 		private Object value;
 		
 
-		public ValueFormatter(Object value)
+		ValueFormatter(Object value)
 		{
 			this.value = value;
 		}

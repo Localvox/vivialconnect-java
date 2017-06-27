@@ -13,7 +13,7 @@ public final class VivialConnectClient
 	
 	private VivialConnectClient()
 	{
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
@@ -37,6 +37,8 @@ public final class VivialConnectClient
 
 	public static void init(int accountId, String apiKey, String apiSecret)
 	{
+		//TODO: Validate API parameters
+		
 		VivialConnectClient.accountId = accountId;
 		VivialConnectClient.apiKey = apiKey;
 		VivialConnectClient.apiSecret = apiSecret;
