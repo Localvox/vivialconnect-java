@@ -16,12 +16,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.SimpleTimeZone;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vivialconnect.client.VivialConnectClient;
 import com.vivialconnect.http.CanonicalRequestBuilder;
 import com.vivialconnect.http.RequestBuilder;
@@ -37,6 +42,8 @@ public abstract class VivialConnectResource implements Serializable
 
 	public static final String	ISO_8601_FORMAT		= "yyyyMMdd'T'HHmmss'Z'";
 	public static final String	HTTP_DATE_FORMAT	= "E, dd MMM yyyy HH:mm:ss z";
+	
+	protected static Set<Class<?>> classesWithoutRootValue = new HashSet<Class<?>>();
 	
 	
 	protected enum RequestMethod
@@ -61,7 +68,7 @@ public abstract class VivialConnectResource implements Serializable
 	{
 		return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
 												  VivialConnectClient.getAccountId(),
-												  ReflectionUtils.className(clazz));
+												  ReflectionUtils.className(clazz).toLowerCase());
 	}
 	
 	
@@ -77,10 +84,11 @@ public abstract class VivialConnectResource implements Serializable
 												  VivialConnectClient.getAccountId(),
 												  resourceName);
 	}
-
+	
 	
 	protected static <T> T request(VivialConnectResource.RequestMethod method,
-								   String url, String body, Map<String, String> queryParams, Class<T> clazz)
+								   String url, String body, Map<String, String> queryParams,
+								   Class<T> responseClass)
 	{
 		try
 		{
@@ -117,8 +125,8 @@ public abstract class VivialConnectResource implements Serializable
 			headers.put("X-Auth-Date", requestTimestamp);
 			headers.put("X-Auth-SignedHeaders", signedHeaders);
 			
-			/* return request(endpoint, method, headers, queryParams, body, clazz); */
-			return jerseyRequest(endpoint, method, headers, queryParams, body, clazz);
+			return request(endpoint, method, headers, queryParams, body, responseClass);
+			/* return jerseyRequest(endpoint, method, headers, queryParams, body, responseClass); */
 		}
 		catch (Exception e)
 		{
@@ -260,7 +268,7 @@ public abstract class VivialConnectResource implements Serializable
 
 
 	private static <T> T request(URL endpoint, VivialConnectResource.RequestMethod method, Map<String, String> headers,
-								 Map<String, String> queryParams, String body, Class<T> responseClazz)
+								 Map<String, String> queryParams, String body, Class<T> responseClass)
 	{
 		HttpURLConnection connection = null;
 		
@@ -272,6 +280,8 @@ public abstract class VivialConnectResource implements Serializable
 			
 			String response = doRequest(connection);
 			System.out.println(response);
+			
+			return unmarshallResponse(response, responseClass);
 		}
 		catch (IOException e)
 		{
@@ -366,6 +376,24 @@ public abstract class VivialConnectResource implements Serializable
 	}
 	
 	
+	private static <T> T unmarshallResponse(String response, Class<T> responseClass) throws JsonProcessingException, IOException
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		if (shouldUnwrapRoot(responseClass))
+		{
+			mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+		}
+		
+		return mapper.reader().forType(responseClass).readValue(response);
+	}
+	
+	
+	private static boolean shouldUnwrapRoot(Class<?> responseClass)
+	{
+		return !classesWithoutRootValue.contains(responseClass);
+	}
+
+
 	private static void disconnect(HttpURLConnection connection)
 	{
 		if (connection != null)

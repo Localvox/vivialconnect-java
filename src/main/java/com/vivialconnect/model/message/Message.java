@@ -1,12 +1,16 @@
 package com.vivialconnect.model.message;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.VivialConnectResource;
-import com.vivialconnect.util.JsonBodyBuilder;
+import com.vivialconnect.model.format.JsonBodyBuilder;
 
+@JsonRootName(value = "message")
 public class Message extends VivialConnectResource
 {
 	private static final long serialVersionUID = 5181807107956389186L;
@@ -124,8 +128,103 @@ public class Message extends VivialConnectResource
 	 */
 	@JsonProperty("price_currency")
 	private String priceCurrency;
+	
+	/**
+	 * URLs of the media you wish to send out with the message.
+	 */
+	private List<String> mediaUrls;
+	
+	static {
+		classesWithoutRootValue.add(MessageCount.class);
+		classesWithoutRootValue.add(MessageCollection.class);
+	}
+	
+	
+	public Message send()
+	{
+		return request(RequestMethod.POST, classURL(Message.class), jsonBody(), null, Message.class);
+	}
+	
+	
+	private String jsonBody()
+	{
+		JsonBodyBuilder builder = JsonBodyBuilder.forClass(Message.class);
+		if (hasMediaUrls())
+		{
+			builder.addParamPair("media_urls", mediaUrls);
+		}
+		
+		if (connectorId > 0)
+		{
+			builder.addParamPair("connector_id", connectorId);
+		}
+		
+		return builder.addParamPair("from_number", this.fromNumber)
+					  .addParamPair("to_number", this.toNumber)
+					  .addParamPair("body", this.body)
+					  .build();
+	}
 
 
+	private boolean hasMediaUrls()
+	{
+		return this.mediaUrls != null && !this.mediaUrls.isEmpty();
+	}
+	
+	
+	public static Message getMessageById(Integer messageId)
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.valueOf(messageId)), null, null, Message.class);
+	}
+	
+	
+	public static List<Message> getMessages()
+	{
+		return getMessages(null);
+	}
+	
+	
+	public static List<Message> getMessages(Map<String, String> queryParameters)
+	{
+		return request(RequestMethod.GET, classURL(Message.class), null, queryParameters, MessageCollection.class).getMessages();
+	}
+	
+	
+	public static int count()
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Message.class, "count"), null, null, MessageCount.class).getCount();
+	}
+	
+	
+	public void getAttachments()
+	{
+		request(RequestMethod.GET,
+				classURLWithSuffix(Message.class, String.format("%d/attachments", this.getId())),
+				null,
+				null,
+				Attachment.class);
+	}
+	
+	
+	public Message redact()
+	{
+		return request(RequestMethod.PUT,
+					   classURLWithSuffix(Message.class, String.valueOf(this.getId())),
+					   jsonBodyEmpty(),
+					   null,
+					   Message.class);
+	}
+	
+	
+	private String jsonBodyEmpty()
+	{
+		return JsonBodyBuilder.forClass(Message.class)
+						 	  .addParamPair("id", getId())
+						      .addParamPair("body", "")
+						      .build();
+	}
+	
+	
 	public int getId()
 	{
 		return id;
@@ -354,70 +453,38 @@ public class Message extends VivialConnectResource
 	}
 	
 	
-	public Message send()
+	public Message addMediaUrl(String mediaUrl)
 	{
-		String jsonBody = JsonBodyBuilder.forClass(Message.class)
-									 	 .addParamPair("from_number", this.fromNumber)
-									     .addParamPair("to_number", this.toNumber)
-									     .addParamPair("body", this.body)
-									     .build();
+		if (mediaUrls == null)
+		{
+			mediaUrls = new ArrayList<String>();
+		}
 		
-		return request(RequestMethod.POST, classURL(Message.class), jsonBody, null, Message.class);
+		mediaUrls.add(mediaUrl);
+		return this;
 	}
 	
 	
-	public static void getMessageById(Integer messageId)
+	public List<String> getMediaUrls()
 	{
-		request(RequestMethod.GET, classURLWithSuffix(Message.class, String.valueOf(messageId)), null, null, Integer.class);
+		return mediaUrls;
 	}
 	
 	
-	public static void getMessages()
+	public void setMediaUrls(List<String> mediaUrls)
 	{
-		getMessages(null);
+		this.mediaUrls = mediaUrls;
 	}
 	
 	
-	public static void getMessages(Map<String, String> queryParameters)
+	@Override
+	public String toString()
 	{
-		request(RequestMethod.GET, classURL(Message.class), null, queryParameters, Message.class);
-	}
-	
-	
-	public static void count()
-	{
-		request(RequestMethod.GET, classURLWithSuffix(Message.class, "count"), null, null, Integer.class);
-	}
-	
-	
-	public void getAttachments()
-	{
-		request(RequestMethod.GET,
-				classURLWithSuffix(Message.class, String.format("%d/attachments", this.getId())),
-				null,
-				null,
-				Attachment.class);
-	}
-	
-	
-	public Message redact()
-	{
-		String _body = JsonBodyBuilder.forClass(Message.class)
-								 	  .addParamPair("id", id)
-								      .addParamPair("body", "")
-								      .build();
-		return request(RequestMethod.PUT,
-				classURLWithSuffix(Message.class, String.valueOf(this.getId())),
-				_body,
-				null,
-				Message.class);
-	}
-	
-	
-	public class Attachment extends VivialConnectResource
-	{
-
-		private static final long serialVersionUID = 270125889320101149L;
-		
+		return "Message [id=" + id + ", dateCreated=" + dateCreated + ", dateModified=" + dateModified + ", accountId="
+				+ accountId + ", masterAccountId=" + masterAccountId + ", messageType=" + messageType + ", direction="
+				+ direction + ", toNumber=" + toNumber + ", fromNumber=" + fromNumber + ", connectorId=" + connectorId
+				+ ", sent=" + sent + ", numMedia=" + numMedia + ", numSegments=" + numSegments + ", body=" + body
+				+ ", status=" + status + ", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", price="
+				+ price + ", priceCurrency=" + priceCurrency + "]";
 	}
 }

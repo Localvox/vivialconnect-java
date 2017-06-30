@@ -1,10 +1,14 @@
-package com.vivialconnect.util;
+package com.vivialconnect.model.format;
+
+import com.vivialconnect.util.ReflectionUtils;
 
 public class JsonBodyBuilder
 {
 
 	private String			className;
 	private StringBuilder	builder;
+	
+	private FormatterRegistry registry = FormatterRegistry.getInstance();
 
 
 	private JsonBodyBuilder(String className)
@@ -26,12 +30,12 @@ public class JsonBodyBuilder
 
 	public JsonBodyBuilder addParamPair(String name, Object value)
 	{
-		ValueFormatter formatter = new ValueFormatter(value);
+		JsonValueFormatter formatter = registry.getFormatter(value.getClass());
 		
 		this.builder.append("\"");
 		this.builder.append(name);
 		this.builder.append("\":");
-		this.builder.append(formatter.formatValue());
+		this.builder.append(formatter.formatValue(value));
 		this.builder.append(",");
 		
 		return this;
@@ -80,46 +84,5 @@ public class JsonBodyBuilder
 		}
 		
 		return translation.toString();
-	}
-	
-	
-	private class ValueFormatter
-	{
-		private Object value;
-		
-
-		ValueFormatter(Object value)
-		{
-			this.value = value;
-		}
-		
-		
-		String formatValue()
-		{
-			StringBuilder builder = new StringBuilder();
-			builder.append("\"");
-			builder.append(value);
-			builder.append("\"");
-			
-			if (isNumber())
-			{
-				removeQuotes(builder);
-			}
-			
-			return builder.toString();
-		}
-
-
-		private void removeQuotes(StringBuilder builder)
-		{
-			builder.deleteCharAt(0);
-			builder.deleteCharAt(builder.length() - 1);
-		}
-		
-		
-		private boolean isNumber()
-		{
-			return this.value instanceof Number;
-		}
 	}
 }
