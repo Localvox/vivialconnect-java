@@ -6,6 +6,8 @@ public class JsonBodyBuilder
 {
 
 	private String			className;
+	private String 			translatedClassName;
+	
 	private StringBuilder	builder;
 	
 	private FormatterRegistry registry = FormatterRegistry.getInstance();
@@ -40,6 +42,13 @@ public class JsonBodyBuilder
 		
 		return this;
 	}
+	
+	
+	public JsonBodyBuilder withTranslatedClassName(String translatedClassName)
+	{
+		this.translatedClassName = translatedClassName;
+		return this;
+	}
 
 
 	public String build()
@@ -65,6 +74,11 @@ public class JsonBodyBuilder
 
 	private String translateClassName()
 	{
+		if (translatedClassName != null)
+		{
+			return translatedClassName;
+		}
+		
 		return separateCamelCase(className, "_").toLowerCase();
 	}
 
