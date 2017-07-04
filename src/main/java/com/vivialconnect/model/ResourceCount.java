@@ -1,8 +1,8 @@
-package com.vivialconnect.model.message;
+package com.vivialconnect.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class MessageCount
+public class ResourceCount
 {
 	
 	@JsonProperty

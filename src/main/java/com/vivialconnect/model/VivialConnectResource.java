@@ -44,11 +44,13 @@ public abstract class VivialConnectResource implements Serializable
 	public static final String	HTTP_DATE_FORMAT	= "E, dd MMM yyyy HH:mm:ss z";
 	
 	protected static Set<Class<?>> classesWithoutRootValue = new HashSet<Class<?>>();
-	
+	static {
+		classesWithoutRootValue.add(ResourceCount.class);
+	}
 	
 	protected enum RequestMethod
 	{
-		GET, POST, PUT
+		GET, POST, PUT, DELETE
 	}
 	
 	
@@ -330,13 +332,19 @@ public abstract class VivialConnectResource implements Serializable
 	}
 
 	
-	private static String doRequest(HttpURLConnection connection) throws IOException
+	private static String doRequest(HttpURLConnection connection) throws IOException, NoContentException
 	{
 		BufferedReader reader = createBufferedReader(connection);
 		
 		try
 		{
-			return readResponse(reader);
+			String response = readResponse(reader);
+			if (connection.getResponseCode() == 204 /* No Content */)
+			{
+				throw new NoContentException(response);
+			}
+			
+			return response;
 		}
 		finally
 		{
@@ -360,8 +368,8 @@ public abstract class VivialConnectResource implements Serializable
 		
 		return new BufferedReader(new InputStreamReader(inputStream));
 	}
-	
-	
+
+
 	private static String readResponse(BufferedReader reader) throws IOException
 	{
 		StringBuilder responseBuilder = new StringBuilder();
@@ -378,13 +386,22 @@ public abstract class VivialConnectResource implements Serializable
 	
 	private static <T> T unmarshallResponse(String response, Class<T> responseClass) throws JsonProcessingException, IOException
 	{
+		ObjectMapper mapper = configureObjectMapper(responseClass);
+		return mapper.reader().forType(responseClass).readValue(response);
+	}
+
+
+	private static <T> ObjectMapper configureObjectMapper(Class<T> responseClass)
+	{
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		
 		if (shouldUnwrapRoot(responseClass))
 		{
 			mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 		}
 		
-		return mapper.reader().forType(responseClass).readValue(response);
+		return mapper;
 	}
 	
 	

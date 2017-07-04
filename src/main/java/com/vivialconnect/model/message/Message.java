@@ -7,12 +7,14 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.vivialconnect.model.ResourceCount;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 
 @JsonRootName(value = "message")
 public class Message extends VivialConnectResource
 {
+	
 	private static final long serialVersionUID = 5181807107956389186L;
 
 	/** Unique identifier of the text message object */
@@ -135,8 +137,8 @@ public class Message extends VivialConnectResource
 	private List<String> mediaUrls;
 	
 	static {
-		classesWithoutRootValue.add(MessageCount.class);
 		classesWithoutRootValue.add(MessageCollection.class);
+		classesWithoutRootValue.add(AttachmentCollection.class);
 	}
 	
 	
@@ -192,27 +194,19 @@ public class Message extends VivialConnectResource
 	
 	public static int count()
 	{
-		return request(RequestMethod.GET, classURLWithSuffix(Message.class, "count"), null, null, MessageCount.class).getCount();
+		return request(RequestMethod.GET, classURLWithSuffix(Message.class, "count"), null, null, ResourceCount.class).getCount();
 	}
 	
 	
-	public void getAttachments()
+	public List<Attachment> getAttachments()
 	{
-		request(RequestMethod.GET,
-				classURLWithSuffix(Message.class, String.format("%d/attachments", this.getId())),
-				null,
-				null,
-				Attachment.class);
+		return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.format("%d/attachments", this.getId())), null, null, AttachmentCollection.class).getAttachments();
 	}
 	
 	
 	public Message redact()
 	{
-		return request(RequestMethod.PUT,
-					   classURLWithSuffix(Message.class, String.valueOf(this.getId())),
-					   jsonBodyEmpty(),
-					   null,
-					   Message.class);
+		return request(RequestMethod.PUT, classURLWithSuffix(Message.class, String.valueOf(this.getId())), jsonBodyEmpty(), null, Message.class);
 	}
 	
 	
