@@ -5,6 +5,18 @@ import java.util.Date;
 public interface AssociatedNumber extends INumber
 {
 	
+	AssociatedNumber update();
+	
+	
+	AssociatedNumber updateLocalNumber();
+	
+	
+	boolean delete();
+	
+	
+	boolean deleteLocalNumber();
+	
+	
 	int getId();
 	
 	
@@ -29,36 +41,6 @@ public interface AssociatedNumber extends INumber
 	void setAccountId(int accountId);
 	
 	
-	String getStatusTextUrl();
-	
-	
-	void setStatusTextUrl(String statusTextUrl);
-	
-	
-	String getIncomingTextUrl();
-	
-	
-	void setIncomingTextUrl(String incomingTextUrl);
-	
-	
-	String getIncomingTextMethod();
-	
-	
-	void setIncomingTextMethod(String incomingTextMethod);
-	
-	
-	String getIncomingTextFallbackUrl();
-	
-	
-	void setIncomingTextFallbackUrl(String incomingTextFallbackUrl);
-	
-	
-	String getIncomingTextFallbackMethod();
-	
-	
-	void setIncomingTextFallbackMethod(String incomingTextFallbackMethod);
-	
-	
 	String getVoiceForwardingNumber();
 	
 	
@@ -75,4 +57,34 @@ public interface AssociatedNumber extends INumber
 	
 	
 	void setActive(boolean active);
+	
+	
+	String getStatusTextUrl();
+	
+	
+	String getIncomingTextUrl();
+	
+	
+	String getIncomingTextMethod();
+	
+	
+	String getIncomingTextFallbackUrl();
+	
+	
+	String getIncomingTextFallbackMethod();
+	
+	
+	int getConnectorId();
+	
+	
+	void setLata(String lata);
+	
+	
+	void setCity(String city);
+	
+	
+	void setRegion(String region);
+	
+	
+	void setRateCenter(String rateCenter);
 }

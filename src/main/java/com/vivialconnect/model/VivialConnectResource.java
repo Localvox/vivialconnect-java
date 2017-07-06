@@ -36,6 +36,7 @@ import com.vivialconnect.util.ReflectionUtils;
 
 public abstract class VivialConnectResource implements Serializable
 {
+	
 	private static final long serialVersionUID = -2726239361148612818L;
 	
 	private static final String SIGNATURE_ALGORITHM = "HmacSHA256";
@@ -341,7 +342,7 @@ public abstract class VivialConnectResource implements Serializable
 			String response = readResponse(reader);
 			if (connection.getResponseCode() == 204 /* No Content */)
 			{
-				throw new NoContentException(response);
+				throw new NoContentException();
 			}
 			
 			return response;
@@ -417,5 +418,16 @@ public abstract class VivialConnectResource implements Serializable
 		{
 			connection.disconnect();
 		}
+	}
+	
+	
+	protected static Map<String, String> addQueryParam(String key, String value, Map<String, String> queryParams)
+	{
+		if (queryParams != null)
+		{
+			queryParams.put(key, value);
+		}
+		
+		return queryParams;
 	}
 }

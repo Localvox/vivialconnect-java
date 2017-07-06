@@ -9,6 +9,24 @@ public interface INumber
 	void setName(String name);
 	
 	
+	void setStatusTextUrl(String statusTextUrl);
+	
+	
+	void setIncomingTextUrl(String incomingTextUrl);
+	
+	
+	void setIncomingTextMethod(String incomingTextMethod);
+	
+	
+	void setIncomingTextFallbackUrl(String incomingTextFallbackUrl);
+	
+	
+	void setIncomingTextFallbackMethod(String incomingTextFallbackMethod);
+	
+	
+	void setConnectorId(int connectorId);
+	
+	
 	String getPhoneNumber();
 	
 	
@@ -24,23 +42,11 @@ public interface INumber
 	String getCity();
 	
 	
-	void setCity(String city);
-	
-	
 	String getRegion();
-	
-	
-	void setRegion(String region);
 	
 	
 	String getLata();
 	
 	
-	void setLata(String lata);
-	
-	
 	String getRateCenter();
-	
-	
-	void setRateCenter(String rateCenter);
 }

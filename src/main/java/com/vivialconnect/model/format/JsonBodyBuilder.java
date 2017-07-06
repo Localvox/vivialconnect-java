@@ -1,5 +1,7 @@
 package com.vivialconnect.model.format;
 
+import java.util.Map;
+
 import com.vivialconnect.util.ReflectionUtils;
 
 public class JsonBodyBuilder
@@ -43,6 +45,18 @@ public class JsonBodyBuilder
 		this.builder.append("\":");
 		this.builder.append(formatter.formatValue(value));
 		this.builder.append(",");
+		
+		return this;
+	}
+	
+	
+	public JsonBodyBuilder addParams(Map<String, Object> params)
+	{
+		for (String paramName : params.keySet())
+		{
+			Object paramValue = params.get(paramName);
+			this.addParamPair(paramName, paramValue);
+		}
 		
 		return this;
 	}

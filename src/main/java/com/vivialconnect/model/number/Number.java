@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.sun.research.ws.wadl.Resource;
+import com.vivialconnect.model.NoContentException;
+import com.vivialconnect.model.ResourceCount;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 
@@ -14,6 +17,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 {
 	
 	private static final long serialVersionUID = -1224802858893763457L;
+	
+	private static final String AVAILABLE_US_LOCAL = "available/US/local";
 	
 	/** Unique identifier of the phone number object */
 	@JsonProperty
@@ -120,18 +125,196 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	@JsonProperty
 	private boolean active;
 	
+	@JsonProperty("connector_id")
+	private int connectorId;
+	
 	static {
 		classesWithoutRootValue.add(NumberCollection.class);
 	}
 	
+	
+	@Override
+	public AssociatedNumber update()
+	{
+		AssociatedNumber number = request(RequestMethod.PUT, classURLWithSuffix(Number.class, String.valueOf(getId())),
+										  buildJsonBodyForUpdate(), null, Number.class);
+		updateFields(number);
+		return this;
+	}
+	
+
+	private String buildJsonBodyForUpdate()
+	{
+		JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number");
+		fillOptionalFieldsForUpdate(builder);
+		
+		return builder.build();
+	}
+
+
+	private void fillOptionalFieldsForUpdate(JsonBodyBuilder builder)
+	{
+		ifParamValidAddToBuilder(builder, "id", getId());
+		ifParamValidAddToBuilder(builder, "connector_id", getConnectorId());
+		ifParamValidAddToBuilder(builder, "incoming_text_url", getIncomingTextUrl());
+		ifParamValidAddToBuilder(builder, "incoming_text_method", getIncomingTextMethod());
+		ifParamValidAddToBuilder(builder, "incoming_text_fallback_url", getIncomingTextFallbackUrl());
+		ifParamValidAddToBuilder(builder, "incoming_text_fallback_method", getIncomingTextFallbackMethod());
+		ifParamValidAddToBuilder(builder, "voice_forwarding_number", getVoiceForwardingNumber());
+	}
+	
+	
+	private void updateFields(AssociatedNumber number)
+	{
+		this.id = number.getId();
+		this.dateCreated = number.getDateCreated();
+		this.dateModified = number.getDateModified();
+		this.accountId = number.getAccountId();
+		this.phoneNumber = number.getPhoneNumber();
+		this.phoneNumberType = number.getPhoneNumberType();
+		this.statusTextUrl = number.getStatusTextUrl();
+		this.incomingTextUrl = number.getIncomingTextUrl();
+		this.incomingTextMethod = number.getIncomingTextMethod();
+		this.incomingTextFallbackUrl = number.getIncomingTextFallbackUrl();
+		this.incomingTextFallbackMethod = number.getIncomingTextFallbackMethod();
+		this.voiceForwardingNumber = number.getVoiceForwardingNumber();
+		this.capabilities = number.getCapabilities();
+		this.city = number.getCity();
+		this.region = number.getRegion();
+		this.lata = number.getLata();
+		this.rateCenter = number.getRateCenter();
+		this.active = number.isActive();
+		this.connectorId = number.getConnectorId();
+	}
+	
+	
+	@Override
+	public AssociatedNumber updateLocalNumber()
+	{
+		ensureNumberIsLocal();
+		
+		AssociatedNumber number = request(RequestMethod.PUT, classURLWithSuffix(Number.class, String.format("local/%d", getId())),
+				  						  buildJsonBodyForUpdate(), null, Number.class);
+		updateFields(number);
+		return this;
+	}
+	
+	
+	private void ensureNumberIsLocal()
+	{
+		if (!"local".equals(phoneNumberType))
+		{
+			throw new UnsupportedOperationException("Number is not local");
+		}
+	}
+
+
+	@Override
+	public boolean delete()
+	{
+		try
+		{
+			request(RequestMethod.DELETE, classURLWithSuffix(Number.class, String.valueOf(getId())), null, null, String.class);
+		}
+		catch(NoContentException e)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	@Override
+	public boolean deleteLocalNumber()
+	{
+		ensureNumberIsLocal();
+		
+		try
+		{
+			request(RequestMethod.DELETE, classURLWithSuffix(Number.class, String.format("local/%d", getId())), null, null, String.class);
+		}
+		catch(NoContentException e)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+
 	@Override
 	public AssociatedNumber buy()
 	{
 		JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number")
 												 .addParamPair("phone_number", getPhoneNumber())
 												 .addParamPair("phone_number_type", getPhoneNumberType());
+		fillOptionalFieldsForBuy(builder);
 		
 		return request(RequestMethod.POST, classURL(Number.class), builder.build(), null, Number.class);
+	}
+
+
+	private void fillOptionalFieldsForBuy(JsonBodyBuilder builder)
+	{
+		ifParamValidAddToBuilder(builder, "name", getName());
+		ifParamValidAddToBuilder(builder, "status_text_url", getStatusTextUrl());
+		ifParamValidAddToBuilder(builder, "connector_id", getConnectorId());
+		ifParamValidAddToBuilder(builder, "incoming_text_url", getIncomingTextUrl());
+		ifParamValidAddToBuilder(builder, "incoming_text_method", getIncomingTextMethod());
+		ifParamValidAddToBuilder(builder, "incoming_text_fallback_url", getIncomingTextFallbackUrl());
+		ifParamValidAddToBuilder(builder, "incoming_text_fallback_method", getIncomingTextFallbackMethod());
+	}
+	
+	
+	public static AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams)
+	{
+		JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number").addParams(optionalParams);
+		ifParamValidAddToBuilder(builder, "phone_number", phoneNumber);
+		ifParamValidAddToBuilder(builder, "area_code", areaCode);
+		
+		return request(RequestMethod.POST, classURLWithSuffix(Number.class, "local"), builder.build(), null, Number.class);
+	}
+	
+	
+	public static AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams)
+	{
+		JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number").addParams(optionalParams);
+		ifParamValidAddToBuilder(builder, "phone_number", phoneNumber);
+		ifParamValidAddToBuilder(builder, "area_code", areaCode);
+		ifParamValidAddToBuilder(builder, "phone_number_type", phoneNumberType);
+		
+		return request(RequestMethod.POST, classURL(Number.class), builder.build(), null, Number.class);
+	}
+	
+	
+	private static void ifParamValidAddToBuilder(JsonBodyBuilder builder, String paramName, String value)
+	{
+		if (value != null && !value.isEmpty())
+		{
+			builder.addParamPair(paramName, value);
+		}
+	}
+	
+	
+	private static void ifParamValidAddToBuilder(JsonBodyBuilder builder, String paramName, int intValue)
+	{
+		if (intValue > 0)
+		{
+			builder.addParamPair(paramName, intValue);
+		}
+	}
+	
+	
+	public static List<AssociatedNumber> getAssociatedNumbers()
+	{
+		return getAssociatedNumbers(null);
+	}
+	
+	
+	public static List<AssociatedNumber> getAssociatedNumbers(Map<String, String> queryParams)
+	{
+		return request(RequestMethod.GET, classURL(Number.class), null, queryParams, NumberCollection.class).getAssociatedNumbers();
 	}
 	
 	
@@ -143,7 +326,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	
 	public static List<AvailableNumber> findAvailableNumbersInRegion(String region, Map<String, String> queryParams)
 	{
-		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "available/US/local"), null, addQueryParam("region", region, queryParams), NumberCollection.class).getAvailableNumbers();
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, AVAILABLE_US_LOCAL), null, addQueryParam("in_region", region, queryParams), NumberCollection.class).getAvailableNumbers();
 	}
 	
 	
@@ -155,7 +338,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	
 	public static List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> queryParams)
 	{
-		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "available/US/local"), null, addQueryParam("area_code", areaCode, queryParams), NumberCollection.class).getAvailableNumbers();
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, AVAILABLE_US_LOCAL), null, addQueryParam("area_code", areaCode, queryParams), NumberCollection.class).getAvailableNumbers();
 	}
 	
 	
@@ -167,20 +350,45 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	
 	public static List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode, Map<String, String> queryParams)
 	{
-		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "available/US/local"), null, addQueryParam("postal_code", postalCode, queryParams), NumberCollection.class).getAvailableNumbers();
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, AVAILABLE_US_LOCAL), null, addQueryParam("in_postal_code", postalCode, queryParams), NumberCollection.class).getAvailableNumbers();
 	}
 	
 	
-	private static Map<String, String> addQueryParam(String key, String value, Map<String, String> queryParams)
+	public static List<AssociatedNumber> getLocalAssociatedNumbers()
 	{
-		if (queryParams != null)
-		{
-			queryParams.put(key, value);
-		}
-		
-		return queryParams;
+		return getLocalAssociatedNumbers(null);
 	}
-
+	
+	
+	public static List<AssociatedNumber> getLocalAssociatedNumbers(Map<String, String> queryParams)
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "local"), null, queryParams, NumberCollection.class).getAssociatedNumbers();
+	}
+	
+	
+	public static int count()
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "count"), null, null, ResourceCount.class).getCount();
+	}
+	
+	
+	public static int countLocal()
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "local/count"), null, null, ResourceCount.class).getCount();
+	}
+	
+	
+	public static AssociatedNumber getNumberById(int numberId)
+	{
+		return request(RequestMethod.GET, classURL(Number.class), null, null, NumberCollection.class).getAssociatedNumbers().get(0);
+	}
+	
+	
+	public static AssociatedNumber getLocalNumberById(int numberId)
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, String.format("local/%d", numberId)), null, null, Number.class);
+	}
+	
 	
 	@Override
 	public int getId()
@@ -445,5 +653,19 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	public void setActive(boolean active)
 	{
 		this.active = active;
+	}
+	
+	
+	@Override
+	public int getConnectorId()
+	{
+		return connectorId;
+	}
+	
+	
+	@Override
+	public void setConnectorId(int connectorId)
+	{
+		this.connectorId = connectorId;
 	}
 }

@@ -19,36 +19,69 @@ import com.vivialconnect.model.number.Number;
 
 public class Main
 {
-	static final int ACCOUNT_ID = 10128;
+	private static final int NUMBER_ID = 131;
+
+	static final int ACCOUNT_ID = 10130;
 	
-	static final String API_KEY = "MTK4VVE0R6LH7BIQ9XNM6RIV45IFQY92MWE";
-	static final String API_SECRET = "zTBzuvBeOWch0F6J6jMus6HaEwlbnX6XWRweoHDcmb97gauA";
+	static final String API_KEY = "MTKUAQS6SS0STMWT8PBLD530VWA0AYNURN8";
+	static final String API_SECRET = "N8TBkht8QHoDFw50HKNA1mf339cVyOgsQ9K89Gk8rWbVAwmr";
 	
-	static final String FROM_NUMBER = "+13132845729";
+	static final String FROM_NUMBER = "+13022133549";
 	static final String TO_NUMBER = "+18099667830";
 	
 	
 	public static void main(String[] args) throws Exception
 	{
 		VivialConnectClient.init(ACCOUNT_ID, API_KEY, API_SECRET);
-		//sendMessage("Test with media_urls and connector_id fields");
+		//sendMessage("Super Secret Message");
 		//getMessageById(42248);
 		//int numberId = 126, 127, 128, 129
+		//int numberId = 130
 		
-		List<AvailableNumber> availableNumbers = getAvailableNumbers();
-		
+		/* List<AvailableNumber> availableNumbers = getAvailableNumbers();
 		AvailableNumber availableNumber = availableNumbers.get(0);
 		AssociatedNumber associatedNumber = availableNumber.buy();
-		System.out.println(associatedNumber.getId());
+		System.out.println(associatedNumber.getId()); */
+		
+		//AssociatedNumber number = Number.buy(null, "302", "local");
+		//List<AssociatedNumber> associatedNumbers = getAssociatedNumbers();
+		//Number.count();
+		
+		/* AssociatedNumber number = getNumberById();
+		number.setIncomingTextUrl("https://www.twitter.com/");
+		number.setIncomingTextMethod("GET");
+		number.update();
+		
+		System.out.println(number.getIncomingTextUrl());
+		System.out.println(number.getIncomingTextMethod());*/
+		
+		/* AssociatedNumber number = getNumberById();
+		number.delete(); */
+		
+		//Number.getLocalAssociatedNumbers();
+		//Number.countLocal();
+		//Number.getLocalNumberById(NUMBER_ID);
+	}
+	
+	private static AssociatedNumber getNumberById()
+	{
+		return Number.getNumberById(NUMBER_ID);
 	}
 	
 	
+	private static List<AssociatedNumber> getAssociatedNumbers()
+	{
+		return Number.getAssociatedNumbers();
+	}
+
+
 	private static List<AvailableNumber> getAvailableNumbers()
 	{
 		Map<String, String> queryParams = new HashMap<String, String>();
 		queryParams.put("limit", "2");
+		queryParams.put("in_city", "DOVER");
 		
-		return Number.findAvailableNumbersByAreaCode("302", queryParams);
+		return Number.findAvailableNumbersInRegion("DE", queryParams);
 	}
 	
 
@@ -119,8 +152,6 @@ public class Main
 	private static void sendMessage(String body)
 	{
 		Message message = new Message();
-		message.addMediaUrl("http://blog.biakelsey.com/wp-content/uploads/6McYbbXo.jpg");
-		message.addMediaUrl("https://s3-media1.fl.yelpcdn.com/bphoto/ouwCRgUnznnUhHZZHZBjqQ/ls.jpg");
 		message.setFromNumber(FROM_NUMBER);
 		message.setToNumber(TO_NUMBER);
 		message.setBody(body);

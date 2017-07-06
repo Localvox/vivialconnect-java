@@ -26,7 +26,13 @@ public class NumberCollection
 	
 	public List<AssociatedNumber> getAssociatedNumbers()
 	{
-		return null;
+		List<AssociatedNumber> associatedNumbers = new ArrayList<AssociatedNumber>(numbers.size());
+		for (Number number : numbers)
+		{
+			associatedNumbers.add((AssociatedNumber) number);
+		}
+		
+		return associatedNumbers;
 	}
 	
 	
