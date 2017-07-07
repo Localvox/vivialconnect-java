@@ -16,6 +16,7 @@ import com.vivialconnect.model.message.Message;
 import com.vivialconnect.model.number.AssociatedNumber;
 import com.vivialconnect.model.number.AvailableNumber;
 import com.vivialconnect.model.number.Number;
+import com.vivialconnect.model.number.NumberInfo;
 
 public class Main
 {
@@ -61,6 +62,11 @@ public class Main
 		//Number.getLocalAssociatedNumbers();
 		//Number.countLocal();
 		//Number.getLocalNumberById(NUMBER_ID);
+		
+		/* AssociatedNumber number = getNumberById();
+		number.lookup(); */
+		
+		
 	}
 	
 	private static AssociatedNumber getNumberById()

@@ -1,12 +1,12 @@
 package com.vivialconnect.model.number;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.sun.research.ws.wadl.Resource;
 import com.vivialconnect.model.NoContentException;
 import com.vivialconnect.model.ResourceCount;
 import com.vivialconnect.model.VivialConnectResource;
@@ -390,6 +390,23 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	}
 	
 	
+	@Override
+	public NumberInfo lookup()
+	{
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("phone_number", getRawPhoneNumber());
+		
+		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "lookup"), null, queryParams, NumberInfo.class);
+	}
+	
+	
+	private String getRawPhoneNumber()
+	{
+		/* Removes the leading '+' character from the phone number */
+		return getPhoneNumber().substring(1);
+	}
+
+
 	@Override
 	public int getId()
 	{

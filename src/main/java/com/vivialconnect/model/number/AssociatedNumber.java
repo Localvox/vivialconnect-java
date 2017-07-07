@@ -17,6 +17,9 @@ public interface AssociatedNumber extends INumber
 	boolean deleteLocalNumber();
 	
 	
+	NumberInfo lookup();
+	
+	
 	int getId();
 	
 	
