@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vivialconnect.client.VivialConnectClient;
+import com.vivialconnect.model.account.Account;
 import com.vivialconnect.model.message.Attachment;
 import com.vivialconnect.model.message.AttachmentCollection;
 import com.vivialconnect.model.message.Message;
@@ -66,7 +67,9 @@ public class Main
 		/* AssociatedNumber number = getNumberById();
 		number.lookup(); */
 		
-		
+		Account account = Account.getAccount();
+		account.setCompanyName("Jellyhub SRL");
+		account.update();
 	}
 	
 	private static AssociatedNumber getNumberById()

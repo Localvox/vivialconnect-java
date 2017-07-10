@@ -288,24 +288,6 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	}
 	
 	
-	private static void ifParamValidAddToBuilder(JsonBodyBuilder builder, String paramName, String value)
-	{
-		if (value != null && !value.isEmpty())
-		{
-			builder.addParamPair(paramName, value);
-		}
-	}
-	
-	
-	private static void ifParamValidAddToBuilder(JsonBodyBuilder builder, String paramName, int intValue)
-	{
-		if (intValue > 0)
-		{
-			builder.addParamPair(paramName, intValue);
-		}
-	}
-	
-	
 	public static List<AssociatedNumber> getAssociatedNumbers()
 	{
 		return getAssociatedNumbers(null);

@@ -34,6 +34,9 @@ import com.vivialconnect.http.VivialRESTClient;
 import com.vivialconnect.util.CryptoUtils;
 import com.vivialconnect.util.ReflectionUtils;
 
+import com.vivialconnect.model.account.Account;
+import com.vivialconnect.model.format.JsonBodyBuilder;
+
 public abstract class VivialConnectResource implements Serializable
 {
 	
@@ -69,6 +72,11 @@ public abstract class VivialConnectResource implements Serializable
 	
 	protected static String singleClassURL(Class<?> clazz)
 	{
+		if (Account.class.equals(clazz))
+		{
+			return String.format("%s/accounts/%d.json", VivialConnectClient.API_BASE, VivialConnectClient.getAccountId());
+		}
+		
 		return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
 												  VivialConnectClient.getAccountId(),
 												  ReflectionUtils.className(clazz).toLowerCase());
@@ -429,5 +437,23 @@ public abstract class VivialConnectResource implements Serializable
 		}
 		
 		return queryParams;
+	}
+
+
+	protected static void ifParamValidAddToBuilder(JsonBodyBuilder builder, String paramName, String value)
+	{
+		if (value != null && !value.isEmpty())
+		{
+			builder.addParamPair(paramName, value);
+		}
+	}
+	
+	
+	protected static void ifParamValidAddToBuilder(JsonBodyBuilder builder, String paramName, int intValue)
+	{
+		if (intValue > 0)
+		{
+			builder.addParamPair(paramName, intValue);
+		}
 	}
 }
