@@ -2,11 +2,14 @@ package com.vivialconnect.model.account;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
+import com.vivialconnect.model.log.Log;
+import com.vivialconnect.model.log.LogCollection;
 
 @JsonRootName("account")
 public class Account extends VivialConnectResource
@@ -47,10 +50,33 @@ public class Account extends VivialConnectResource
 	@JsonProperty
 	private List<Service> services;
 	
+	static {
+		classesWithoutRootValue.add(LogCollection.class);
+		classesWithoutRootValue.add(ContactCollection.class);
+	}
+	
 	
 	public static Account getAccount()
 	{
 		return request(RequestMethod.GET, singleClassURL(Account.class), null, null, Account.class);
+	}
+	
+	
+	public static List<Log> getLogs(Date startTime, Date endTime)
+	{
+		return request(RequestMethod.GET, classURL(Log.class), null, null, LogCollection.class).getLogs();
+	}
+	
+	
+	public static List<Contact> retrieveContacts()
+	{
+		return retrieveContacts(null);
+	}
+	
+	
+	public static List<Contact> retrieveContacts(Map<String, String> queryParams)
+	{
+		return request(RequestMethod.GET, classURL(Contact.class), null, queryParams, ContactCollection.class).getContacts();
 	}
 	
 	

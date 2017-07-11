@@ -11,13 +11,13 @@ import org.apache.commons.io.IOUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vivialconnect.client.VivialConnectClient;
 import com.vivialconnect.model.account.Account;
+import com.vivialconnect.model.account.Contact;
 import com.vivialconnect.model.message.Attachment;
 import com.vivialconnect.model.message.AttachmentCollection;
 import com.vivialconnect.model.message.Message;
 import com.vivialconnect.model.number.AssociatedNumber;
 import com.vivialconnect.model.number.AvailableNumber;
 import com.vivialconnect.model.number.Number;
-import com.vivialconnect.model.number.NumberInfo;
 
 public class Main
 {
@@ -28,9 +28,8 @@ public class Main
 	static final String API_KEY = "MTKUAQS6SS0STMWT8PBLD530VWA0AYNURN8";
 	static final String API_SECRET = "N8TBkht8QHoDFw50HKNA1mf339cVyOgsQ9K89Gk8rWbVAwmr";
 	
-	static final String FROM_NUMBER = "+13022133549";
+	static final String FROM_NUMBER = "+13022136859";
 	static final String TO_NUMBER = "+18099667830";
-	
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -62,14 +61,23 @@ public class Main
 		
 		//Number.getLocalAssociatedNumbers();
 		//Number.countLocal();
-		//Number.getLocalNumberById(NUMBER_ID);
+		/* Number.getLocalNumberById(NUMBER_ID); */
 		
 		/* AssociatedNumber number = getNumberById();
 		number.lookup(); */
 		
-		Account account = Account.getAccount();
-		account.setCompanyName("Jellyhub SRL");
-		account.update();
+		/* AssociatedNumber number = Number.getAssociatedNumbers().get(0);
+		
+		Message message = new Message();
+		message.setFromNumber(number.getPhoneNumber());
+		message.setToNumber(TO_NUMBER);
+		message.setBody("Hello! 😊");
+		message.send(); */
+		
+		//Account.getLogs(startDate, endDate);
+		//Account.getLogs(startDate, endDate, queryParams);
+		
+		List<Contact> contacts = Account.retrieveContacts();
 	}
 	
 	private static AssociatedNumber getNumberById()

@@ -89,6 +89,7 @@ public class Contact extends VivialConnectResource
 	@JsonProperty("work_phone")
 	private String workPhone;
 	
+	
 	public int getId()
 	{
 		return id;

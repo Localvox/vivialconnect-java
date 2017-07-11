@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.ResourceCount;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
+import com.vivialconnect.util.StringUtils;
 
 @JsonRootName(value = "message")
 public class Message extends VivialConnectResource
@@ -383,7 +384,8 @@ public class Message extends VivialConnectResource
 
 	public void setBody(String body)
 	{
-		this.body = body;
+		/* Escape Non-ASCII characters in order to support things like emojis and Chinese characters */
+		this.body = StringUtils.escapeNonAscii(body);
 	}
 
 
