@@ -138,7 +138,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	{
 		AssociatedNumber number = request(RequestMethod.PUT, classURLWithSuffix(Number.class, String.valueOf(getId())),
 										  buildJsonBodyForUpdate(), null, Number.class);
-		updateFields(number);
+		updateObjectState(number);
 		return this;
 	}
 	
@@ -164,7 +164,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	}
 	
 	
-	private void updateFields(AssociatedNumber number)
+	private void updateObjectState(AssociatedNumber number)
 	{
 		this.id = number.getId();
 		this.dateCreated = number.getDateCreated();
@@ -195,7 +195,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 		
 		AssociatedNumber number = request(RequestMethod.PUT, classURLWithSuffix(Number.class, String.format("local/%d", getId())),
 				  						  buildJsonBodyForUpdate(), null, Number.class);
-		updateFields(number);
+		updateObjectState(number);
 		return this;
 	}
 	

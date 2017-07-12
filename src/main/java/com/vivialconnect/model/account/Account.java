@@ -68,18 +68,6 @@ public class Account extends VivialConnectResource
 	}
 	
 	
-	public static List<Contact> retrieveContacts()
-	{
-		return retrieveContacts(null);
-	}
-	
-	
-	public static List<Contact> retrieveContacts(Map<String, String> queryParams)
-	{
-		return request(RequestMethod.GET, classURL(Contact.class), null, queryParams, ContactCollection.class).getContacts();
-	}
-	
-	
 	public Account update()
 	{
 		Account updatedAccount = request(RequestMethod.PUT, singleClassURL(Account.class),

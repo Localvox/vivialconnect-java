@@ -385,7 +385,7 @@ public class Message extends VivialConnectResource
 	public void setBody(String body)
 	{
 		/* Escape Non-ASCII characters in order to support things like emojis and Chinese characters */
-		this.body = StringUtils.escapeNonAscii(body);
+		this.body = StringUtils.escapeNonAsciiCharacters(body);
 	}
 
 

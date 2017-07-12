@@ -74,10 +74,12 @@ public class Main
 		message.setBody("Hello! 😊");
 		message.send(); */
 		
-		//Account.getLogs(startDate, endDate);
-		//Account.getLogs(startDate, endDate, queryParams);
-		
-		List<Contact> contacts = Account.retrieveContacts();
+		Contact contact = new Contact();
+		contact.setFirstName("Eugenio");
+		contact.setLastName("Mancebo");
+		contact.setEmail("eugenio.mancebo@newtechsa.com");
+		contact.setContactType("billing");
+		contact.create();
 	}
 	
 	private static AssociatedNumber getNumberById()

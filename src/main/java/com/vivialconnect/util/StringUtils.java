@@ -3,7 +3,7 @@ package com.vivialconnect.util;
 public class StringUtils
 {
 
-	public static String escapeNonAscii(String str)
+	public static String escapeNonAsciiCharacters(String str)
 	{
 		StringBuilder retStr = new StringBuilder();
 		for (int i = 0; i < str.length(); i++)

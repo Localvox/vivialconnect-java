@@ -1,10 +1,17 @@
 package com.vivialconnect.model.account;
 
+import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.vivialconnect.model.ResourceCount;
 import com.vivialconnect.model.VivialConnectResource;
+import com.vivialconnect.model.format.JsonBodyBuilder;
 
+@JsonRootName("contact")
 public class Contact extends VivialConnectResource
 {
 
@@ -88,6 +95,162 @@ public class Contact extends VivialConnectResource
 	/** Contacts's work phone number */
 	@JsonProperty("work_phone")
 	private String workPhone;
+	
+	private static String[] REQUIRED_FIELDS = { "firstName", "lastName", "email", "contactType" };
+	
+	
+	public Contact create()
+	{
+		verifyRequiredFields();
+		
+		Contact createdContact = request(RequestMethod.POST, classURL(Contact.class),
+										jsonBodyForCreate(), null, Contact.class);
+		
+		updateObjectState(createdContact);
+		return this;
+	}
+	
+
+	private void verifyRequiredFields()
+	{
+		Class<?> c = getClass();
+		for (int i = 0; i < REQUIRED_FIELDS.length; i++)
+		{
+			String requiredFieldName = REQUIRED_FIELDS[i];
+			Field requiredField = getDeclaredField(c, requiredFieldName);
+			
+			if (requiredField == null)
+			{
+				continue;
+			}
+			
+			if (requiredField.getType().equals(String.class))
+			{
+				String fieldValue = (String) getValueFromField(requiredField);
+				validateStringValue(requiredField.getName(), fieldValue);
+			}
+		}
+	}
+	
+
+	private Field getDeclaredField(Class<?> clazz, String fieldName)
+	{
+		try
+		{
+			return clazz.getDeclaredField(fieldName);
+		}
+		catch (SecurityException e) {}
+		catch (NoSuchFieldException e) {}
+		
+		return null;
+	}
+	
+	
+	private Object getValueFromField(Field field)
+	{
+		try
+		{
+			return field.get(this);
+		}
+		catch (IllegalArgumentException e) {}
+		catch (IllegalAccessException e) {}
+		
+		return null;
+	}
+	
+	
+	private void validateStringValue(String fieldName, String fieldValue)
+	{
+		if (fieldValue == null || fieldValue.isEmpty())
+		{
+			throw new IllegalStateException(String.format("Parameter '%s' is null or empty", fieldName));
+		}
+	}
+	
+	
+	private String jsonBodyForCreate()
+	{
+		JsonBodyBuilder builder = JsonBodyBuilder.forClass(Contact.class);
+		addRequiredFields(builder);
+		addOptionalFields(builder);
+		
+		return builder.build();
+	}
+	
+
+	private void addRequiredFields(JsonBodyBuilder builder)
+	{
+		ifParamValidAddToBuilder(builder, "first_name", getFirstName());
+		ifParamValidAddToBuilder(builder, "last_name", getLastName());
+		ifParamValidAddToBuilder(builder, "email", getEmail());
+		ifParamValidAddToBuilder(builder, "contact_type", getContactType());
+	}
+	
+	
+	private void addOptionalFields(JsonBodyBuilder builder)
+	{
+		ifParamValidAddToBuilder(builder, "company_name", getCompanyName());
+		ifParamValidAddToBuilder(builder, "title", getTitle());
+		ifParamValidAddToBuilder(builder, "address1", getAddress1());
+		ifParamValidAddToBuilder(builder, "address2", getAddress2());
+		ifParamValidAddToBuilder(builder, "address3", getAddress3());
+		ifParamValidAddToBuilder(builder, "city", getCity());
+		ifParamValidAddToBuilder(builder, "state", getState());
+		ifParamValidAddToBuilder(builder, "postal_code", getPostalCode());
+		ifParamValidAddToBuilder(builder, "country", getState());
+		ifParamValidAddToBuilder(builder, "mobile_phone", getMobilePhone());
+		ifParamValidAddToBuilder(builder, "work_phone", getWorkPhone());
+	}
+	
+	
+	private void updateObjectState(Contact contact)
+	{
+		this.id = contact.getId();
+		this.accountId = contact.getAccountId();
+		this.active = contact.isActive();
+		this.address1 = contact.getAddress1();
+		this.address2 = contact.getAddress2();
+		this.address3 = contact.getAddress3();
+		this.city = contact.getCity();
+		this.companyName = contact.getCompanyName();
+		this.contactType = contact.getContactType();
+		this.country = contact.getCountry();
+		this.dateCreated = contact.getDateCreated();
+		this.dateModified = contact.getDateModified();
+		this.email = contact.getEmail();
+		this.fax = contact.getFax();
+		this.firstName = contact.getFirstName();
+		this.lastName = contact.getLastName();
+		this.mobilePhone = contact.getMobilePhone();
+		this.postalCode = contact.getPostalCode();
+		this.state = contact.getState();
+		this.title = contact.getTitle();
+		this.workPhone = contact.getWorkPhone();
+	}
+
+
+	public static List<Contact> getContacts()
+	{
+		return getContacts(null);
+	}
+	
+	
+	public static List<Contact> getContacts(Map<String, String> queryParams)
+	{
+		return request(RequestMethod.GET, classURL(Contact.class), null, queryParams, ContactCollection.class).getContacts();
+	}
+	
+	
+	public static Contact getContactById(int contactId)
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Contact.class, String.valueOf(contactId)), null, null, Contact.class);
+	}
+	
+	
+	public static int count()
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Contact.class, "count"), null, null, ResourceCount.class).getCount();
+	}
 	
 	
 	public int getId()
