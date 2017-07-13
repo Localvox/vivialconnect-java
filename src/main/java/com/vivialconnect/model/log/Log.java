@@ -102,12 +102,22 @@ public class Log extends VivialConnectResource
 
 	public static LogCollection getLogs(Date startTime, Date endTime, Map<String, String> queryParameters)
 	{
-		queryParameters = buildQueryParams(startTime, endTime, queryParameters);
+		queryParameters = buildQueryParams(startTime, endTime, null, queryParameters);
 		return request(RequestMethod.GET, classURL(Log.class), null, queryParameters, LogCollection.class);
 	}
+	
+	public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType)
+	{
+		return getAggregate(startTime, endTime, aggregatorType, null);
+	}
+	
+	public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParameters)
+	{
+		queryParameters = buildQueryParams(startTime, endTime, aggregatorType, queryParameters);
+		return request(RequestMethod.GET, classURLWithSuffix(Log.class, "aggregate"), null, queryParameters, LogCollection.class);
+	}
 
-
-	private static Map<String, String> buildQueryParams(Date startTime, Date endTime, Map<String, String> queryParams)
+	private static Map<String, String> buildQueryParams(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParams)
 	{
 		String formattedStartDate = createRequestTimestamp(startTime);
 		String formattedEndDate = createRequestTimestamp(endTime);
@@ -119,11 +129,15 @@ public class Log extends VivialConnectResource
 
 		queryParams.put("start_time", formattedStartDate);
 		queryParams.put("end_time", formattedEndDate);
+		
+		if(aggregatorType != null && !aggregatorType.isEmpty()) 
+		{
+			queryParams.put("aggregator_type", aggregatorType);
+		}
 
 		return queryParams;
 	}
-
-
+	
 	public String getLogId()
 	{
 		return logId;
