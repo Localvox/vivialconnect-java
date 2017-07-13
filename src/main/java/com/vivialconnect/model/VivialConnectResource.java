@@ -44,8 +44,8 @@ public abstract class VivialConnectResource implements Serializable
 	
 	private static final String SIGNATURE_ALGORITHM = "HmacSHA256";
 
-	public static final String	ISO_8601_FORMAT		= "yyyyMMdd'T'HHmmss'Z'";
-	public static final String	HTTP_DATE_FORMAT	= "E, dd MMM yyyy HH:mm:ss z";
+	protected static final String	ISO_8601_FORMAT		= "yyyyMMdd'T'HHmmss'Z'";
+	protected static final String	HTTP_DATE_FORMAT	= "E, dd MMM yyyy HH:mm:ss z";
 	
 	protected static Set<Class<?>> classesWithoutRootValue = new HashSet<Class<?>>();
 	static {
@@ -221,7 +221,7 @@ public abstract class VivialConnectResource implements Serializable
 	}
 	
 	
-	private static String createRequestTimestamp(Date currentDate)
+	protected static String createRequestTimestamp(Date currentDate)
 	{
 		DateFormat iso8601 = new SimpleDateFormat(ISO_8601_FORMAT);
 		iso8601.setTimeZone(new SimpleTimeZone(0, "GMT"));

@@ -11,7 +11,7 @@ public class LogCollection
 	private String lastKey;
 	
 	
-	@JsonProperty("Items")
+	@JsonProperty("log_items")
 	private List<Log> logs;
 
 
