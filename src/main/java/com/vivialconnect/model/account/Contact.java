@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.vivialconnect.model.NoContentException;
 import com.vivialconnect.model.ResourceCount;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
@@ -17,6 +18,8 @@ public class Contact extends VivialConnectResource
 
 	private static final long serialVersionUID = 3140451099385557777L;
 	
+	private static String[] REQUIRED_FIELDS = { "firstName", "lastName", "email", "contactType" };
+	
 	/** Unique identifier of the user object */
 	@JsonProperty
 	private int id;
@@ -25,7 +28,7 @@ public class Contact extends VivialConnectResource
 	@JsonProperty("date_created")
 	private Date dateCreated;
 
-	/** Last modification date (UTC) of contact in ISO 8601 format */
+	/** Last modification date (UTC) of the contact in ISO 8601 format */
 	@JsonProperty("date_modified")
 	private Date dateModified;
 	
@@ -96,13 +99,28 @@ public class Contact extends VivialConnectResource
 	@JsonProperty("work_phone")
 	private String workPhone;
 	
-	private static String[] REQUIRED_FIELDS = { "firstName", "lastName", "email", "contactType" };
+	private JsonBodyBuilder jsonBodyBuilder;
+	
+	static {
+		classesWithoutRootValue.add(ContactCollection.class);
+	}
+	
+	public Contact()
+	{
+		jsonBodyBuilder = JsonBodyBuilder.forClass(Contact.class);
+	}
+	
+	
+	public Contact(Contact contact)
+	{
+		jsonBodyBuilder = JsonBodyBuilder.forClass(Contact.class).addParamPair("id", contact.getId());
+		updateObjectState(contact);
+	}
 	
 	
 	public Contact create()
 	{
 		verifyRequiredFields();
-		
 		Contact createdContact = request(RequestMethod.POST, classURL(Contact.class),
 										jsonBodyForCreate(), null, Contact.class);
 		
@@ -180,6 +198,7 @@ public class Contact extends VivialConnectResource
 
 	private void addRequiredFields(JsonBodyBuilder builder)
 	{
+		/* TODO: Move all these to class-level constants */
 		ifParamValidAddToBuilder(builder, "first_name", getFirstName());
 		ifParamValidAddToBuilder(builder, "last_name", getLastName());
 		ifParamValidAddToBuilder(builder, "email", getEmail());
@@ -227,7 +246,38 @@ public class Contact extends VivialConnectResource
 		this.title = contact.getTitle();
 		this.workPhone = contact.getWorkPhone();
 	}
+	
+	
+	public Contact update()
+	{
+		verifyRequiredFields();
+		Contact updatedContact = request(RequestMethod.PUT, classURLWithSuffix(Contact.class, String.valueOf(getId())),
+									     jsonBodyForUpdate(), null, Contact.class);
+		updateObjectState(updatedContact);
+		return this;
+	}
 
+	
+	public String jsonBodyForUpdate()
+	{
+		return jsonBodyBuilder.build();
+	}
+	
+	
+	public boolean delete()
+	{
+		try
+		{
+			request(RequestMethod.DELETE, classURLWithSuffix(Contact.class, String.valueOf(getId())), null, null, String.class);
+		}
+		catch(NoContentException nce)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
 
 	public static List<Contact> getContacts()
 	{
@@ -243,7 +293,7 @@ public class Contact extends VivialConnectResource
 	
 	public static Contact getContactById(int contactId)
 	{
-		return request(RequestMethod.GET, classURLWithSuffix(Contact.class, String.valueOf(contactId)), null, null, Contact.class);
+		return new Contact(request(RequestMethod.GET, classURLWithSuffix(Contact.class, String.valueOf(contactId)), null, null, Contact.class));
 	}
 	
 	
@@ -261,6 +311,7 @@ public class Contact extends VivialConnectResource
 	public void setId(int id)
 	{
 		this.id = id;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "id", getId());
 	}
 
 	public Date getDateCreated()
@@ -291,6 +342,7 @@ public class Contact extends VivialConnectResource
 	public void setAccountId(int accountId)
 	{
 		this.accountId = accountId;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "account_id", getAccountId());
 	}
 
 	public boolean isActive()
@@ -301,6 +353,7 @@ public class Contact extends VivialConnectResource
 	public void setActive(boolean active)
 	{
 		this.active = active;
+		jsonBodyBuilder.addParamPair("active", isActive());
 	}
 
 	public String getAddress1()
@@ -311,6 +364,7 @@ public class Contact extends VivialConnectResource
 	public void setAddress1(String address1)
 	{
 		this.address1 = address1;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "address1", getAddress1());
 	}
 
 	public String getAddress2()
@@ -321,6 +375,7 @@ public class Contact extends VivialConnectResource
 	public void setAddress2(String address2)
 	{
 		this.address2 = address2;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "address2", getAddress2());
 	}
 
 	public String getAddress3()
@@ -331,6 +386,7 @@ public class Contact extends VivialConnectResource
 	public void setAddress3(String address3)
 	{
 		this.address3 = address3;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "address3", getAddress3());
 	}
 
 	public String getCity()
@@ -341,6 +397,7 @@ public class Contact extends VivialConnectResource
 	public void setCity(String city)
 	{
 		this.city = city;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "city", getCity());
 	}
 
 	public String getCompanyName()
@@ -351,6 +408,7 @@ public class Contact extends VivialConnectResource
 	public void setCompanyName(String companyName)
 	{
 		this.companyName = companyName;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "company_name", getCompanyName());
 	}
 
 	public String getContactType()
@@ -361,6 +419,7 @@ public class Contact extends VivialConnectResource
 	public void setContactType(String contactType)
 	{
 		this.contactType = contactType;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "contact_type", getContactType());
 	}
 
 	public String getCountry()
@@ -371,6 +430,7 @@ public class Contact extends VivialConnectResource
 	public void setCountry(String country)
 	{
 		this.country = country;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "country", getCountry());
 	}
 
 	public String getEmail()
@@ -381,6 +441,7 @@ public class Contact extends VivialConnectResource
 	public void setEmail(String email)
 	{
 		this.email = email;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "email", getEmail());
 	}
 
 	public String getFax()
@@ -391,6 +452,7 @@ public class Contact extends VivialConnectResource
 	public void setFax(String fax)
 	{
 		this.fax = fax;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "fax", getFax());
 	}
 
 	public String getFirstName()
@@ -401,6 +463,7 @@ public class Contact extends VivialConnectResource
 	public void setFirstName(String firstName)
 	{
 		this.firstName = firstName;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "first_name", getFirstName());
 	}
 
 	public String getLastName()
@@ -411,6 +474,7 @@ public class Contact extends VivialConnectResource
 	public void setLastName(String lastName)
 	{
 		this.lastName = lastName;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "last_name", getLastName());
 	}
 
 	public String getMobilePhone()
@@ -421,6 +485,7 @@ public class Contact extends VivialConnectResource
 	public void setMobilePhone(String mobilePhone)
 	{
 		this.mobilePhone = mobilePhone;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "mobile_phone", getMobilePhone());
 	}
 
 	public String getPostalCode()
@@ -431,6 +496,7 @@ public class Contact extends VivialConnectResource
 	public void setPostalCode(String postalCode)
 	{
 		this.postalCode = postalCode;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "postal_code", getPostalCode());
 	}
 
 	public String getState()
@@ -441,6 +507,7 @@ public class Contact extends VivialConnectResource
 	public void setState(String state)
 	{
 		this.state = state;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "state", getState());
 	}
 
 	public String getTitle()
@@ -451,6 +518,7 @@ public class Contact extends VivialConnectResource
 	public void setTitle(String title)
 	{
 		this.title = title;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "title", getTitle());
 	}
 
 	public String getWorkPhone()
@@ -461,5 +529,6 @@ public class Contact extends VivialConnectResource
 	public void setWorkPhone(String workPhone)
 	{
 		this.workPhone = workPhone;
+		ifParamValidAddToBuilder(jsonBodyBuilder, "work_phone", getWorkPhone());
 	}
 }

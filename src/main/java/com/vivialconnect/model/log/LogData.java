@@ -2,7 +2,8 @@ package com.vivialconnect.model.log;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LogData {
+public class LogData
+{
 
 	@JsonProperty
 	private String receiver;
@@ -13,28 +14,39 @@ public class LogData {
 	@JsonProperty
 	private String text;
 
-	public String getReceiver() {
+
+	public String getReceiver()
+	{
 		return receiver;
 	}
 
-	public void setReceiver(String receiver) {
+
+	public void setReceiver(String receiver)
+	{
 		this.receiver = receiver;
 	}
 
-	public String getSender() {
+
+	public String getSender()
+	{
 		return sender;
 	}
 
-	public void setSender(String sender) {
+
+	public void setSender(String sender)
+	{
 		this.sender = sender;
 	}
 
-	public String getText() {
+
+	public String getText()
+	{
 		return text;
 	}
 
-	public void setText(String text) {
+
+	public void setText(String text)
+	{
 		this.text = text;
 	}
-
 }

@@ -1,0 +1,38 @@
+{
+  "users": [
+    {
+      "account_id": 10130, 
+      "active": true, 
+      "api_key": "MTKUAQS6SS0STMWT8PBLD530VWA0AYNURN8", 
+      "date_created": "2017-07-05T22:46:13+00:00", 
+      "date_modified": "2017-07-05T22:46:56+00:00", 
+      "email": "carlos.gonzalez@newtechsa.com", 
+      "first_name": "Carlos", 
+      "id": 10122, 
+      "last_name": "Gonz\u00e1lez", 
+      "roles": [
+        {
+          "active": true, 
+          "date_created": "2016-09-30T23:42:59+00:00", 
+          "date_modified": "2016-09-30T23:42:59+00:00", 
+          "description": "Account administrator role", 
+          "id": 3, 
+          "name": "AccountAdministrator", 
+          "role_type": "client"
+        }, 
+        {
+          "active": true, 
+          "date_created": "2016-09-30T23:42:59+00:00", 
+          "date_modified": "2016-09-30T23:42:59+00:00", 
+          "description": "User role", 
+          "id": 4, 
+          "name": "User", 
+          "role_type": "client"
+        }
+      ], 
+      "timezone": "UTC", 
+      "username": "chuckbuckethead", 
+      "verified": true
+    }
+  ]
+}

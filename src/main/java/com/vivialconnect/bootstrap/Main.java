@@ -10,14 +10,13 @@ import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vivialconnect.client.VivialConnectClient;
-import com.vivialconnect.model.account.Account;
-import com.vivialconnect.model.account.Contact;
 import com.vivialconnect.model.message.Attachment;
 import com.vivialconnect.model.message.AttachmentCollection;
 import com.vivialconnect.model.message.Message;
 import com.vivialconnect.model.number.AssociatedNumber;
 import com.vivialconnect.model.number.AvailableNumber;
 import com.vivialconnect.model.number.Number;
+import com.vivialconnect.model.user.User;
 
 public class Main
 {
@@ -74,12 +73,8 @@ public class Main
 		message.setBody("Hello! 😊");
 		message.send(); */
 		
-		Contact contact = new Contact();
-		contact.setFirstName("Eugenio");
-		contact.setLastName("Mancebo");
-		contact.setEmail("eugenio.mancebo@newtechsa.com");
-		contact.setContactType("billing");
-		contact.create();
+		User user = User.getUserById(10122);
+		user.changePassword("", "");
 	}
 	
 	private static AssociatedNumber getNumberById()
