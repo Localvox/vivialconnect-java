@@ -3,8 +3,8 @@ package com.vivialconnect.model.connector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.ResourceCount;
-import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
+import com.vivialconnect.model.error.VivialConnectException;
 
 @JsonRootName("phone_number")
 public class PhoneNumber extends VivialConnectResource
@@ -40,7 +40,7 @@ public class PhoneNumber extends VivialConnectResource
 	
 	public static int count(int connectorId) throws VivialConnectException
 	{
-		return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("count", connectorId)), null, null, ResourceCount.class).getCount();
+		return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/phone_numbers/count", connectorId)), null, null, ResourceCount.class).getCount();
 	}
 	
 

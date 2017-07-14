@@ -33,6 +33,9 @@ import com.vivialconnect.http.CanonicalRequestBuilder;
 import com.vivialconnect.http.RequestBuilder;
 import com.vivialconnect.http.VivialRESTClient;
 import com.vivialconnect.model.account.Account;
+import com.vivialconnect.model.error.ErrorMessage;
+import com.vivialconnect.model.error.NoContentException;
+import com.vivialconnect.model.error.VivialConnectException;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 import com.vivialconnect.util.CryptoUtils;
 import com.vivialconnect.util.ReflectionUtils;
@@ -406,8 +409,9 @@ public abstract class VivialConnectResource implements Serializable
 		{
 			reader = createBufferedReader(connection.getErrorStream());
 			String errorResponse = readResponse(reader);
+			String errorMessage = unmarshalErrorResponse(errorResponse);
 			
-			VivialConnectException vivialException = new VivialConnectException(errorResponse, ioe);
+			VivialConnectException vivialException = new VivialConnectException(errorMessage, ioe);
 			vivialException.setResponseCode(connection.getResponseCode());
 			
 			return vivialException;
@@ -429,6 +433,25 @@ public abstract class VivialConnectResource implements Serializable
 					return new VivialConnectException(e);
 				}
 			}
+		}
+	}
+
+
+	private static String unmarshalErrorResponse(String errorResponse)
+	{
+		try
+		{
+			ObjectMapper mapper = new ObjectMapper();
+			Object unmarshalledObject = mapper.reader()
+											  .forType(ErrorMessage.class)
+											  .readValue(errorResponse);
+			
+			ErrorMessage errorMessage = (ErrorMessage) unmarshalledObject;
+			return errorMessage.getErrorMessage();
+		}
+		catch (Exception e)
+		{
+			return errorResponse;
 		}
 	}
 

@@ -1,6 +1,8 @@
 package com.vivialconnect.bootstrap;
 
 import com.vivialconnect.client.VivialConnectClient;
+import com.vivialconnect.model.connector.Callback;
+import com.vivialconnect.model.error.VivialConnectException;
 
 public class Main
 {
@@ -14,7 +16,7 @@ public class Main
 	static final String FROM_NUMBER = "+13022136859";
 	static final String TO_NUMBER = "+18099667830";
 	
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args)
 	{
 		VivialConnectClient.init(ACCOUNT_ID, API_KEY, API_SECRET);
 		//sendMessage("Super Secret Message");
@@ -83,5 +85,14 @@ public class Main
 		} */
 		
 		//PhoneNumber.getPhoneNumbers(29);
+		
+		try
+		{
+			Callback.count(29);
+		}
+		catch (VivialConnectException e)
+		{
+			System.out.println();
+		}
 	}
 }

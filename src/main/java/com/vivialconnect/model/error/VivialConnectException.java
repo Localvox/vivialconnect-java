@@ -1,4 +1,4 @@
-package com.vivialconnect.model;
+package com.vivialconnect.model.error;
 
 public class VivialConnectException extends Exception
 {

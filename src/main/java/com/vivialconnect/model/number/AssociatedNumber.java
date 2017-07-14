@@ -2,7 +2,7 @@ package com.vivialconnect.model.number;
 
 import java.util.Date;
 
-import com.vivialconnect.model.VivialConnectException;
+import com.vivialconnect.model.error.VivialConnectException;
 
 public interface AssociatedNumber extends INumber
 {

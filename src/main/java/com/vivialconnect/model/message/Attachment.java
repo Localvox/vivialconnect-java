@@ -4,10 +4,10 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.vivialconnect.model.NoContentException;
 import com.vivialconnect.model.ResourceCount;
-import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
+import com.vivialconnect.model.error.NoContentException;
+import com.vivialconnect.model.error.VivialConnectException;
 
 @JsonRootName(value = "attachment")
 public class Attachment extends VivialConnectResource

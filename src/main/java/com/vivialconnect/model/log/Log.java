@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
+import com.vivialconnect.model.error.VivialConnectException;
 
 public class Log extends VivialConnectResource
 {

@@ -4,8 +4,9 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.vivialconnect.model.VivialConnectException;
+import com.vivialconnect.model.ResourceCount;
 import com.vivialconnect.model.VivialConnectResource;
+import com.vivialconnect.model.error.VivialConnectException;
 
 @JsonRootName("callback")
 public class Callback extends VivialConnectResource
@@ -65,6 +66,12 @@ public class Callback extends VivialConnectResource
 	public static ConnectorWithCallbacks getCallbacks(int connectorId) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/callbacks", connectorId)), null, null, Connector.class);
+	}
+	
+	
+	public static int count(int connectorId) throws VivialConnectException
+	{
+		return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/callbacks/count", connectorId)), null, null, ResourceCount.class).getCount();
 	}
 	
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
+import com.vivialconnect.model.error.VivialConnectException;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 import com.vivialconnect.model.log.LogCollection;
 
