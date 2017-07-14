@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.NoContentException;
 import com.vivialconnect.model.ResourceCount;
+import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 
@@ -118,7 +119,7 @@ public class Contact extends VivialConnectResource
 	}
 	
 	
-	public Contact create()
+	public Contact create() throws VivialConnectException
 	{
 		verifyRequiredFields();
 		Contact createdContact = request(RequestMethod.POST, classURL(Contact.class),
@@ -248,7 +249,7 @@ public class Contact extends VivialConnectResource
 	}
 	
 	
-	public Contact update()
+	public Contact update() throws VivialConnectException
 	{
 		verifyRequiredFields();
 		Contact updatedContact = request(RequestMethod.PUT, classURLWithSuffix(Contact.class, String.valueOf(getId())),
@@ -264,7 +265,7 @@ public class Contact extends VivialConnectResource
 	}
 	
 	
-	public boolean delete()
+	public boolean delete() throws VivialConnectException
 	{
 		try
 		{
@@ -279,25 +280,25 @@ public class Contact extends VivialConnectResource
 	}
 	
 
-	public static List<Contact> getContacts()
+	public static List<Contact> getContacts() throws VivialConnectException
 	{
 		return getContacts(null);
 	}
 	
 	
-	public static List<Contact> getContacts(Map<String, String> queryParams)
+	public static List<Contact> getContacts(Map<String, String> queryParams) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURL(Contact.class), null, queryParams, ContactCollection.class).getContacts();
 	}
 	
 	
-	public static Contact getContactById(int contactId)
+	public static Contact getContactById(int contactId) throws VivialConnectException
 	{
 		return new Contact(request(RequestMethod.GET, classURLWithSuffix(Contact.class, String.valueOf(contactId)), null, null, Contact.class));
 	}
 	
 	
-	public static int count()
+	public static int count() throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Contact.class, "count"), null, null, ResourceCount.class).getCount();
 	}

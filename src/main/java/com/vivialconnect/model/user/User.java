@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.NoContentException;
 import com.vivialconnect.model.ResourceCount;
+import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 
@@ -69,31 +70,31 @@ public class User extends VivialConnectResource
 		classesWithoutRootValue.add(UserCollection.class);
 	}
 	
-	public static User getUserById(int userId)
+	public static User getUserById(int userId) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(User.class, String.valueOf(userId)), null, null, User.class);
 	}
 	
 	
-	public static List<User> getUsers()
+	public static List<User> getUsers() throws VivialConnectException
 	{
 		return getUsers(null);
 	}
 	
 	
-	public static List<User> getUsers(Map<String, String> queryParams)
+	public static List<User> getUsers(Map<String, String> queryParams) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURL(User.class), null, queryParams, UserCollection.class).getUsers();
 	}
 	
 	
-	public static int count()
+	public static int count() throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(User.class, "count"), null, null, ResourceCount.class).getCount();
 	}
 	
 	
-	public boolean delete()
+	public boolean delete() throws VivialConnectException
 	{
 		try
 		{
@@ -108,7 +109,7 @@ public class User extends VivialConnectResource
 	}
 	
 	
-	public boolean changePassword(String oldPassword, String newPassword)
+	public boolean changePassword(String oldPassword, String newPassword) throws VivialConnectException
 	{
 		JsonBodyBuilder builder = JsonBodyBuilder.forClass(User.class)
 												 .addParamPair("_password", oldPassword)

@@ -14,6 +14,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,11 +32,10 @@ import com.vivialconnect.client.VivialConnectClient;
 import com.vivialconnect.http.CanonicalRequestBuilder;
 import com.vivialconnect.http.RequestBuilder;
 import com.vivialconnect.http.VivialRESTClient;
-import com.vivialconnect.util.CryptoUtils;
-import com.vivialconnect.util.ReflectionUtils;
-
 import com.vivialconnect.model.account.Account;
 import com.vivialconnect.model.format.JsonBodyBuilder;
+import com.vivialconnect.util.CryptoUtils;
+import com.vivialconnect.util.ReflectionUtils;
 
 public abstract class VivialConnectResource implements Serializable
 {
@@ -99,7 +99,7 @@ public abstract class VivialConnectResource implements Serializable
 	
 	protected static <T> T request(VivialConnectResource.RequestMethod method,
 								   String url, String body, Map<String, String> queryParams,
-								   Class<T> responseClass)
+								   Class<T> responseClass) throws VivialConnectException
 	{
 		try
 		{
@@ -137,7 +137,7 @@ public abstract class VivialConnectResource implements Serializable
 			headers.put("X-Auth-SignedHeaders", signedHeaders);
 			
 			return request(endpoint, method, headers, queryParams, body, responseClass);
-			/* return jerseyRequest(endpoint, method, headers, queryParams, body, responseClass); */
+			//return jerseyRequest(endpoint, method, headers, queryParams, body, responseClass);
 		}
 		catch (NoContentException nce)
 		{
@@ -145,17 +145,32 @@ public abstract class VivialConnectResource implements Serializable
 		}
 		catch (Exception e)
 		{
-			/* TODO: HANDLE PROPERLY */
-			e.printStackTrace();
+			throw handleException(e);
 		}
+	}
 
-		return null;
+
+	private static VivialConnectException handleException(Exception e)
+	{
+		VivialConnectException vce = null;
+		
+		if (VivialConnectException.class.isAssignableFrom(e.getClass()))
+		{
+			vce = (VivialConnectException) e;
+		}
+		else
+		{
+			vce = new VivialConnectException(e);
+		}
+		
+		return vce;
 	}
 
 
 	private static boolean requestSupportsBody(String method)
 	{
-		return "POST".equals(method) || "PUT".equals(method);
+		String[] supportedMethods = { "DELETE", "POST", "PUT" };
+		return Arrays.binarySearch(supportedMethods, method) > -1;
 	}
 
 
@@ -284,7 +299,7 @@ public abstract class VivialConnectResource implements Serializable
 
 
 	private static <T> T request(URL endpoint, VivialConnectResource.RequestMethod method, Map<String, String> headers,
-								 Map<String, String> queryParams, String body, Class<T> responseClass)
+								 Map<String, String> queryParams, String body, Class<T> responseClass) throws IOException, NoContentException, VivialConnectException
 	{
 		HttpURLConnection connection = null;
 		
@@ -299,16 +314,10 @@ public abstract class VivialConnectResource implements Serializable
 			
 			return unmarshallResponse(response, responseClass);
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 		finally
 		{
 			disconnect(connection);
 		}
-		
-		return null;
 	}
 	
 	
@@ -346,12 +355,15 @@ public abstract class VivialConnectResource implements Serializable
 	}
 
 	
-	private static String doRequest(HttpURLConnection connection) throws IOException, NoContentException
+	private static String doRequest(HttpURLConnection connection) throws NoContentException, VivialConnectException
 	{
-		BufferedReader reader = createBufferedReader(connection);
+		BufferedReader reader = null;
 		
 		try
 		{
+			InputStream inputStream = connection.getInputStream();
+			reader = createBufferedReader(inputStream);
+			
 			String response = readResponse(reader);
 			if (connection.getResponseCode() == 204 /* No Content */)
 			{
@@ -360,26 +372,69 @@ public abstract class VivialConnectResource implements Serializable
 			
 			return response;
 		}
+		catch(IOException ioe)
+		{
+			throw convertToVivialException(ioe, connection);
+		}
 		finally
 		{
-			reader.close();
+			if (reader != null)
+			{
+				try
+				{
+					reader.close();
+				}
+				catch (IOException e)
+				{
+					throw convertToVivialException(e, null);
+				}
+			}
 		}
 	}
 	
-	
-	private static BufferedReader createBufferedReader(HttpURLConnection connection)
+
+	private static VivialConnectException convertToVivialException(IOException ioe, HttpURLConnection connection)
 	{
-		InputStream inputStream = null;
+		if (connection == null)
+		{
+			return new VivialConnectException(ioe);
+		}
+		
+		BufferedReader reader = null;
 		
 		try
 		{
-			inputStream = connection.getInputStream();
+			reader = createBufferedReader(connection.getErrorStream());
+			String errorResponse = readResponse(reader);
+			
+			VivialConnectException vivialException = new VivialConnectException(errorResponse, ioe);
+			vivialException.setResponseCode(connection.getResponseCode());
+			
+			return vivialException;
 		}
 		catch (IOException e)
 		{
-			inputStream = connection.getErrorStream();
+			return new VivialConnectException(e);
 		}
-		
+		finally
+		{
+			if (reader != null)
+			{
+				try
+				{
+					reader.close();
+				}
+				catch (IOException e)
+				{
+					return new VivialConnectException(e);
+				}
+			}
+		}
+	}
+
+
+	private static BufferedReader createBufferedReader(InputStream inputStream) throws IOException
+	{
 		return new BufferedReader(new InputStreamReader(inputStream));
 	}
 

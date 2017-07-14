@@ -2,22 +2,24 @@ package com.vivialconnect.model.number;
 
 import java.util.Date;
 
+import com.vivialconnect.model.VivialConnectException;
+
 public interface AssociatedNumber extends INumber
 {
 	
-	AssociatedNumber update();
+	AssociatedNumber update() throws VivialConnectException;
 	
 	
-	AssociatedNumber updateLocalNumber();
+	AssociatedNumber updateLocalNumber() throws VivialConnectException;
 	
 	
-	boolean delete();
+	boolean delete() throws VivialConnectException;
 	
 	
-	boolean deleteLocalNumber();
+	boolean deleteLocalNumber() throws VivialConnectException;
 	
 	
-	NumberInfo lookup();
+	NumberInfo lookup() throws VivialConnectException;
 	
 	
 	int getId();

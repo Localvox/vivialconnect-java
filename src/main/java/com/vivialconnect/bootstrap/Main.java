@@ -1,22 +1,6 @@
 package com.vivialconnect.bootstrap;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vivialconnect.client.VivialConnectClient;
-import com.vivialconnect.model.message.Attachment;
-import com.vivialconnect.model.message.AttachmentCollection;
-import com.vivialconnect.model.message.Message;
-import com.vivialconnect.model.number.AssociatedNumber;
-import com.vivialconnect.model.number.AvailableNumber;
-import com.vivialconnect.model.number.Number;
-import com.vivialconnect.model.user.User;
 
 public class Main
 {
@@ -73,102 +57,31 @@ public class Main
 		message.setBody("Hello! 😊");
 		message.send(); */
 		
-		User user = User.getUserById(10122);
-		user.changePassword("", "");
-	}
-	
-	private static AssociatedNumber getNumberById()
-	{
-		return Number.getNumberById(NUMBER_ID);
-	}
-	
-	
-	private static List<AssociatedNumber> getAssociatedNumbers()
-	{
-		return Number.getAssociatedNumbers();
-	}
-
-
-	private static List<AvailableNumber> getAvailableNumbers()
-	{
-		Map<String, String> queryParams = new HashMap<String, String>();
-		queryParams.put("limit", "2");
-		queryParams.put("in_city", "DOVER");
+		/* Connector connector = new Connector();
+		connector.setName("Dummy Connector");
+		connector.create(); */
 		
-		return Number.findAvailableNumbersInRegion("DE", queryParams);
-	}
-	
-
-	private static List<Attachment> getAttachments() throws IOException
-	{
-		ClassLoader classLoader = Main.class.getClassLoader();
-		InputStream stream = classLoader.getResourceAsStream("attachments.json");
-		String fileContent = readFile(stream);
+		//List<Connector> connectors = Connector.getConnectors(); 
 		
-		ObjectMapper mapper = new ObjectMapper();
-		AttachmentCollection collection = mapper.reader()
-										        .forType(AttachmentCollection.class)
-										        .readValue(fileContent);
+		//System.out.println(Connector.count());
 		
-		return collection.getAttachments();
-	}
-	
-	
-	private static String readFile(InputStream stream) throws IOException
-	{
-		return IOUtils.toString(stream);
-	}
-	
-	
-	private static void deleteAttachment(int attachmentId)
-	{
-		Attachment att = new Attachment();
-		att.setMessageId(42248);
-		att.setId(attachmentId);
-		att.delete();
-	}
-	
-	
-	private static void attachmentCount(int messageId)
-	{
-		Attachment.count(messageId);
-	}
-	
-	
-	private static void getAttachmentById(int messageId, int attachmentId)
-	{
-		Attachment.getAttachmentById(messageId, attachmentId);
-	}
-	
-	
-	private static Message getMessageById(int messageId)
-	{
-		return Message.getMessageById(messageId);
-	}
-	
-	
-	private static void messageCount()
-	{
-		System.out.println(Message.count());
-	}
-	
-	
-	private static void getMessages()
-	{
-		Map<String, String> filters = new HashMap<String, String>();
-		filters.put("limit", "1");
+		/* Callback callback = new Callback();
+		callback.setMessageType("text");
+		callback.setEventType("status");
+		callback.setMethod("POST");
+		callback.setUrl("new/path/to/sms/incoming"); */
 		
-		List<Message> messages = Message.getMessages(filters);
-		System.out.println(messages.size());
-	}
-	
-	
-	private static void sendMessage(String body)
-	{
-		Message message = new Message();
-		message.setFromNumber(FROM_NUMBER);
-		message.setToNumber(TO_NUMBER);
-		message.setBody(body);
-		message.send();
+		/* Connector connector = Connector.getConnectorById(29);
+		connector.deleteAllPhoneNumbers(); */
+		
+		//connector.addCallback(callback).createCallbacks();
+		
+		/* for (Callback callback : connector.getCallbacks())
+		{
+			connector.deleteSingleCallback(callback);
+			callback.setUrl("new/path/to/sms/text");
+		} */
+		
+		//PhoneNumber.getPhoneNumbers(29);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 import com.vivialconnect.model.log.LogCollection;
@@ -54,12 +55,13 @@ public class Account extends VivialConnectResource
 	}
 	
 	
-	public static Account getAccount()
+	public static Account getAccount() throws VivialConnectException
 	{
 		return request(RequestMethod.GET, singleClassURL(Account.class), null, null, Account.class);
 	}
 	
-	public Account update()
+	
+	public Account update() throws VivialConnectException
 	{
 		Account updatedAccount = request(RequestMethod.PUT, singleClassURL(Account.class),
 										 buildJsonBodyForUpdate(), null, Account.class);

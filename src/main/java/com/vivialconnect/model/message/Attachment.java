@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.NoContentException;
 import com.vivialconnect.model.ResourceCount;
+import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
 
 @JsonRootName(value = "attachment")
@@ -56,19 +57,19 @@ public class Attachment extends VivialConnectResource
 	private String fileName;
 	
 	
-	public static Attachment getAttachmentById(int messageId, int attachmentId)
+	public static Attachment getAttachmentById(int messageId, int attachmentId) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.format("%d/attachments/%d", messageId, attachmentId)), null, null, Attachment.class);
 	}
 	
 	
-	public static int count(int messageId)
+	public static int count(int messageId) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.format("%d/attachments/count", messageId)), null, null, ResourceCount.class).getCount();
 	}
 	
 	
-	public boolean delete()
+	public boolean delete() throws VivialConnectException
 	{
 		try
 		{

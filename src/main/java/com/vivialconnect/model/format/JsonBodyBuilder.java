@@ -11,7 +11,14 @@ public class JsonBodyBuilder
 	private StringBuilder	builder;
 	
 	private FormatterRegistry registry = FormatterRegistry.getInstance();
-
+	
+	
+	private JsonBodyBuilder()
+	{
+		this.builder = new StringBuilder();
+		this.builder.append("{");
+	}
+	
 
 	private JsonBodyBuilder(String className)
 	{
@@ -21,6 +28,12 @@ public class JsonBodyBuilder
 		this.builder.append("{\"");
 		this.builder.append(translateClassName());
 		this.builder.append("\":{");
+	}
+	
+	
+	public static JsonBodyBuilder emptyJson()
+	{
+		return new JsonBodyBuilder();
 	}
 
 
@@ -38,6 +51,11 @@ public class JsonBodyBuilder
 
 	public JsonBodyBuilder addParamPair(String name, Object value)
 	{
+		if (value == null)
+		{
+			return this;
+		}
+		
 		JsonValueFormatter formatter = registry.getFormatter(value.getClass());
 		
 		this.builder.append("\"");
@@ -73,13 +91,25 @@ public class JsonBodyBuilder
 
 	private void closeJsonObject()
 	{
-		this.builder.append("}}");
+		this.builder.append(hasClassName() ? "}}" : "}");
+	}
+
+
+	private boolean hasClassName()
+	{
+		return this.className != null && !this.className.isEmpty();
 	}
 
 
 	private void removeTrailingComma()
 	{
-		this.builder.deleteCharAt(this.builder.length() - 1);
+		int lastCharIndex = this.builder.length() - 1;
+		char lastChar = this.builder.charAt(lastCharIndex);
+		
+		if (lastChar == ',')
+		{
+			this.builder.deleteCharAt(lastCharIndex);
+		}
 	}
 
 

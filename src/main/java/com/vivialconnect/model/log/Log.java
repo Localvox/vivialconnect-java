@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
 
 public class Log extends VivialConnectResource
@@ -94,24 +95,24 @@ public class Log extends VivialConnectResource
 	}
 
 
-	public static LogCollection getLogs(Date startTime, Date endTime)
+	public static LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException
 	{
 		return getLogs(startTime, endTime, null);
 	}
 
 
-	public static LogCollection getLogs(Date startTime, Date endTime, Map<String, String> queryParameters)
+	public static LogCollection getLogs(Date startTime, Date endTime, Map<String, String> queryParameters) throws VivialConnectException
 	{
 		queryParameters = buildQueryParams(startTime, endTime, null, queryParameters);
 		return request(RequestMethod.GET, classURL(Log.class), null, queryParameters, LogCollection.class);
 	}
 	
-	public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType)
+	public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException
 	{
 		return getAggregate(startTime, endTime, aggregatorType, null);
 	}
 	
-	public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParameters)
+	public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParameters) throws VivialConnectException
 	{
 		queryParameters = buildQueryParams(startTime, endTime, aggregatorType, queryParameters);
 		return request(RequestMethod.GET, classURLWithSuffix(Log.class, "aggregate"), null, queryParameters, LogCollection.class);

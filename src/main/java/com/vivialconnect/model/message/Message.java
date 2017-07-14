@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.ResourceCount;
+import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 import com.vivialconnect.util.StringUtils;
@@ -143,7 +144,7 @@ public class Message extends VivialConnectResource
 	}
 	
 	
-	public Message send()
+	public Message send() throws VivialConnectException
 	{
 		return request(RequestMethod.POST, classURL(Message.class), jsonBody(), null, Message.class);
 	}
@@ -175,37 +176,37 @@ public class Message extends VivialConnectResource
 	}
 	
 	
-	public static Message getMessageById(Integer messageId)
+	public static Message getMessageById(Integer messageId) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.valueOf(messageId)), null, null, Message.class);
 	}
 	
 	
-	public static List<Message> getMessages()
+	public static List<Message> getMessages() throws VivialConnectException
 	{
 		return getMessages(null);
 	}
 	
 	
-	public static List<Message> getMessages(Map<String, String> queryParameters)
+	public static List<Message> getMessages(Map<String, String> queryParameters) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURL(Message.class), null, queryParameters, MessageCollection.class).getMessages();
 	}
 	
 	
-	public static int count()
+	public static int count() throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Message.class, "count"), null, null, ResourceCount.class).getCount();
 	}
 	
 	
-	public List<Attachment> getAttachments()
+	public List<Attachment> getAttachments() throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.format("%d/attachments", this.getId())), null, null, AttachmentCollection.class).getAttachments();
 	}
 	
 	
-	public Message redact()
+	public Message redact() throws VivialConnectException
 	{
 		return request(RequestMethod.PUT, classURLWithSuffix(Message.class, String.valueOf(this.getId())), jsonBodyEmpty(), null, Message.class);
 	}

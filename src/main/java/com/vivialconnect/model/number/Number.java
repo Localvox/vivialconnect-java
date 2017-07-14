@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.NoContentException;
 import com.vivialconnect.model.ResourceCount;
+import com.vivialconnect.model.VivialConnectException;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 
@@ -134,7 +135,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	
 	
 	@Override
-	public AssociatedNumber update()
+	public AssociatedNumber update() throws VivialConnectException
 	{
 		AssociatedNumber number = request(RequestMethod.PUT, classURLWithSuffix(Number.class, String.valueOf(getId())),
 										  buildJsonBodyForUpdate(), null, Number.class);
@@ -189,7 +190,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	
 	
 	@Override
-	public AssociatedNumber updateLocalNumber()
+	public AssociatedNumber updateLocalNumber() throws VivialConnectException
 	{
 		ensureNumberIsLocal();
 		
@@ -210,7 +211,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 
 
 	@Override
-	public boolean delete()
+	public boolean delete() throws VivialConnectException
 	{
 		try
 		{
@@ -226,7 +227,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	
 	
 	@Override
-	public boolean deleteLocalNumber()
+	public boolean deleteLocalNumber() throws VivialConnectException
 	{
 		ensureNumberIsLocal();
 		
@@ -244,7 +245,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 
 
 	@Override
-	public AssociatedNumber buy()
+	public AssociatedNumber buy() throws VivialConnectException
 	{
 		JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number")
 												 .addParamPair("phone_number", getPhoneNumber())
@@ -267,7 +268,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	}
 	
 	
-	public static AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams)
+	public static AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams) throws VivialConnectException
 	{
 		JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number").addParams(optionalParams);
 		ifParamValidAddToBuilder(builder, "phone_number", phoneNumber);
@@ -277,7 +278,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	}
 	
 	
-	public static AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams)
+	public static AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException
 	{
 		JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number").addParams(optionalParams);
 		ifParamValidAddToBuilder(builder, "phone_number", phoneNumber);
@@ -288,92 +289,92 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 	}
 	
 	
-	public static List<AssociatedNumber> getAssociatedNumbers()
+	public static List<AssociatedNumber> getAssociatedNumbers() throws VivialConnectException
 	{
 		return getAssociatedNumbers(null);
 	}
 	
 	
-	public static List<AssociatedNumber> getAssociatedNumbers(Map<String, String> queryParams)
+	public static List<AssociatedNumber> getAssociatedNumbers(Map<String, String> queryParams) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURL(Number.class), null, queryParams, NumberCollection.class).getAssociatedNumbers();
 	}
 	
 	
-	public static List<AvailableNumber> findAvailableNumbersInRegion(String region)
+	public static List<AvailableNumber> findAvailableNumbersInRegion(String region) throws VivialConnectException
 	{
 		return findAvailableNumbersInRegion(region, null);
 	}
 	
 	
-	public static List<AvailableNumber> findAvailableNumbersInRegion(String region, Map<String, String> queryParams)
+	public static List<AvailableNumber> findAvailableNumbersInRegion(String region, Map<String, String> queryParams) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Number.class, AVAILABLE_US_LOCAL), null, addQueryParam("in_region", region, queryParams), NumberCollection.class).getAvailableNumbers();
 	}
 	
 	
-	public static List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode)
+	public static List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode) throws VivialConnectException
 	{
 		return findAvailableNumbersByAreaCode(areaCode, null);
 	}
 	
 	
-	public static List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> queryParams)
+	public static List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> queryParams) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Number.class, AVAILABLE_US_LOCAL), null, addQueryParam("area_code", areaCode, queryParams), NumberCollection.class).getAvailableNumbers();
 	}
 	
 	
-	public static List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode)
+	public static List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode) throws VivialConnectException
 	{
 		return findAvailableNumbersByPostalCode(postalCode);
 	}
 	
 	
-	public static List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode, Map<String, String> queryParams)
+	public static List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode, Map<String, String> queryParams) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Number.class, AVAILABLE_US_LOCAL), null, addQueryParam("in_postal_code", postalCode, queryParams), NumberCollection.class).getAvailableNumbers();
 	}
 	
 	
-	public static List<AssociatedNumber> getLocalAssociatedNumbers()
+	public static List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException
 	{
 		return getLocalAssociatedNumbers(null);
 	}
 	
 	
-	public static List<AssociatedNumber> getLocalAssociatedNumbers(Map<String, String> queryParams)
+	public static List<AssociatedNumber> getLocalAssociatedNumbers(Map<String, String> queryParams) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "local"), null, queryParams, NumberCollection.class).getAssociatedNumbers();
 	}
 	
 	
-	public static int count()
+	public static int count() throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "count"), null, null, ResourceCount.class).getCount();
 	}
 	
 	
-	public static int countLocal()
+	public static int countLocal() throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Number.class, "local/count"), null, null, ResourceCount.class).getCount();
 	}
 	
 	
-	public static AssociatedNumber getNumberById(int numberId)
+	public static AssociatedNumber getNumberById(int numberId) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURL(Number.class), null, null, NumberCollection.class).getAssociatedNumbers().get(0);
 	}
 	
 	
-	public static AssociatedNumber getLocalNumberById(int numberId)
+	public static AssociatedNumber getLocalNumberById(int numberId) throws VivialConnectException
 	{
 		return request(RequestMethod.GET, classURLWithSuffix(Number.class, String.format("local/%d", numberId)), null, null, Number.class);
 	}
 	
 	
 	@Override
-	public NumberInfo lookup()
+	public NumberInfo lookup() throws VivialConnectException
 	{
 		Map<String, String> queryParams = new HashMap<String, String>();
 		queryParams.put("phone_number", getRawPhoneNumber());
