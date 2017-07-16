@@ -21,10 +21,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.SimpleTimeZone;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -151,12 +149,13 @@ public abstract class VivialConnectResource implements Serializable{
             vce = new VivialConnectException(e);
 	}
 		
-            return vce;
+        return vce;
     }
 
 
     private static boolean requestSupportsBody(String method){
 	String[] supportedMethods = { "DELETE", "POST", "PUT" };
+        
 	return Arrays.binarySearch(supportedMethods, method) > -1;
     }
 
@@ -193,8 +192,7 @@ public abstract class VivialConnectResource implements Serializable{
             }
 			
             System.out.println(response);
-	}
-	catch (Exception e){
+	}catch (Exception e){
             e.printStackTrace();
 	}
 		
@@ -204,6 +202,7 @@ public abstract class VivialConnectResource implements Serializable{
 
     private static URL createEndpoint(String url, RequestMethod method,
                                       Map<String, String> queryParams) throws MalformedURLException{
+        
         if (method == RequestMethod.GET && queryParams != null && !queryParams.isEmpty()){
             StringBuilder urlBuilder = new StringBuilder(url).append("?");
             for (String key : queryParams.keySet()){
@@ -239,19 +238,16 @@ public abstract class VivialConnectResource implements Serializable{
         try{
             Mac hmac = Mac.getInstance(SIGNATURE_ALGORITHM);
             SecretKeySpec secretKey = new SecretKeySpec(VivialConnectClient.getApiSecret().getBytes(),
-                                                                                    SIGNATURE_ALGORITHM);
+                                                                            SIGNATURE_ALGORITHM);
             hmac.init(secretKey);
 
             byte[] signatureBytes = hmac.doFinal(canonicalRequest.getBytes("UTF-8"));
             return CryptoUtils.toHex(signatureBytes);
-        }
-        catch (NoSuchAlgorithmException e){
+        }catch (NoSuchAlgorithmException e){
             e.printStackTrace();
-        }
-        catch (InvalidKeyException e){
+        }catch (InvalidKeyException e){
             e.printStackTrace();
-        }
-        catch (UnsupportedEncodingException e){
+        }catch (UnsupportedEncodingException e){
             e.printStackTrace();
         }
 
@@ -271,6 +267,7 @@ public abstract class VivialConnectResource implements Serializable{
     private static <T> T request(URL endpoint, VivialConnectResource.RequestMethod method, Map<String, String> headers,
                                     Map<String, String> queryParams, String body, Class<T> responseClass) 
                                     throws IOException, NoContentException, VivialConnectException{
+        
         HttpURLConnection connection = null;
 
         try{
@@ -282,8 +279,7 @@ public abstract class VivialConnectResource implements Serializable{
             System.out.println(response);
 
             return unmarshallResponse(response, responseClass);
-        }
-        finally{
+        }finally{
             disconnect(connection);
         }
     }
@@ -331,16 +327,13 @@ public abstract class VivialConnectResource implements Serializable{
             }
 
             return response;
-        }
-        catch(IOException ioe){
+        }catch(IOException ioe){
             throw convertToVivialException(ioe, connection);
-        }
-        finally{
+        }finally{
             if (reader != null){
                 try{
                     reader.close();
-                }
-                catch (IOException e){
+                }catch (IOException e){
                     throw convertToVivialException(e, null);
                 }
             }
@@ -364,16 +357,13 @@ public abstract class VivialConnectResource implements Serializable{
             vivialException.setResponseCode(connection.getResponseCode());
 
             return vivialException;
-        }
-        catch (IOException e){
+        }catch (IOException e){
             return new VivialConnectException(e);
-        }
-        finally{
+        }finally{
             if (reader != null){
                 try{
                     reader.close();
-                }
-                catch (IOException e){
+                }catch (IOException e){
                     return new VivialConnectException(e);
                 }
             }
@@ -390,8 +380,7 @@ public abstract class VivialConnectResource implements Serializable{
 
             ErrorMessage errorMessage = (ErrorMessage) unmarshalledObject;
             return errorMessage.getErrorMessage();
-        }
-        catch (Exception e){
+        }catch (Exception e){
             return errorResponse;
         }
     }

@@ -8,28 +8,24 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 import java.net.URI;
 import javax.ws.rs.core.UriBuilder;
 
-public class VivialRESTClient
-{
+public class VivialRESTClient{
 
-	private URI baseUri;
+    private URI baseUri;
     private ClientConfig config;
 
     
-    public VivialRESTClient(String path)
-    {
+    public VivialRESTClient(String path){
         this(path, new DefaultClientConfig());
     }
     
     
-    public VivialRESTClient(String path, ClientConfig config)
-    {
+    public VivialRESTClient(String path, ClientConfig config){
         this.config = config;
         this.baseUri = UriBuilder.fromPath(path).build();
     }
     
     
-    public RequestBuilder request()
-    {
+    public RequestBuilder request(){
         Client client = Client.create(config);
         client.addFilter(new LoggingFilter(System.out));
         

@@ -87,8 +87,7 @@ public class Main{
 
         try{
             Callback.count(29);
-        }
-        catch (VivialConnectException e){
+        }catch (VivialConnectException e){
             System.out.println();
         }
     }

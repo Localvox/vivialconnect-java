@@ -1,24 +1,20 @@
 package com.vivialconnect.model.message;
 
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class MessageCollection
-{
+public class MessageCollection{
 	
-	@JsonProperty
-	private List<Message> messages;
+    @JsonProperty
+    private List<Message> messages;
 
-	
-	public List<Message> getMessages()
-	{
-		return messages;
-	}
-	
-	
-	public void setMessages(List<Message> messages)
-	{
-		this.messages = messages;
-	}
+
+    public List<Message> getMessages(){
+        return messages;
+    }
+
+
+    public void setMessages(List<Message> messages){
+        this.messages = messages;
+    }
 }

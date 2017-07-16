@@ -2,7 +2,6 @@ package com.vivialconnect.model.account;
 
 import java.util.Date;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.VivialConnectResource;
@@ -11,186 +10,165 @@ import com.vivialconnect.model.format.JsonBodyBuilder;
 import com.vivialconnect.model.log.LogCollection;
 
 @JsonRootName("account")
-public class Account extends VivialConnectResource
-{
+public class Account extends VivialConnectResource{
 
-	private static final long serialVersionUID = -2624039897600671223L;
-	
-	/** Unique identifier of the account object */
-	@JsonProperty
-	private int id;
+    private static final long serialVersionUID = -2624039897600671223L;
 
-	/** Creation date (UTC) of the account in ISO 8601 format */
-	@JsonProperty("date_created")
-	private Date dateCreated;
+    /** Unique identifier of the account object */
+    @JsonProperty
+    private int id;
 
-	/** Last modification date (UTC) of account in ISO 8601 format */
-	@JsonProperty("date_modified")
-	private Date dateModified;
-	
-	/**
-	 * Unique identifier of the parent account
-	 */
-	@JsonProperty("account_id")
-	private int accountId;
-	
-	/** Account name as it is displayed to users (for example, the name of your company) */
-	@JsonProperty("company_name")
-	private String companyName;
-		
-	@JsonProperty
-	private boolean active;
-	
-	/** Account's contacts */
-	@JsonProperty
-	private List<Contact> contacts;
-	
-	/** Account's services */
-	@JsonProperty
-	private List<Service> services;
-	
-	static {
-		classesWithoutRootValue.add(LogCollection.class);
-		classesWithoutRootValue.add(ContactCollection.class);
-	}
-	
-	
-	public static Account getAccount() throws VivialConnectException
-	{
-		return request(RequestMethod.GET, singleClassURL(Account.class), null, null, Account.class);
-	}
-	
-	
-	public Account update() throws VivialConnectException
-	{
-		Account updatedAccount = request(RequestMethod.PUT, singleClassURL(Account.class),
-										 buildJsonBodyForUpdate(), null, Account.class);
-		updateFields(updatedAccount);
-		return this;
-	}
-	
+    /** Creation date (UTC) of the account in ISO 8601 format */
+    @JsonProperty("date_created")
+    private Date dateCreated;
 
-	private String buildJsonBodyForUpdate()
-	{
-		JsonBodyBuilder builder = JsonBodyBuilder.forClass(Account.class);
-		fillOptionalFieldsForUpdate(builder);
-		
-		return builder.build();
-	}
-	
-	
-	private void fillOptionalFieldsForUpdate(JsonBodyBuilder builder)
-	{
-		ifParamValidAddToBuilder(builder, "id", getId());
-		ifParamValidAddToBuilder(builder, "company_name", getCompanyName());
-	}
-	
-	
-	private void updateFields(Account updatedAccount)
-	{
-		this.id = updatedAccount.getId();
-		this.accountId = updatedAccount.getAccountId();
-		this.active = updatedAccount.isActive();
-		this.companyName = updatedAccount.getCompanyName();
-		this.dateCreated = updatedAccount.getDateCreated();
-		this.dateModified = updatedAccount.getDateModified();
-		this.contacts = updatedAccount.getContacts();
-		this.services = updatedAccount.getServices();
-	}
+    /** Last modification date (UTC) of account in ISO 8601 format */
+    @JsonProperty("date_modified")
+    private Date dateModified;
+
+    /**
+     * Unique identifier of the parent account
+     */
+    @JsonProperty("account_id")
+    private int accountId;
+
+    /** Account name as it is displayed to users (for example, the name of your company) */
+    @JsonProperty("company_name")
+    private String companyName;
+
+    @JsonProperty
+    private boolean active;
+
+    /** Account's contacts */
+    @JsonProperty
+    private List<Contact> contacts;
+
+    /** Account's services */
+    @JsonProperty
+    private List<Service> services;
+
+    static {
+        classesWithoutRootValue.add(LogCollection.class);
+        classesWithoutRootValue.add(ContactCollection.class);
+    }
 
 
-	public int getId()
-	{
-		return id;
-	}
+    public static Account getAccount() throws VivialConnectException{
+        return request(RequestMethod.GET, singleClassURL(Account.class), null, null, Account.class);
+    }
 
 
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+    public Account update() throws VivialConnectException{
+        Account updatedAccount = request(RequestMethod.PUT, singleClassURL(Account.class),
+                                        buildJsonBodyForUpdate(), null, Account.class);
+        updateFields(updatedAccount);
+        
+        return this;
+    }
 
 
-	public Date getDateCreated()
-	{
-		return dateCreated;
-	}
+    private String buildJsonBodyForUpdate(){
+        JsonBodyBuilder builder = JsonBodyBuilder.forClass(Account.class);
+        fillOptionalFieldsForUpdate(builder);
+
+        return builder.build();
+    }
 
 
-	public void setDateCreated(Date dateCreated)
-	{
-		this.dateCreated = dateCreated;
-	}
+    private void fillOptionalFieldsForUpdate(JsonBodyBuilder builder){
+        ifParamValidAddToBuilder(builder, "id", getId());
+        ifParamValidAddToBuilder(builder, "company_name", getCompanyName());
+    }
 
 
-	public Date getDateModified()
-	{
-		return dateModified;
-	}
+    private void updateFields(Account updatedAccount){
+        this.id = updatedAccount.getId();
+        this.accountId = updatedAccount.getAccountId();
+        this.active = updatedAccount.isActive();
+        this.companyName = updatedAccount.getCompanyName();
+        this.dateCreated = updatedAccount.getDateCreated();
+        this.dateModified = updatedAccount.getDateModified();
+        this.contacts = updatedAccount.getContacts();
+        this.services = updatedAccount.getServices();
+    }
 
 
-	public void setDateModified(Date dateModified)
-	{
-		this.dateModified = dateModified;
-	}
+    public int getId(){
+        return id;
+    }
 
 
-	public int getAccountId()
-	{
-		return accountId;
-	}
+    public void setId(int id){
+        this.id = id;
+    }
 
 
-	public void setAccountId(int accountId)
-	{
-		this.accountId = accountId;
-	}
+    public Date getDateCreated(){
+        return dateCreated;
+    }
 
 
-	public String getCompanyName()
-	{
-		return companyName;
-	}
+    public void setDateCreated(Date dateCreated){
+        this.dateCreated = dateCreated;
+    }
 
 
-	public void setCompanyName(String companyName)
-	{
-		this.companyName = companyName;
-	}
+    public Date getDateModified(){
+        return dateModified;
+    }
 
 
-	public boolean isActive()
-	{
-		return active;
-	}
+    public void setDateModified(Date dateModified){
+        this.dateModified = dateModified;
+    }
 
 
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
+    public int getAccountId(){
+        return accountId;
+    }
 
 
-	public List<Contact> getContacts()
-	{
-		return contacts;
-	}
+    public void setAccountId(int accountId){
+        this.accountId = accountId;
+    }
 
 
-	public void setContacts(List<Contact> contacts)
-	{
-		this.contacts = contacts;
-	}
+    public String getCompanyName(){
+        return companyName;
+    }
 
 
-	public List<Service> getServices()
-	{
-		return services;
-	}
+    public void setCompanyName(String companyName){
+        this.companyName = companyName;
+    }
 
 
-	public void setServices(List<Service> services)
-	{
-		this.services = services;
-	}
+    public boolean isActive(){
+        return active;
+    }
+
+
+    public void setActive(boolean active){
+        this.active = active;
+    }
+
+
+    public List<Contact> getContacts(){
+        return contacts;
+    }
+
+
+    public void setContacts(List<Contact> contacts){
+        this.contacts = contacts;
+    }
+
+
+    public List<Service> getServices(){
+        return services;
+    }
+
+
+    public void setServices(List<Service> services){
+        this.services = services;
+    }
 }

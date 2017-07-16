@@ -3,11 +3,10 @@ package com.vivialconnect.model.connector;
 import java.util.Date;
 import java.util.List;
 
-public interface ConnectorWithPhoneNumbers
-{
+public interface ConnectorWithPhoneNumbers{
 
-	Date getDateModified();
+    Date getDateModified();
 	
 	
-	List<PhoneNumber> getPhoneNumbers();
+    List<PhoneNumber> getPhoneNumbers();
 }

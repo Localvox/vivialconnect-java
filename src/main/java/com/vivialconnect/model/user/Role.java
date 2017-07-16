@@ -1,106 +1,90 @@
 package com.vivialconnect.model.user;
 
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Role
-{
+public class Role{
 	
-	/** Unique identifier of the role object */
-	@JsonProperty
-	private int id;
-	
-	@JsonProperty
-	private boolean active;
-	
-	/** Creation date (UTC) of the role in ISO 8601 format */
-	@JsonProperty("date_created")
-	private Date dateCreated;
+    /** Unique identifier of the role object */
+    @JsonProperty
+    private int id;
 
-	/** Last modification date (UTC) of the role in ISO 8601 format */
-	@JsonProperty("date_modified")
-	private Date dateModified;
-	
-	/** Name of the role  */
-	@JsonProperty
-	private String name;
-	
-	/** Role's description  */
-	@JsonProperty
-	private String description;
-	
-	/** Role's type  */
-	@JsonProperty("role_type")
-	private String roleType;
+    @JsonProperty
+    private boolean active;
 
-	public int getId()
-	{
-		return id;
-	}
+    /** Creation date (UTC) of the role in ISO 8601 format */
+    @JsonProperty("date_created")
+    private Date dateCreated;
 
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+    /** Last modification date (UTC) of the role in ISO 8601 format */
+    @JsonProperty("date_modified")
+    private Date dateModified;
 
-	public boolean isActive()
-	{
-		return active;
-	}
+    /** Name of the role  */
+    @JsonProperty
+    private String name;
 
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
+    /** Role's description  */
+    @JsonProperty
+    private String description;
 
-	public Date getDateCreated()
-	{
-		return dateCreated;
-	}
+    /** Role's type  */
+    @JsonProperty("role_type")
+    private String roleType;
 
-	public void setDateCreated(Date dateCreated)
-	{
-		this.dateCreated = dateCreated;
-	}
+    public int getId(){
+        return id;
+    }
 
-	public Date getDateModified()
-	{
-		return dateModified;
-	}
+    public void setId(int id){
+        this.id = id;
+    }
 
-	public void setDateModified(Date dateModified)
-	{
-		this.dateModified = dateModified;
-	}
+    public boolean isActive(){
+        return active;
+    }
 
-	public String getName()
-	{
-		return name;
-	}
+    public void setActive(boolean active){
+        this.active = active;
+    }
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    public Date getDateCreated(){
+        return dateCreated;
+    }
 
-	public String getDescription()
-	{
-		return description;
-	}
+    public void setDateCreated(Date dateCreated){
+        this.dateCreated = dateCreated;
+    }
 
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
+    public Date getDateModified(){
+        return dateModified;
+    }
 
-	public String getRoleType()
-	{
-		return roleType;
-	}
+    public void setDateModified(Date dateModified){
+        this.dateModified = dateModified;
+    }
 
-	public void setRoleType(String roleType)
-	{
-		this.roleType = roleType;
-	}
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public String getRoleType(){
+        return roleType;
+    }
+
+    public void setRoleType(String roleType){
+        this.roleType = roleType;
+    }
 }

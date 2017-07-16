@@ -2,21 +2,18 @@ package com.vivialconnect.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ResourceCount
-{
+public class ResourceCount{
 	
-	@JsonProperty
-	private int count;
-	
+    @JsonProperty
+    private int count;
 
-	public int getCount()
-	{
-		return count;
-	}
-	
 
-	public void setCount(int count)
-	{
-		this.count = count;
-	}
+    public int getCount(){
+        return count;
+    }
+
+
+    public void setCount(int count){
+        this.count = count;
+    }
 }

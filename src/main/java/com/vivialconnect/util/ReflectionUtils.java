@@ -1,10 +1,8 @@
 package com.vivialconnect.util;
 
-public class ReflectionUtils
-{
+public class ReflectionUtils{
 
-	public static String className(Class<?> clazz)
-	{
-		return clazz.getSimpleName().replace("$", "");
-	}
+    public static String className(Class<?> clazz){
+        return clazz.getSimpleName().replace("$", "");
+    }
 }

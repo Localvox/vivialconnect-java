@@ -1,40 +1,34 @@
 package com.vivialconnect.model.log;
 
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LogCollection
-{
+public class LogCollection{
 
-	@JsonProperty("last_key")
-	private String lastKey;
-	
-	
-	@JsonProperty("log_items")
-	private List<Log> logs;
+    @JsonProperty("last_key")
+    private String lastKey;
 
 
-	public String getLastKey()
-	{
-		return lastKey;
-	}
+    @JsonProperty("log_items")
+    private List<Log> logs;
 
 
-	public void setLastKey(String lastKey)
-	{
-		this.lastKey = lastKey;
-	}
+    public String getLastKey(){
+        return lastKey;
+    }
 
 
-	public List<Log> getLogs()
-	{
-		return logs;
-	}
+    public void setLastKey(String lastKey){
+        this.lastKey = lastKey;
+    }
 
 
-	public void setLogs(List<Log> logs)
-	{
-		this.logs = logs;
-	}
+    public List<Log> getLogs(){
+        return logs;
+    }
+
+
+    public void setLogs(List<Log> logs){
+        this.logs = logs;
+    }
 }

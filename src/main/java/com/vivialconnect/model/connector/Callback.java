@@ -1,7 +1,6 @@
 package com.vivialconnect.model.connector;
 
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.vivialconnect.model.ResourceCount;
@@ -9,140 +8,125 @@ import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.error.VivialConnectException;
 
 @JsonRootName("callback")
-public class Callback extends VivialConnectResource
-{
+public class Callback extends VivialConnectResource{
 
-	private static final long serialVersionUID = 6618863185770282392L;
-	
-	/** Creation date (UTC) of the callback in ISO 8601 format */
-	@JsonProperty("date_created")
-	private Date dateCreated;
+    private static final long serialVersionUID = 6618863185770282392L;
 
-	/** Last modification date (UTC) of the callback in ISO 8601 format */
-	@JsonProperty("date_modified")
-	private Date dateModified;
+    /** Creation date (UTC) of the callback in ISO 8601 format */
+    @JsonProperty("date_created")
+    private Date dateCreated;
 
-	/** Message type this callback applies to */
-	@JsonProperty("message_type")
-	private String messageType;
+    /** Last modification date (UTC) of the callback in ISO 8601 format */
+    @JsonProperty("date_modified")
+    private Date dateModified;
 
-	/** Event type this callback applies to */
-	@JsonProperty("event_type")
-	private String eventType;
+    /** Message type this callback applies to */
+    @JsonProperty("message_type")
+    private String messageType;
 
-	/** The URL that will receive callback request */
-	@JsonProperty
-	private String url;
+    /** Event type this callback applies to */
+    @JsonProperty("event_type")
+    private String eventType;
 
-	/** The HTTP method which will be used for this callback */
-	@JsonProperty
-	private String method;
-	
-	/* public enum EventType {
-		
-		INCOMING,
-		INCOMING_FALLBACK,
-		STATUS;
-		
-		public String toString()
-		{
-			return this.name().toLowerCase();
-		}
-	}
-	
-	
-	public enum MessageType {
-		
-		TEXT,
-		VOICE;
-		
-		public String toString()
-		{
-			return this.name().toLowerCase();
-		}
-	} */
-	
-	
-	public static ConnectorWithCallbacks getCallbacks(int connectorId) throws VivialConnectException
-	{
-		return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/callbacks", connectorId)), null, null, Connector.class);
-	}
-	
-	
-	public static int count(int connectorId) throws VivialConnectException
-	{
-		return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/callbacks/count", connectorId)), null, null, ResourceCount.class).getCount();
-	}
-	
+    /** The URL that will receive callback request */
+    @JsonProperty
+    private String url;
 
-	public Date getDateCreated()
-	{
-		return dateCreated;
-	}
+    /** The HTTP method which will be used for this callback */
+    @JsonProperty
+    private String method;
+
+    /* public enum EventType {
+
+        INCOMING,
+        INCOMING_FALLBACK,
+        STATUS;
+
+        public String toString()
+        {
+                return this.name().toLowerCase();
+        }
+    }
 
 
-	public void setDateCreated(Date dateCreated)
-	{
-		this.dateCreated = dateCreated;
-	}
+    public enum MessageType {
+
+        TEXT,
+        VOICE;
+
+        public String toString()
+        {
+                return this.name().toLowerCase();
+        }
+    } */
 
 
-	public Date getDateModified()
-	{
-		return dateModified;
-	}
+    public static ConnectorWithCallbacks getCallbacks(int connectorId) throws VivialConnectException{
+        return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/callbacks", connectorId)), null, null, Connector.class);
+    }
 
 
-	public void setDateModified(Date dateModified)
-	{
-		this.dateModified = dateModified;
-	}
+    public static int count(int connectorId) throws VivialConnectException{
+        return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/callbacks/count", connectorId)), null, null, ResourceCount.class).getCount();
+    }
 
 
-	public String getMessageType()
-	{
-		return messageType;
-	}
+    public Date getDateCreated(){
+        return dateCreated;
+    }
 
 
-	public void setMessageType(String messageType)
-	{
-		this.messageType = messageType;
-	}
+    public void setDateCreated(Date dateCreated){
+        this.dateCreated = dateCreated;
+    }
 
 
-	public String getEventType()
-	{
-		return eventType;
-	}
+    public Date getDateModified(){
+        return dateModified;
+    }
 
 
-	public void setEventType(String eventType)
-	{
-		this.eventType = eventType;
-	}
+    public void setDateModified(Date dateModified){
+        this.dateModified = dateModified;
+    }
 
 
-	public String getUrl()
-	{
-		return url;
-	}
+    public String getMessageType(){
+        return messageType;
+    }
 
 
-	public void setUrl(String url)
-	{
-		this.url = url;
-	}
+    public void setMessageType(String messageType){
+        this.messageType = messageType;
+    }
 
 
-	public String getMethod()
-	{
-		return method;
-	}
+    public String getEventType(){
+        return eventType;
+    }
 
 
-	public void setMethod(String method)
-	{
-		this.method = method;
-	}
+    public void setEventType(String eventType){
+        this.eventType = eventType;
+    }
+
+
+    public String getUrl(){
+        return url;
+    }
+
+
+    public void setUrl(String url){
+        this.url = url;
+    }
+
+
+    public String getMethod(){
+        return method;
+    }
+
+
+    public void setMethod(String method){
+        this.method = method;
+    }
 }
