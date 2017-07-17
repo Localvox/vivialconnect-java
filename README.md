@@ -1,6 +1,6 @@
 
 # VivialConnect Client for Java
----
+
 VivialConnect is a simple SMS/MSS API. It's designed specifically for developers seeking a simple, affordable and scalable messaging solution.
 
 Get your API key here: https://www.vivialconnect.net/register 
@@ -28,7 +28,7 @@ git clone https://github.com/VivialConnect/vivialconnect-java
 ```
 
 ### Examples
----
+
 __Initialize Client:__ Needed before attempting to use any resource.
 
 ```java
@@ -51,7 +51,7 @@ message.setToNumber(TO_NUMBER);
 message.setBody("Hello, from Vivial Connect!");
 message.send(); 
 ```
-__Retrieve a list of all the messages sent:__ 
+__Retrieve a list of all messages sent:__ 
 
 ```java
 Message.getMessages();
