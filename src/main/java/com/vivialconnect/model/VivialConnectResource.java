@@ -434,10 +434,11 @@ public abstract class VivialConnectResource implements Serializable{
 	
 	
     protected static Map<String, String> addQueryParam(String key, String value, Map<String, String> queryParams){
-        if (queryParams != null){
-            queryParams.put(key, value);
+        if (queryParams == null){
+            queryParams = new HashMap<String, String>();
         }
-
+     
+     queryParams.put(key, value);   
      return queryParams;
     }
 
