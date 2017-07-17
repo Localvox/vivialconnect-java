@@ -140,13 +140,32 @@ public class Message extends VivialConnectResource{
         classesWithoutRootValue.add(MessageCollection.class);
         classesWithoutRootValue.add(AttachmentCollection.class);
     }
-
-
+    
+    /**
+     * Sends this text message using the API.
+     * <p>
+     * If the <code>connector_id</code> property is set, the <code>from_number</code>
+     * property will be ignored.
+     * <p>
+     * In order to send an MMS, be sure to add media attachments to this message
+     * using the {@link #addMediaUrl(String)} and {@link #setMediaUrls(List)} methods.
+     *
+     * @return      the message that was just sent
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * @see 		#setBody(String)
+     * @see 		#setFromNumber(String)
+     * @see 		#setToNumber(String)
+     * @see 		#setConnectorId(int)
+     * @see         #addMediaUrl(String)
+     * @see 		#setMediaUrls(List)
+     * 
+     */
     public Message send() throws VivialConnectException{
         return request(RequestMethod.POST, classURL(Message.class), jsonBody(), null, Message.class);
     }
-
-
+    
+    
     private String jsonBody(){
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Message.class);
         if (hasMediaUrls()){
@@ -416,16 +435,5 @@ public class Message extends VivialConnectResource{
 
     public void setMediaUrls(List<String> mediaUrls){
         this.mediaUrls = mediaUrls;
-    }
-
-
-    @Override
-    public String toString(){
-        return "Message [id=" + id + ", dateCreated=" + dateCreated + ", dateModified=" + dateModified + ", accountId="
-                        + accountId + ", masterAccountId=" + masterAccountId + ", messageType=" + messageType + ", direction="
-                        + direction + ", toNumber=" + toNumber + ", fromNumber=" + fromNumber + ", connectorId=" + connectorId
-                        + ", sent=" + sent + ", numMedia=" + numMedia + ", numSegments=" + numSegments + ", body=" + body
-                        + ", status=" + status + ", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", price="
-                        + price + ", priceCurrency=" + priceCurrency + "]";
     }
 }
