@@ -9,12 +9,12 @@
         "address1": null, 
         "address2": null, 
         "address3": null, 
-        "city": null, 
+        "city": "Santo Domingo", 
         "company_name": "Newtech SRL", 
         "contact_type": "main", 
-        "country": null, 
+        "country": "Dominican Republic", 
         "date_created": "2017-07-05T22:46:13+00:00", 
-        "date_modified": "2017-07-05T22:46:13+00:00", 
+        "date_modified": "2017-07-12T23:49:23+00:00", 
         "email": "carlos.gonzalez@newtechsa.com", 
         "fax": null, 
         "first_name": "Carlos", 
@@ -23,12 +23,12 @@
         "mobile_phone": "8097567237", 
         "postal_code": null, 
         "state": null, 
-        "title": null, 
+        "title": "Software Engineer", 
         "work_phone": null
       }
     ], 
     "date_created": "2017-07-05T22:46:13+00:00", 
-    "date_modified": "2017-07-05T22:46:13+00:00", 
+    "date_modified": "2017-07-17T21:10:51+00:00", 
     "id": 10130, 
     "services": [
       {

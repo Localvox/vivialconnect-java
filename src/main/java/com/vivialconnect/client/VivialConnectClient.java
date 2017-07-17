@@ -1,10 +1,5 @@
 package com.vivialconnect.client;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.vivialconnect.model.message.Message;
-import com.vivialconnect.model.message.MessageCollection;
-    
 public final class VivialConnectClient{
 
     private static int accountId;
@@ -13,10 +8,8 @@ public final class VivialConnectClient{
     private static String apiSecret;
 
     public static final String API_BASE = "https://api.vivialconnect.net/api/v1.0";
-
-    private static Map<Class<?>, Class<?>> collectionToInstanceMap;
-	
-	
+    
+    
     private VivialConnectClient(){
 
     }
@@ -38,25 +31,47 @@ public final class VivialConnectClient{
 
 
     public static void init(int accountId, String apiKey, String apiSecret){
-        //TODO: Validate API parameters
+        validateInitialArguments(accountId, apiKey, apiSecret);
 
         VivialConnectClient.accountId = accountId;
         VivialConnectClient.apiKey = apiKey;
         VivialConnectClient.apiSecret = apiSecret;
-
-        initMap();
     }
 
 
-    private static void initMap(){
-        if (collectionToInstanceMap == null){
-            collectionToInstanceMap = new HashMap<Class<?>, Class<?>>();
-            collectionToInstanceMap.put(MessageCollection.class, Message.class);
-        }
-    }
+    private static void validateInitialArguments(int accountId, String apiKey, String apiSecret){
+    	validateAccountId(accountId);
+    	validateAPIKey(apiKey);
+    	validateAPISecret(apiSecret);
+	}
 
 
-    public static Map<Class<?>, Class<?>> getCollectionToInstanceMap(){
-        return collectionToInstanceMap;
-    }
+	private static void validateAccountId(int accountId){
+		if (accountId < 1){
+			throw createIllegalArgumentException("accountId");
+		}
+	}
+
+
+	private static void validateAPIKey(String apiKey){
+		validateStringArg(apiKey, "apiKey");
+	}
+
+
+	private static void validateAPISecret(String apiSecret){
+		validateStringArg(apiSecret, "apiSecret");
+	}
+	
+	
+	private static void validateStringArg(String arg, String argName){
+		if (arg == null || arg.isEmpty())
+		{
+			throw createIllegalArgumentException(argName);
+		}
+	}
+	
+	
+	private static IllegalArgumentException createIllegalArgumentException(String argName){
+		return new IllegalArgumentException(String.format("'%s' param is not valid", argName));
+	}
 }
