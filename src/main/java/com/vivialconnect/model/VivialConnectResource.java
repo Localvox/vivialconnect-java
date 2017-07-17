@@ -21,15 +21,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.SimpleTimeZone;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vivialconnect.client.VivialConnectClient;
 import com.vivialconnect.http.CanonicalRequestBuilder;
-import com.vivialconnect.http.RequestBuilder;
-import com.vivialconnect.http.VivialRESTClient;
 import com.vivialconnect.model.account.Account;
 import com.vivialconnect.model.error.ErrorMessage;
 import com.vivialconnect.model.error.NoContentException;
@@ -39,77 +39,77 @@ import com.vivialconnect.util.CryptoUtils;
 import com.vivialconnect.util.ReflectionUtils;
 
 public abstract class VivialConnectResource implements Serializable{
-	
+
     private static final long serialVersionUID = -2726239361148612818L;
-	
+
     private static final String SIGNATURE_ALGORITHM = "HmacSHA256";
 
     protected static final String ISO_8601_FORMAT = "yyyyMMdd'T'HHmmss'Z'";
     protected static final String HTTP_DATE_FORMAT = "E, dd MMM yyyy HH:mm:ss z";
-	
+
     protected static Set<Class<?>> classesWithoutRootValue = new HashSet<Class<?>>();
-	
+
     static {
         classesWithoutRootValue.add(ResourceCount.class);
     }
-	
+
     protected enum RequestMethod{
         GET, POST, PUT, DELETE
     }
-	
-	
+
+
     protected static String classURLWithSuffix(Class<?> clazz, String suffix){
         return String.format("%ss/%s.json", singleClassURL(clazz), suffix);
     }
-	
+
 
     protected static String classURL(Class<?> clazz){
         return String.format("%ss.json", singleClassURL(clazz));
     }
-	
-	
+
+
     protected static String singleClassURL(Class<?> clazz){
         if (Account.class.equals(clazz)){
             return String.format("%s/accounts/%d.json", VivialConnectClient.API_BASE, VivialConnectClient.getAccountId());
         }
-		
+
         return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
                                                   VivialConnectClient.getAccountId(),
                                                   ReflectionUtils.className(clazz).toLowerCase());
     }
-	
-	
+
+
     protected static String unmappedURL(String resourceName){
         return String.format("%s.json", formatURLForResource(resourceName));
     }
-	
-	
+
+
     protected static String formatURLForResource(String resourceName){
         return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
 						  VivialConnectClient.getAccountId(),
                                                   resourceName);
     }
-	
-	
+
+
     protected static <T> T request(VivialConnectResource.RequestMethod method,
                                    String url, String body, Map<String, String> queryParams,
 			           Class<T> responseClass) throws VivialConnectException{
         try{
             URL endpoint = createEndpoint(url, method, queryParams);
             Date currentDate = new Date();
-			
+
             String requestTimestamp = createRequestTimestamp(currentDate);
             String requestDate = createRequestDate(currentDate);
-			
+
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Date", requestDate);
             headers.put("Host", endpoint.getHost());
             headers.put("Accept", "application/json");
-			
+
             if (requestSupportsBody(method.name())){
                     headers.put("Content-Type", "application/json");
             }
-			
+
             CanonicalRequestBuilder canonicalRequestbuilder = new CanonicalRequestBuilder();
             canonicalRequestbuilder.endpoint(endpoint)
 				   .requestTimestamp(requestTimestamp)
@@ -117,18 +117,18 @@ public abstract class VivialConnectResource implements Serializable{
 				   .method(method.name())
 				   .headers(headers)
 				   .queryParams(queryParams);
-			
+
             String canonicalRequest = canonicalRequestbuilder.build();
             String signedHeaders = canonicalRequestbuilder.getCanonicalizedHeaderNames();
             String signature = createSignature(canonicalRequest);
-			
+
             String authoritzationHeader = buildAuthoritzationHeader(signature);
             headers.put("Authorization", authoritzationHeader);
             headers.put("X-Auth-Date", requestTimestamp);
             headers.put("X-Auth-SignedHeaders", signedHeaders);
-			
+
             return request(endpoint, method, headers, queryParams, body, responseClass);
-            //return jerseyRequest(endpoint, method, headers, queryParams, body, responseClass);
+            /* return jerseyRequest(endpoint, method, headers, queryParams, body, responseClass); */
 	}
 	catch (NoContentException nce){
             throw nce;
@@ -141,38 +141,38 @@ public abstract class VivialConnectResource implements Serializable{
 
     private static VivialConnectException handleException(Exception e){
         VivialConnectException vce = null;
-		
+
 	if (VivialConnectException.class.isAssignableFrom(e.getClass())){
             vce = (VivialConnectException) e;
 	}
 	else{
             vce = new VivialConnectException(e);
 	}
-		
+
         return vce;
     }
 
 
     private static boolean requestSupportsBody(String method){
 	String[] supportedMethods = { "DELETE", "POST", "PUT" };
-        
+
 	return Arrays.binarySearch(supportedMethods, method) > -1;
     }
 
 
-    private static <T> T jerseyRequest(URL endpoint, RequestMethod method, Map<String, String> headers,
+    /* private static <T> T jerseyRequest(URL endpoint, RequestMethod method, Map<String, String> headers,
                                        Map<String, String> queryParams, String body, Class<T> clazz){
         VivialRESTClient client = new VivialRESTClient(VivialConnectClient.API_BASE);
         RequestBuilder builder = client.request().path("accounts/10128/messages.json");
-		
+
 	for (String headerName : headers.keySet()){
             String headerValue = headers.get(headerName);
             builder.header(headerName, headerValue);
 	}
-		
+
 	try{
             String response = "null";
-			
+
             switch(method) {
 		case GET:
                     if (queryParams != null){
@@ -181,7 +181,7 @@ public abstract class VivialConnectResource implements Serializable{
                             builder.queryParam(key, value);
 			}
                     }
-					
+
                     response = builder.get(String.class);
 		break;
 		case POST:
@@ -190,19 +190,19 @@ public abstract class VivialConnectResource implements Serializable{
 		default:
                 break;
             }
-			
+
             System.out.println(response);
 	}catch (Exception e){
             e.printStackTrace();
 	}
-		
+
         return null;
-    }
+    } */
 
 
     private static URL createEndpoint(String url, RequestMethod method,
                                       Map<String, String> queryParams) throws MalformedURLException{
-        
+
         if (method == RequestMethod.GET && queryParams != null && !queryParams.isEmpty()){
             StringBuilder urlBuilder = new StringBuilder(url).append("?");
             for (String key : queryParams.keySet()){
@@ -216,8 +216,8 @@ public abstract class VivialConnectResource implements Serializable{
 
         return new URL(url);
     }
-	
-	
+
+
     protected static String createRequestTimestamp(Date currentDate){
         DateFormat iso8601 = new SimpleDateFormat(ISO_8601_FORMAT);
         iso8601.setTimeZone(new SimpleTimeZone(0, "GMT"));
@@ -232,29 +232,19 @@ public abstract class VivialConnectResource implements Serializable{
 
         return requestDateFormat.format(currentDate);
     }
-	
-	
-    private static String createSignature(String canonicalRequest){
-        try{
-            Mac hmac = Mac.getInstance(SIGNATURE_ALGORITHM);
-            SecretKeySpec secretKey = new SecretKeySpec(VivialConnectClient.getApiSecret().getBytes(),
-                                                                            SIGNATURE_ALGORITHM);
-            hmac.init(secretKey);
 
-            byte[] signatureBytes = hmac.doFinal(canonicalRequest.getBytes("UTF-8"));
-            return CryptoUtils.toHex(signatureBytes);
-        }catch (NoSuchAlgorithmException e){
-            e.printStackTrace();
-        }catch (InvalidKeyException e){
-            e.printStackTrace();
-        }catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-        }
 
-        return null;
+    private static String createSignature(String canonicalRequest) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException{
+        Mac hmac = Mac.getInstance(SIGNATURE_ALGORITHM);
+        SecretKeySpec secretKey = new SecretKeySpec(VivialConnectClient.getApiSecret().getBytes(),
+                                                                        SIGNATURE_ALGORITHM);
+        hmac.init(secretKey);
+
+        byte[] signatureBytes = hmac.doFinal(canonicalRequest.getBytes("UTF-8"));
+        return CryptoUtils.toHex(signatureBytes);
     }
-	
-	
+
+
     private static String buildAuthoritzationHeader(String signature){
         return new StringBuilder().append("HMAC ")
                                   .append(VivialConnectClient.getApiKey())
@@ -265,9 +255,9 @@ public abstract class VivialConnectResource implements Serializable{
 
 
     private static <T> T request(URL endpoint, VivialConnectResource.RequestMethod method, Map<String, String> headers,
-                                    Map<String, String> queryParams, String body, Class<T> responseClass) 
+                                    Map<String, String> queryParams, String body, Class<T> responseClass)
                                     throws IOException, NoContentException, VivialConnectException{
-        
+
         HttpURLConnection connection = null;
 
         try{
@@ -283,8 +273,8 @@ public abstract class VivialConnectResource implements Serializable{
             disconnect(connection);
         }
     }
-	
-	
+
+
     private static HttpURLConnection prepareConnection(URL endpoint, RequestMethod method) throws IOException{
         HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
         connection.setRequestMethod(method.name());
@@ -294,8 +284,8 @@ public abstract class VivialConnectResource implements Serializable{
 
         return connection;
     }
-	
-	
+
+
     private static void setHeaders(HttpURLConnection connection, Map<String, String> headers){
         for (String headerName : headers.keySet()){
             String headerValue = headers.get(headerName);
@@ -303,7 +293,7 @@ public abstract class VivialConnectResource implements Serializable{
         }
     }
 
-	
+
     private static void setBody(HttpURLConnection connection, String body) throws IOException{
         if (requestSupportsBody(connection.getRequestMethod()) && body != null && !body.isEmpty()){
             DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
@@ -313,7 +303,7 @@ public abstract class VivialConnectResource implements Serializable{
         }
     }
 
-	
+
     private static String doRequest(HttpURLConnection connection) throws NoContentException, VivialConnectException{
         BufferedReader reader = null;
 
@@ -339,7 +329,7 @@ public abstract class VivialConnectResource implements Serializable{
             }
         }
     }
-	
+
 
     private static VivialConnectException convertToVivialException(IOException ioe, HttpURLConnection connection){
         if (connection == null){
@@ -401,9 +391,9 @@ public abstract class VivialConnectResource implements Serializable{
 
         return responseBuilder.toString();
     }
-	
-	
-    private static <T> T unmarshallResponse(String response, Class<T> responseClass) throws JsonProcessingException, IOException	{
+
+
+    private static <T> T unmarshallResponse(String response, Class<T> responseClass) throws JsonProcessingException, IOException{
         ObjectMapper mapper = configureObjectMapper(responseClass);
         return mapper.reader().forType(responseClass).readValue(response);
     }
@@ -419,8 +409,8 @@ public abstract class VivialConnectResource implements Serializable{
 
         return mapper;
     }
-	
-	
+
+
     private static boolean shouldUnwrapRoot(Class<?> responseClass){
         return !classesWithoutRootValue.contains(responseClass);
     }
@@ -431,15 +421,15 @@ public abstract class VivialConnectResource implements Serializable{
             connection.disconnect();
 	}
     }
-	
-	
+
+
     protected static Map<String, String> addQueryParam(String key, String value, Map<String, String> queryParams){
         if (queryParams == null){
             queryParams = new HashMap<String, String>();
         }
-     
-     queryParams.put(key, value);   
-     return queryParams;
+
+        queryParams.put(key, value);
+        return queryParams;
     }
 
 
@@ -448,8 +438,8 @@ public abstract class VivialConnectResource implements Serializable{
             builder.addParamPair(paramName, value);
         }
     }
-	
-	
+
+
     protected static void ifParamValidAddToBuilder(JsonBodyBuilder builder, String paramName, int intValue){
         if (intValue > 0){
             builder.addParamPair(paramName, intValue);
