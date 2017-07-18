@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.vivialconnect.client.VivialConnectClient;
 import com.vivialconnect.model.account.Account;
 import com.vivialconnect.model.error.VivialConnectException;
+import org.junit.Before;
 
 public class AccountTest extends BaseTestCase {
 

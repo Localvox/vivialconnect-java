@@ -256,7 +256,7 @@ public abstract class VivialConnectResource implements Serializable{
 
     private static <T> T request(URL endpoint, VivialConnectResource.RequestMethod method, Map<String, String> headers,
                                     Map<String, String> queryParams, String body, Class<T> responseClass)
-                                    throws IOException, NoContentException, VivialConnectException{
+                                    throws IOException, NoContentException, VivialConnectException {
 
         HttpURLConnection connection = null;
 
@@ -266,7 +266,7 @@ public abstract class VivialConnectResource implements Serializable{
             setBody(connection, body);
 
             String response = doRequest(connection);
-            System.out.println(response);
+            //System.out.println(response);
 
             return unmarshallResponse(response, responseClass);
         }finally{
@@ -275,7 +275,7 @@ public abstract class VivialConnectResource implements Serializable{
     }
 
 
-    private static HttpURLConnection prepareConnection(URL endpoint, RequestMethod method) throws IOException{
+    private static HttpURLConnection prepareConnection(URL endpoint, RequestMethod method) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
         connection.setRequestMethod(method.name());
         connection.setUseCaches(false);
@@ -286,7 +286,7 @@ public abstract class VivialConnectResource implements Serializable{
     }
 
 
-    private static void setHeaders(HttpURLConnection connection, Map<String, String> headers){
+    private static void setHeaders(HttpURLConnection connection, Map<String, String> headers) {
         for (String headerName : headers.keySet()){
             String headerValue = headers.get(headerName);
             connection.setRequestProperty(headerName, headerValue);
@@ -294,8 +294,8 @@ public abstract class VivialConnectResource implements Serializable{
     }
 
 
-    private static void setBody(HttpURLConnection connection, String body) throws IOException{
-        if (requestSupportsBody(connection.getRequestMethod()) && body != null && !body.isEmpty()){
+    private static void setBody(HttpURLConnection connection, String body) throws IOException {
+        if (requestSupportsBody(connection.getRequestMethod()) && body != null && !body.isEmpty()) {
             DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(body);
             outputStream.flush();
@@ -304,7 +304,7 @@ public abstract class VivialConnectResource implements Serializable{
     }
 
 
-    private static String doRequest(HttpURLConnection connection) throws NoContentException, VivialConnectException{
+    private static String doRequest(HttpURLConnection connection) throws NoContentException, VivialConnectException {
         BufferedReader reader = null;
 
         try{
@@ -332,7 +332,7 @@ public abstract class VivialConnectResource implements Serializable{
 
 
     private static VivialConnectException convertToVivialException(IOException ioe, HttpURLConnection connection){
-        if (connection == null){
+        if (connection == null) {
             return new VivialConnectException(ioe);
         }
 

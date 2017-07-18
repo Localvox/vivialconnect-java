@@ -3,6 +3,8 @@ package com.vivialconnect.bootstrap;
 import com.vivialconnect.client.VivialConnectClient;
 import com.vivialconnect.model.error.VivialConnectException;
 
+import com.vivialconnect.model.number.Number;
+
 public class Main {
     
     private static final int NUMBER_ID = 131;
@@ -17,5 +19,7 @@ public class Main {
 	
     public static void main(String[] args) throws VivialConnectException {
         VivialConnectClient.init(ACCOUNT_ID, API_KEY, API_SECRET);
+        
+        Number.getNumberById(131);
     }
 }
