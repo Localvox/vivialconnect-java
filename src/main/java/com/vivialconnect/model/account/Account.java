@@ -52,12 +52,24 @@ public class Account extends VivialConnectResource{
         classesWithoutRootValue.add(ContactCollection.class);
     }
 
-
+    /**
+     * Retrieve the information for this Account.
+     * 
+     * @return          account object
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     */
     public static Account getAccount() throws VivialConnectException{
         return request(RequestMethod.GET, singleClassURL(Account.class), null, null, Account.class);
     }
 
-
+    /**
+     * Updates information about the account.
+     * 
+     * @return          account object
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public Account update() throws VivialConnectException{
         Account updatedAccount = request(RequestMethod.PUT, singleClassURL(Account.class),
                                         buildJsonBodyForUpdate(), null, Account.class);

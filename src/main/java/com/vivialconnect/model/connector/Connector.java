@@ -63,22 +63,62 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         classesWithoutRootValue.add(ConnectorCollection.class);
     }
 
-
+    /**
+     * Search for a connector by it's ID using the API.
+     * <p>
+     * If the <code>Connector</code> is not found, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @param           connectorId the connectorId to lookup
+     * @return          the connector that was found given the connectorId
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * 
+     * @see 		#getConnectors()
+     */
     public static Connector getConnectorById(int connectorId) throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.valueOf(connectorId)), null, null, Connector.class);
     }
 
-
+    /**
+     * Search for all connectors within this Account using the API.
+     * <p>
+     * If no connectors were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          a list of connector
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * @see 		#getConnectorById(int) 
+     */
     public static List<Connector> getConnectors() throws VivialConnectException{
         return request(RequestMethod.GET, classURL(Connector.class), null, null, ConnectorCollection.class).getConnectors();
     }
 
-
+    /**
+     * Total number of connectors within this Account using the API.
+     * <p>
+     * If no connector were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          number of connector sent
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public static int count() throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(Connector.class, "count"), null, null, ResourceCount.class).getCount();
     }
-
-
+    
+    /**
+     * Total number of connectors within this Account using the API.
+     * <p>
+     * If no connector were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          number of connector sent
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public Connector create() throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("name", getName());

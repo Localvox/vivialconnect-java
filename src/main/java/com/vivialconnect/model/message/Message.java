@@ -229,7 +229,7 @@ public class Message extends VivialConnectResource{
      * <p>
      * 
      * @param           queryParameters a map that specify the <code>page</code> or <code>limit</code> for the messages
-     * @return          a list of messages
+     * @return          a list of message
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getMessages()
@@ -382,9 +382,9 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Set the origin phone number for the text message to be send
+     * Set the origin phone number or connectorId for the text message to be send
      * <p>
-     * This number must be registered as an associated number in your account and should meet the +1########## format
+     * This number must be registered as an associated number in your account and should meet the +1########## format.
      * <p>
      *
      *

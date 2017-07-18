@@ -114,7 +114,14 @@ public class Contact extends VivialConnectResource{
         updateObjectState(contact);
     }
 
-
+    /**
+     * Creates a new contact using the provided fields.
+     * 
+     * @return          contact object
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * @see 		#update()
+     */
     public Contact create() throws VivialConnectException{
         verifyRequiredFields();
         Contact createdContact = request(RequestMethod.POST, classURL(Contact.class),
@@ -230,7 +237,13 @@ public class Contact extends VivialConnectResource{
         this.workPhone = contact.getWorkPhone();
     }
 
-
+    /**
+     * Updated information for this contact using the API.
+     * 
+     * @return          contact object
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     */
     public Contact update() throws VivialConnectException{
         verifyRequiredFields();
         Contact updatedContact = request(RequestMethod.PUT, classURLWithSuffix(Contact.class, String.valueOf(getId())),
@@ -244,7 +257,13 @@ public class Contact extends VivialConnectResource{
         return jsonBodyBuilder.build();
     }
 
-
+    /**
+     * Delete the current contact, using the API.
+     * 
+     * @return          contact object
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public boolean delete() throws VivialConnectException{
         try{
             request(RequestMethod.DELETE, classURLWithSuffix(Contact.class, String.valueOf(getId())), null, null, String.class);
@@ -255,22 +274,70 @@ public class Contact extends VivialConnectResource{
         return false;
     }
 
-
+    /**
+     * Search for all contacts within this Account using the API.
+     * <p>
+     * If no contact were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          a list of contact
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * @see 		#getContactById(int)
+     * @see 		#getContacts(Map) 
+     */
     public static List<Contact> getContacts() throws VivialConnectException{
         return getContacts(null);
     }
 
-
+    /**
+     * Search and filter all contacts within this Account using the API.
+     * <p>
+     * If no contacts were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @param           queryParams a map that specify the <code>company_name</code>, <code>title</code>,<code>address1</code>,
+     *                  <code>address2</code>,<code>address3</code>,<code>city</code>,<code>state</code>,<code>postal_code</code>,
+     *                  <code>country</code>,<code>mobile_phone</code>,<code>work_phone</code> for the contact
+     * 
+     * @return          a list of contact
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * @see 		#getContacts()
+     * @see 		#getContactById(int) 
+     */
     public static List<Contact> getContacts(Map<String, String> queryParams) throws VivialConnectException{
         return request(RequestMethod.GET, classURL(Contact.class), null, queryParams, ContactCollection.class).getContacts();
     }
 
-
+    /**
+     * Search for a contact by it's ID using the API.
+     * <p>
+     * If the <code>Contact</code> is not found, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @param           contactId the contactId to lookup
+     * @return          the contact that was found given the contactId
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * 
+     * @see 		#getContacts()
+     * @see 		#getContacts(Map)
+     */
     public static Contact getContactById(int contactId) throws VivialConnectException{
         return new Contact(request(RequestMethod.GET, classURLWithSuffix(Contact.class, String.valueOf(contactId)), null, null, Contact.class));
     }
 
-
+    /**
+     * Total number of contacts within this Account using the API.
+     * <p>
+     * If no contact were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          number of contacts
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public static int count() throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(Contact.class, "count"), null, null, ResourceCount.class).getCount();
     }
