@@ -215,15 +215,14 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Search for a text message by it's ID using the API.
+     * Search for a {@link Message} by its ID using the API.
      * <p>
-     * If the <code>Message</code> is not found, a VivialConnectException will be thrown.
-     * <p>
+     * If the {@link Message} is not found, a VivialConnectException will be thrown.
      * 
-     * @param           messageId the messageId to lookup
-     * @return          the message that was found given the messageId
+     * @param           messageId the id of the message to look up
+     * 
+     * @return          the Message that was found given the id
      * @throws		VivialConnectException if there is an API-level error
-     * 
      * 
      * @see 		#getMessages()
      * @see 		#getMessages(Map)
@@ -233,12 +232,11 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Search for all text messages sent with this Account using the API.
+     * Gets all messages sent with this Account using the API.
      * <p>
-     * If no messages were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no Message were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          a list of messages
+     * @return          a list of message
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getMessageById(int)
@@ -250,13 +248,12 @@ public class Message extends VivialConnectResource{
 
 
     /**
-     * Search and filter all text messages sent with this Account using the API.
+     * Search and filter every message for this Account using the API.
      * <p>
-     * If no messages were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no {@link Message} were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @param           queryParameters a map that specify the <code>page</code> or <code>limit</code> for the messages
-     * @return          a list of message
+     * @param           queryParameters a map of {@link String } key-value pairs
+     * @return          a list of messages
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getMessages()
@@ -267,26 +264,24 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Total number of messages sent with this Account using the API.
+     * Total number of messages in the account specified.
      * <p>
-     * If no messages were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no messages were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          number of messages sent
+     * @return          message count
      * @throws		VivialConnectException if there is an API-level error
      *
      */
     public static int count() throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(Message.class, "count"), null, null, ResourceCount.class).getCount();
     }
-
+    
     /**
-     * Retrieve a list of <code>attachment</code> sent within this <code>message</code>, using the API.
+     * Retrieve a list of attachments sent within this message.
      * <p>
-     * If no attachment were found......
-     * <p>
+     * If no User were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          a list of attachment
+     * @return          a list of attachments
      * @throws		VivialConnectException if there is an API-level error
      *
      */

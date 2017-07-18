@@ -275,12 +275,11 @@ public class Contact extends VivialConnectResource{
     }
 
     /**
-     * Search for all contacts within this Account using the API.
+     * Gets all contacts for this Account using the API.
      * <p>
-     * If no contact were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no Contact were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          a list of contact
+     * @return          a list of contacts
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getContactById(int)
@@ -291,15 +290,11 @@ public class Contact extends VivialConnectResource{
     }
 
     /**
-     * Search and filter all contacts within this Account using the API.
+     * Search and filter every contact for this Account using the API.
      * <p>
-     * If no contacts were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no {@link Contact} were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @param           queryParams a map that specify the <code>company_name</code>, <code>title</code>,<code>address1</code>,
-     *                  <code>address2</code>,<code>address3</code>,<code>city</code>,<code>state</code>,<code>postal_code</code>,
-     *                  <code>country</code>,<code>mobile_phone</code>,<code>work_phone</code> for the contact
-     * 
+     * @param           queryParams a map of {@link String } key-value pairs
      * @return          a list of contact
      * @throws		VivialConnectException if there is an API-level error
      * 
@@ -310,16 +305,15 @@ public class Contact extends VivialConnectResource{
         return request(RequestMethod.GET, classURL(Contact.class), null, queryParams, ContactCollection.class).getContacts();
     }
 
-    /**
-     * Search for a contact by it's ID using the API.
+     /**
+     * Search for a {@link Contact} by its ID using the API.
      * <p>
-     * If the <code>Contact</code> is not found, a VivialConnectException will be thrown.
-     * <p>
+     * If the {@link Contact} is not found, a VivialConnectException will be thrown.
      * 
-     * @param           contactId the contactId to lookup
-     * @return          the contact that was found given the contactId
+     * @param           contactId the id of the user to look up
+     * 
+     * @return          the Contact that was found given the id
      * @throws		VivialConnectException if there is an API-level error
-     * 
      * 
      * @see 		#getContacts()
      * @see 		#getContacts(Map)
@@ -329,12 +323,11 @@ public class Contact extends VivialConnectResource{
     }
 
     /**
-     * Total number of contacts within this Account using the API.
+     * Total number of contacts in the account specified.
      * <p>
-     * If no contact were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no contacts were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          number of contacts
+     * @return          contact count
      * @throws		VivialConnectException if there is an API-level error
      *
      */

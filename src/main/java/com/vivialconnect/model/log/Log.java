@@ -113,13 +113,12 @@ public class Log extends VivialConnectResource {
     static {
         classesWithoutRootValue.add(LogCollection.class);
     }
-
+    
     /**
-     * Search for all logs relating to your account activity.
+     * Gets all logs relating to your account activity.
      * <p>
      * StartTime and endTime should be formated in ISO 8601 format like YYYYMMDDThhmmssZ.
-     * <p>
-     *
+     * 
      * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @return          a list of log collection
@@ -135,13 +134,10 @@ public class Log extends VivialConnectResource {
      * Search and filter for all logs relating to your account activity.
      * <p>
      * StartTime and endTime should be formated in ISO 8601 format like YYYYMMDDThhmmssZ.
-     * <p>
      *
      * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           queryParameters a map to filter the logs by <code>log_type</code>,
-     *                              <code>item_id</code>, <code>operator_id</code>,<code>limit</code>,
-     *                              <code>start_key</code>
+     * @param           queryParameters a map of {@link String } key-value pairs
      *
      * @return          a list of log collection
      * @throws          VivialConnectException if there is an API-level error
@@ -157,7 +153,6 @@ public class Log extends VivialConnectResource {
      * Returns the list of aggregated logs in your account.
      * <p>
      * Use aggregated logs to view information about log activity over time.
-     * <p>
      *
      * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
@@ -180,8 +175,8 @@ public class Log extends VivialConnectResource {
      * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param           aggregatorType valid values are: minutes, hours, days, months, years
-     * @param           queryParameters a map to filter the aggregate logs by <code>log_type</code>,
-     *                              <code>operator_id</code>,<code>limit</code>,<code>start_key</code>
+     * @param           queryParameters a map of {@link String } key-value pairs
+     * 
      * @return          a list of log collection
      * @throws          VivialConnectException if there is an API-level error
      *

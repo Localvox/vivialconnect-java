@@ -64,15 +64,14 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
     /**
-     * Search for a connector by it's ID using the API.
+     * Search for a {@link Connector} by its ID using the API.
      * <p>
-     * If the <code>Connector</code> is not found, a VivialConnectException will be thrown.
-     * <p>
+     * If the {@link Connector} is not found, a VivialConnectException will be thrown.
      * 
-     * @param           connectorId the connectorId to lookup
-     * @return          the connector that was found given the connectorId
+     * @param           connectorId the id of the connector to look up
+     * 
+     * @return          the Connector that was found given the id
      * @throws		VivialConnectException if there is an API-level error
-     * 
      * 
      * @see 		#getConnectors()
      */
@@ -81,12 +80,11 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
     /**
-     * Search for all connectors within this Account using the API.
+     * Gets all connectors for this Account using the API.
      * <p>
-     * If no connectors were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no Connectors were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          a list of connector
+     * @return          a list of connectors
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getConnectorById(int) 
@@ -96,12 +94,11 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
     /**
-     * Total number of connectors within this Account using the API.
+     * Total number of connectors in the account specified.
      * <p>
-     * If no connector were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no connectors were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          number of connector sent
+     * @return          connector count
      * @throws		VivialConnectException if there is an API-level error
      *
      */
@@ -113,7 +110,6 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * Total number of connectors within this Account using the API.
      * <p>
      * If no connector were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
      * 
      * @return          number of connector sent
      * @throws		VivialConnectException if there is an API-level error
@@ -158,6 +154,15 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
 
+    /**
+     * Removes the connector from the account.
+     * <p>
+     * Returns <code>true<code> if the connector was successfully deleted.
+     * 
+     * @return          whether the connector was deleted or not
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public boolean delete() throws VivialConnectException{
         try{
             request(RequestMethod.DELETE, classURLWithSuffix(Connector.class, String.valueOf(getId())), null, null, String.class);
