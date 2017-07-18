@@ -69,15 +69,14 @@ public class User extends VivialConnectResource{
     }
     
     /**
-     * Search for a <code>User</code> by it's ID using the API.
+     * Search for a {@link User} by its ID using the API.
      * <p>
-     * If the <code>User</code> is not found, a VivialConnectException will be thrown.
-     * <p>
+     * If the {@link User} is not found, a VivialConnectException will be thrown.
      * 
-     * @param           userId the userId to lookup
-     * @return          the User that was found given the userId
+     * @param           userId the id of the user to look up
+     * 
+     * @return          the User that was found given the id
      * @throws		VivialConnectException if there is an API-level error
-     * 
      * 
      * @see 		#getUsers()
      * @see 		#getUsers(Map)
@@ -87,12 +86,11 @@ public class User extends VivialConnectResource{
     }
 
     /**
-     * Search for all <code>User</code> for this Account using the API.
+     * Gets all users for this Account using the API.
      * <p>
-     * If no User were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no User were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          a list of user
+     * @return          a list of users
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getUserById(int)
@@ -105,11 +103,10 @@ public class User extends VivialConnectResource{
     /**
      * Search and filter every user for this Account using the API.
      * <p>
-     * If no <code>User</code> were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no {@link User} were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @param           queryParams a map that specify the <code>page</code> or <code>limit</code> for the users
-     * @return          a list of user
+     * @param           queryParams a map of {@link String } key-value pairs
+     * @return          a list of users
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getUsers()
@@ -120,12 +117,11 @@ public class User extends VivialConnectResource{
     }
 
     /**
-     * Total number of users in the account specified using the API.
+     * Total number of users in the account specified.
      * <p>
-     * If no users were found for this <code>Account</code>, a VivialConnectException will be thrown.
-     * <p>
+     * If no users were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @return          number of users
+     * @return          user count
      * @throws		VivialConnectException if there is an API-level error
      *
      */
@@ -134,12 +130,11 @@ public class User extends VivialConnectResource{
     }
 
     /**
-     * Removes the user from the account using the API.
+     * Removes the user from the account.
      * <p>
-     * Method should be called with a <code>User</code> reference or a VivialConnectException will be thrown.
-     * <p>
+     * Returns <code>true<code> if the user was successfully deleted.
      * 
-     * @return          HTTP status code
+     * @return          whether the user was deleted or not
      * @throws		VivialConnectException if there is an API-level error
      *
      */
@@ -154,12 +149,11 @@ public class User extends VivialConnectResource{
     }
 
     /**
-     * Set or update user passwords.
+     * Updates the user's password.
      * <p>
-     * Method should be called with a <code>User</code> reference or, a VivialConnectException will be thrown.
-     * <p>
+     * Returns <code>true<code> if the password was successfully updated.
      * 
-     * @return          HTTP status code
+     * @return          whether the password was updated or not
      * @throws		VivialConnectException if there is an API-level error
      *
      */
