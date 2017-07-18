@@ -27,10 +27,7 @@ public class MessageTest extends BaseTestCase {
     private static String TO_NUMBER = "+18099667830";
     private static String MESSAGE_BODY = "Message from Vivial Connect Test Suite";
     
-    private int messageId = 0;
-    private int messageCount = 0;
-    private Message retrievedMessage = null;
-    private Message redactedMessage = null;
+    private static int messageId = 0;
     
     @BeforeClass
     public static void initializeClient() {
@@ -46,7 +43,7 @@ public class MessageTest extends BaseTestCase {
         message.setBody(MESSAGE_BODY);
         message.addMediaUrl("https://code.org/images/apple-touch-icon-precomposed.png");
         
-        assertNull(message.getId());
+        assertEquals(0, message.getId());
         
         message = message.send();
         this.messageId = message.getId();
@@ -55,32 +52,31 @@ public class MessageTest extends BaseTestCase {
         assertEquals(MESSAGE_BODY, message.getBody());
         assertEquals(FROM_NUMBER, message.getFromNumber());
         assertEquals(TO_NUMBER, message.getToNumber());
-        assertEquals("outbound", message.getMessageType());
+        assertEquals("local_mms", message.getMessageType());
         assertNotEquals("delivered", message.getStatus());
     }
     
     
     @Test
     public void test_message_count() throws VivialConnectException {
-        this.messageCount = Message.count();
-        assertTrue(this.messageCount > 0);
+        assertTrue(Message.count() > 0);
     }
     
     
     @Test
     public void test_get_message() throws VivialConnectException {
         assertTrue(this.messageId > 0);
-        retrievedMessage = Message.getMessageById(messageId);
+        Message message = Message.getMessageById(messageId);
         
-        assertNotNull(retrievedMessage);
-        assertEquals(this.messageId, retrievedMessage.getId());
-        assertEquals(1, retrievedMessage.getNumMedia());
+        assertNotNull(message);
+        assertEquals(this.messageId, message.getId());
+        assertEquals(1, message.getNumMedia());
     }
     
     
     @Test
     public void test_get_messages() throws VivialConnectException {
-        assertEquals(Message.getMessages().size(), this.messageCount);
+        assertEquals(Message.getMessages().size(), Message.count());
     }
     
     
@@ -94,17 +90,16 @@ public class MessageTest extends BaseTestCase {
     
     
     @Test(expected = VivialConnectException.class)
-    public void test_get_messages_with_invalid_limit_throws_vivial_connect_exception() throws VivialConnectException {
-        Map<String, String> filters = new HashMap<String, String>();
-        filters.put("limit", "foo");
-        
-        Message.getMessages(filters);
+    public void test_get_message_with_invalid_id_throws_vivial_connect_exception() throws VivialConnectException {
+        Message.getMessageById(0);
     }
     
     
     @Test
     public void test_redact_message() throws VivialConnectException {
-        assertEquals(MESSAGE_BODY, retrievedMessage.getBody());
-        assertEquals("", retrievedMessage.redact().getBody());
+        Message message = Message.getMessageById(messageId);
+        
+        assertEquals(MESSAGE_BODY, message.getBody());
+        assertEquals("", message.redact().getBody());
     }
 }
