@@ -67,27 +67,82 @@ public class User extends VivialConnectResource{
     static {
         classesWithoutRootValue.add(UserCollection.class);
     }
-
+    
+    /**
+     * Search for a <code>User</code> by it's ID using the API.
+     * <p>
+     * If the <code>User</code> is not found, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @param           userId the userId to lookup
+     * @return          the User that was found given the userId
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * 
+     * @see 		#getUsers()
+     * @see 		#getUsers(Map)
+     */
     public static User getUserById(int userId) throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(User.class, String.valueOf(userId)), null, null, User.class);
     }
 
-
+    /**
+     * Search for all <code>User</code> for this Account using the API.
+     * <p>
+     * If no User were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          a list of user
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * @see 		#getUserById(int)
+     * @see 		#getUsers(Map) 
+     */
     public static List<User> getUsers() throws VivialConnectException{
         return getUsers(null);
     }
 
-
+    /**
+     * Search and filter every user for this Account using the API.
+     * <p>
+     * If no <code>User</code> were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @param           queryParams a map that specify the <code>page</code> or <code>limit</code> for the users
+     * @return          a list of user
+     * @throws		VivialConnectException if there is an API-level error
+     * 
+     * @see 		#getUsers()
+     * @see 		#getUserById(int) 
+     */
     public static List<User> getUsers(Map<String, String> queryParams) throws VivialConnectException{
         return request(RequestMethod.GET, classURL(User.class), null, queryParams, UserCollection.class).getUsers();
     }
 
-
+    /**
+     * Total number of users in the account specified using the API.
+     * <p>
+     * If no users were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          number of users sent
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public static int count() throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(User.class, "count"), null, null, ResourceCount.class).getCount();
     }
 
-
+    /**
+     * Removes the user from the account using the API.
+     * <p>
+     * Method should be called with a <code>User</code> reference or a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          HTTP status code
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public boolean delete() throws VivialConnectException{
         try{
             request(RequestMethod.DELETE, classURLWithSuffix(User.class, String.valueOf(getId())), null, null, String.class);
@@ -98,7 +153,16 @@ public class User extends VivialConnectResource{
         return false;
     }
 
-
+    /**
+     * Set or update user passwords.
+     * <p>
+     * Method should be called with a <code>User</code> reference or, a VivialConnectException will be thrown.
+     * <p>
+     * 
+     * @return          HTTP status code
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public boolean changePassword(String oldPassword, String newPassword) throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(User.class)
                                                  .addParamPair("_password", oldPassword)

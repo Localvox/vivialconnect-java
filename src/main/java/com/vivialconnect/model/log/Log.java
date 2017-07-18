@@ -7,27 +7,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vivialconnect.model.VivialConnectResource;
 import com.vivialconnect.model.error.VivialConnectException;
 
-public class Log extends VivialConnectResource{
+public class Log extends VivialConnectResource {
 
     private static final long serialVersionUID = -1982193020990089235L;
 
-    /** Unique identifier of the log object. */
+    /**
+     * Unique identifier of the log object.
+     */
     @JsonProperty("log_id")
     private String logId;
 
-    /** Unique identifier of the account that owns this log. */
+    /**
+     * Unique identifier of the account that owns this log.
+     */
     @JsonProperty("account_id")
     private int accountId;
 
-    /** Account id item id */
+    /**
+     * Account id item id
+     */
     @JsonProperty("account_id_item_id")
     private String accountIdItemId;
 
-    /** Account id log type */
+    /**
+     * Account id log type
+     */
     @JsonProperty("account_id_log_type")
     private String accountIdLogType;
 
-    /** Account id operator id */
+    /**
+     * Account id operator id
+     */
     @JsonProperty("account_id_operator_id")
     private String accountIdOperatorId;
 
@@ -46,7 +56,9 @@ public class Log extends VivialConnectResource{
     @JsonProperty("item_type")
     private String itemType;
 
-    /** Unique id of item that was affected. */
+    /**
+     * Unique id of item that was affected.
+     */
     @JsonProperty("item_id")
     private String itemId;
 
@@ -59,7 +71,9 @@ public class Log extends VivialConnectResource{
     @JsonProperty("operator_type")
     private String operatorType;
 
-    /** Unique id of operator that caused this log. */
+    /**
+     * Unique id of operator that caused this log.
+     */
     @JsonProperty("operator_id")
     private int operatorId;
 
@@ -72,19 +86,27 @@ public class Log extends VivialConnectResource{
     @JsonProperty("origin")
     private String origin;
 
-    /** A free-form json object storing additional data about the log item. */
+    /**
+     * A free-form json object storing additional data about the log item.
+     */
     @JsonProperty("log_data")
     private LogData logData;
 
-    /** Log data Json */
+    /**
+     * Log data Json
+     */
     @JsonProperty("log_data_json")
     private String logDataJson;
 
-    /** A UTC timestamp in format YYYYMMDDhhmmssssssss */
+    /**
+     * A UTC timestamp in format YYYYMMDDhhmmssssssss
+     */
     @JsonProperty("log_timestamp")
     private String logTimestamp;
 
-    /** A human-readable description of the log. */
+    /**
+     * A human-readable description of the log.
+     */
     @JsonProperty("description")
     private String description;
 
@@ -92,190 +114,219 @@ public class Log extends VivialConnectResource{
         classesWithoutRootValue.add(LogCollection.class);
     }
 
-
-    public static LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException{
+    /**
+     * Search for all logs relating to your account activity.
+     * <p>
+     * StartTime and endTime should be formated in ISO 8601 format like YYYYMMDDThhmmssZ.
+     * <p>
+     *
+     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @return          a list of log collection
+     * @throws          VivialConnectException if there is an API-level error
+     *
+     * @see             #getLogs(Date, Date, Map)
+     */
+    public static LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException {
         return getLogs(startTime, endTime, null);
     }
 
-
-    public static LogCollection getLogs(Date startTime, Date endTime, Map<String, String> queryParameters) throws VivialConnectException{
+    /**
+     * Search and filter for all logs relating to your account activity.
+     * <p>
+     * StartTime and endTime should be formated in ISO 8601 format like YYYYMMDDThhmmssZ.
+     * <p>
+     *
+     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param           queryParameters a map to filter the logs by <code>log_type</code>,
+     *                              <code>item_id</code>, <code>operator_id</code>,<code>limit</code>,
+     *                              <code>start_key</code>
+     *
+     * @return          a list of log collection
+     * @throws          VivialConnectException if there is an API-level error
+     *
+     * @see             #getLogs(Date, Date)
+     */
+    public static LogCollection getLogs(Date startTime, Date endTime, Map<String, String> queryParameters) throws VivialConnectException {
         queryParameters = buildQueryParams(startTime, endTime, null, queryParameters);
         return request(RequestMethod.GET, classURL(Log.class), null, queryParameters, LogCollection.class);
     }
 
-    public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException{
+    /**
+     * Returns the list of aggregated logs in your account.
+     * <p>
+     * Use aggregated logs to view information about log activity over time.
+     * <p>
+     *
+     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param           aggregatorType valid values are: minutes, hours, days, months, years
+     * @return          a list of log collection
+     * @throws          VivialConnectException if there is an API-level error
+     *
+     * @see             #getAggregate(Date, Date, String, Map)
+     */
+    public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException {
         return getAggregate(startTime, endTime, aggregatorType, null);
     }
 
-    public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParameters) throws VivialConnectException{
+    /**
+     * Search and filter the list of aggregated logs in your account.
+     * <p>
+     * Use aggregated logs to view information about log activity over time.
+     * <p>
+     *
+     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param           aggregatorType valid values are: minutes, hours, days, months, years
+     * @param           queryParameters a map to filter the aggregate logs by <code>log_type</code>,
+     *                              <code>operator_id</code>,<code>limit</code>,<code>start_key</code>
+     * @return          a list of log collection
+     * @throws          VivialConnectException if there is an API-level error
+     *
+     * @see             #getAggregate(Date, Date, String)
+     */
+    public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParameters) throws VivialConnectException {
         queryParameters = buildQueryParams(startTime, endTime, aggregatorType, queryParameters);
         return request(RequestMethod.GET, classURLWithSuffix(Log.class, "aggregate"), null, queryParameters, LogCollection.class);
     }
 
-    private static Map<String, String> buildQueryParams(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParams){
+    private static Map<String, String> buildQueryParams(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParams) {
         String formattedStartDate = createRequestTimestamp(startTime);
         String formattedEndDate = createRequestTimestamp(endTime);
 
-        if (queryParams == null){
+        if (queryParams == null) {
             queryParams = new HashMap<String, String>();
         }
 
         queryParams.put("start_time", formattedStartDate);
         queryParams.put("end_time", formattedEndDate);
 
-        if(aggregatorType != null && !aggregatorType.isEmpty()){
+        if (aggregatorType != null && !aggregatorType.isEmpty()) {
             queryParams.put("aggregator_type", aggregatorType);
         }
 
         return queryParams;
     }
 
-    public String getLogId(){
+    public String getLogId() {
         return logId;
     }
 
-
-    public void setLogId(String logId){
+    public void setLogId(String logId) {
         this.logId = logId;
     }
 
-
-    public int getAccountId(){
+    public int getAccountId() {
         return accountId;
     }
 
-
-    public void setAccountId(int accountId){
+    public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
 
-
-    public String getAccountIdItemId(){
+    public String getAccountIdItemId() {
         return accountIdItemId;
     }
 
-
-    public void setAccountIdItemId(String accountIdItemId){
+    public void setAccountIdItemId(String accountIdItemId) {
         this.accountIdItemId = accountIdItemId;
     }
 
-
-    public String getAccountIdLogType(){
+    public String getAccountIdLogType() {
         return accountIdLogType;
     }
 
-
-    public void setAccountIdLogType(String accountIdLogType){
+    public void setAccountIdLogType(String accountIdLogType) {
         this.accountIdLogType = accountIdLogType;
     }
 
-
-    public String getAccountIdOperatorId(){
+    public String getAccountIdOperatorId() {
         return accountIdOperatorId;
     }
 
-
-    public void setAccountIdOperatorId(String accountIdOperatorId){
+    public void setAccountIdOperatorId(String accountIdOperatorId) {
         this.accountIdOperatorId = accountIdOperatorId;
     }
 
-
-    public String getLogType(){
+    public String getLogType() {
         return logType;
     }
 
-
-    public void setLogType(String logType){
+    public void setLogType(String logType) {
         this.logType = logType;
     }
 
-
-    public String getItemType(){
+    public String getItemType() {
         return itemType;
     }
 
-
-    public void setItemType(String itemType){
+    public void setItemType(String itemType) {
         this.itemType = itemType;
     }
 
-
-    public String getItemId(){
+    public String getItemId() {
         return itemId;
     }
 
-
-    public void setItemId(String itemId){
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
-
-    public String getOperatorType(){
+    public String getOperatorType() {
         return operatorType;
     }
 
-
-    public void setOperatorType(String operatorType){
+    public void setOperatorType(String operatorType) {
         this.operatorType = operatorType;
     }
 
-
-    public int getOperatorId(){
+    public int getOperatorId() {
         return operatorId;
     }
 
-
-    public void setOperatorId(int operatorId){
+    public void setOperatorId(int operatorId) {
         this.operatorId = operatorId;
     }
 
-
-    public String getOrigin(){
+    public String getOrigin() {
         return origin;
     }
 
-
-    public void setOrigin(String origin){
+    public void setOrigin(String origin) {
         this.origin = origin;
     }
 
-
-    public LogData getLogData(){
+    public LogData getLogData() {
         return logData;
     }
 
-
-    public void setLogData(LogData logData){
+    public void setLogData(LogData logData) {
         this.logData = logData;
     }
 
-
-    public String getLogDataJson(){
+    public String getLogDataJson() {
         return logDataJson;
     }
 
-
-    public void setLogDataJson(String logDataJson){
+    public void setLogDataJson(String logDataJson) {
         this.logDataJson = logDataJson;
     }
 
-
-    public String getLogTimestamp(){
+    public String getLogTimestamp() {
         return logTimestamp;
     }
 
-
-    public void setLogTimestamp(String logTimestamp){
+    public void setLogTimestamp(String logTimestamp) {
         this.logTimestamp = logTimestamp;
     }
 
-
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 
-
-    public void setDescription(String description){
+    public void setDescription(String description) {
         this.description = description;
     }
 }
