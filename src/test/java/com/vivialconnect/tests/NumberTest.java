@@ -104,11 +104,17 @@ public class NumberTest extends BaseTestCase {
     
 
     private String getNewIncomingTextUrl(AssociatedNumber associatedNumber) {
-        if (associatedNumber.getIncomingTextUrl() == null) {
-            return "https://foo.bar/callback";
+        if ("https://foo.bar/callback".equals(associatedNumber.getIncomingTextUrl())) {
+            return "https://bar.foo/callback";
         }
         else {
-            return null;
+            return "https://foo.bar/callback";
         }
+    }
+    
+    
+    @Test
+    public void test_number_lookup() throws VivialConnectException {
+        assertEquals(number.getPhoneNumber().substring(1), Number.getNumberById(number.getId()).lookup().getPhoneNumber());
     }
 }
