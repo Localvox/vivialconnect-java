@@ -1,6 +1,6 @@
 package com.vivialconnect.client;
 
-public final class VivialConnectClient{
+public final class VivialConnectClient {
 
     private static int accountId;
 

@@ -1,7 +1,6 @@
 package com.vivialconnect.tests;
 
-public class NumberTest extends BaseTestCase
-{
+public class NumberTest extends BaseTestCase {
 
 	
 }
