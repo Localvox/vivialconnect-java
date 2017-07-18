@@ -3,8 +3,9 @@
 
 VivialConnect is a simple SMS/MSS API. It's designed specifically for developers seeking a simple, affordable and scalable messaging solution.
 
-Get your API key here: https://www.vivialconnect.net/register 
+Get your API key here: https://www.vivialconnect.net/register <br />
 Be sure to read the API documentation: https://www.vivialconnect.net/docs 
+
 
 ### Requirements
 
@@ -15,9 +16,9 @@ Be sure to read the API documentation: https://www.vivialconnect.net/docs
 Include the following dependency into your pom.xml:
 ```xml
 <dependency>
-  <groupId>z.y.z</groupId>
-  <artifactId>x.y.z</artifactId>
-  <version>x.y.z</version>
+  <groupId>vivialconnect</groupId>
+  <artifactId>vivialconnect-java</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
 ### Manual Installation
@@ -32,13 +33,13 @@ git clone https://github.com/VivialConnect/vivialconnect-java
 __Initialize Client:__ Needed before attempting to use any resource.
 
 ```java
-VivialConnectClient.init(ACCOUNT_ID, API_KEY, API_SECRET);
+VivialConnectClient.init(123456, my-api-key, my-api-secret);
 ```
 
 __Search for and buying a number:__ 
 
 ```java
-List<AvailableNumber> availableNumbers = Number.findAvailableNumbersByAreaCode("AREA_CODE");
+List<AvailableNumber> availableNumbers = Number.findAvailableNumbersByAreaCode("302");
 AvailableNumber availableNumber = availableNumbers.get(0);
 AssociatedNumber associatedNumber = availableNumber.buy();
 ```
@@ -46,8 +47,8 @@ __Send a text message:__
 
 ```java
 Message message = new Message();
-message.setFromNumber(FROM_NUMBER);
-message.setToNumber(TO_NUMBER);
+message.setFromNumber("+19132597591");
+message.setToNumber("+11234567890");
 message.setBody("Hello, from Vivial Connect!");
 message.send(); 
 ```
@@ -59,5 +60,23 @@ Message.getMessages();
 __Get a specific message by ID:__ 
 
 ```java
-Message message = Message.getMessageById(MSG_ID);
+Message message = Message.getMessageById(86962);
+```
+
+### Query Parameters
+
+qParams are managed by this library using a `Map<String, String>`. Every resource that supports query parameters will have an overload method that takes the Map.
+
+__Retrieve a list messages sent with a limit of 5:__
+```java
+Map<String, String> queryParams = new HashMap<String, String>();
+queryParams.put("limit", "5");
+List<Message> messages = Message.getMessages(queryParams);
+```
+
+__Retrieve a list of available numbers with a limit of 2:__
+```java
+Map<String, String> queryParams = new HashMap<String, String>();
+queryParams.put("limit", "2");
+List<AvailableNumber> availableNumbers = Number.findAvailableNumbersByAreaCode("302", queryParams);
 ```
