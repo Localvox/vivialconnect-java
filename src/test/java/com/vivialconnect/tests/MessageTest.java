@@ -45,7 +45,7 @@ public class MessageTest extends BaseTestCase {
         
         assertEquals(0, message.getId());
         
-        message = message.send();
+        message.send();
         this.messageId = message.getId();
         
         assertTrue(this.messageId > 0);

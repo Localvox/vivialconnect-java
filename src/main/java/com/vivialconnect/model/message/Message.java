@@ -162,7 +162,34 @@ public class Message extends VivialConnectResource{
      * 
      */
     public Message send() throws VivialConnectException{
-        return request(RequestMethod.POST, classURL(Message.class), jsonBody(), null, Message.class);
+        Message sentMessage = request(RequestMethod.POST, classURL(Message.class), jsonBody(), null, Message.class);
+        updateObjectState(sentMessage);
+        
+        return this;
+    }
+    
+
+    private void updateObjectState(Message sentMessage){
+        this.id = sentMessage.getId();
+        this.accountId = sentMessage.getAccountId();
+        this.body = sentMessage.getBody();
+        this.connectorId = sentMessage.getConnectorId();
+        this.dateCreated = sentMessage.getDateCreated();
+        this.dateModified = sentMessage.getDateModified();
+        this.direction = sentMessage.getDirection();
+        this.errorCode = sentMessage.getErrorCode();
+        this.errorMessage = sentMessage.getErrorMessage();
+        this.fromNumber = sentMessage.getFromNumber();
+        this.toNumber = sentMessage.getToNumber();
+        this.masterAccountId = sentMessage.getMasterAccountId();
+        this.mediaUrls = sentMessage.getMediaUrls();
+        this.messageType = sentMessage.getMessageType();
+        this.numMedia = sentMessage.getNumMedia();
+        this.numSegments = sentMessage.getNumSegments();
+        this.price = sentMessage.getPrice();
+        this.priceCurrency = sentMessage.getPriceCurrency();
+        this.sent = sentMessage.getSent();
+        this.status = sentMessage.getStatus();
     }
     
     
@@ -278,7 +305,10 @@ public class Message extends VivialConnectResource{
      *
      */
     public Message redact() throws VivialConnectException{
-        return request(RequestMethod.PUT, classURLWithSuffix(Message.class, String.valueOf(this.getId())), jsonBodyEmpty(), null, Message.class);
+        Message redactedMessage = request(RequestMethod.PUT, classURLWithSuffix(Message.class, String.valueOf(this.getId())), jsonBodyEmpty(), null, Message.class);
+        updateObjectState(redactedMessage);
+        
+        return this;
     }
 
 
