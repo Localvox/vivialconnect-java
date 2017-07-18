@@ -22,19 +22,19 @@ public class BaseTestCase{
 	
 	
 	@Test(expected = IllegalArgumentException.class)
-	public static void client_initialization_with_invalid_account_id_throws_illegal_argument_exception(){
+	public void client_initialization_with_invalid_account_id_throws_illegal_argument_exception(){
 		VivialConnectClient.init(INVALID_ACCOUNT_ID, API_KEY, API_SECRET);
 	}
 	
 	
 	@Test(expected = IllegalArgumentException.class)
-	public static void client_initialization_with_invalid_api_key_throws_illegal_argument_exception(){
+	public void client_initialization_with_invalid_api_key_throws_illegal_argument_exception(){
 		VivialConnectClient.init(ACCOUNT_ID, INVALID_API_KEY, API_SECRET);
 	}
 	
 	
 	@Test(expected = IllegalArgumentException.class)
-	public static void client_initialization_with_invalid_api_secret_throws_illegal_argument_exception(){
+	public void client_initialization_with_invalid_api_secret_throws_illegal_argument_exception(){
 		VivialConnectClient.init(ACCOUNT_ID, API_KEY, INVALID_API_SECRET);
 	}
 	
