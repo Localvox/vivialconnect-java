@@ -1,4 +1,4 @@
-package com.vivialconnect.tests.common.account;
+package com.vivialconnect.tests;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,6 @@ import org.junit.Test;
 import com.vivialconnect.client.VivialConnectClient;
 import com.vivialconnect.model.account.Account;
 import com.vivialconnect.model.error.VivialConnectException;
-import com.vivialconnect.tests.common.BaseTestCase;
 
 public class AccountTest extends BaseTestCase{
 	
@@ -49,7 +48,7 @@ public class AccountTest extends BaseTestCase{
 		account.update();
 		
 		assertEquals(newCompanyName, account.getCompanyName());
-		assertNotEquals(modifiedDateBeforeUpdate.getTime(), account.getDateModified().getTime());
+		assertTrue(account.getDateModified().getTime() > modifiedDateBeforeUpdate.getTime());
 	}
 
 

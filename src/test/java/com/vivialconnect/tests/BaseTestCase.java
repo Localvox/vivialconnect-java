@@ -1,4 +1,4 @@
-package com.vivialconnect.tests.common;
+package com.vivialconnect.tests;
 
 import java.io.IOException;
 import java.io.InputStream;
