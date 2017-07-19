@@ -18,7 +18,7 @@ Include the following dependency into your pom.xml:
 <dependency>
   <groupId>vivialconnect</groupId>
   <artifactId>vivialconnect-java</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
 </dependency>
 ```
 ### Manual Installation
@@ -65,7 +65,7 @@ Message message = Message.getMessageById(86962);
 
 ### Query Parameters
 
-qParams are managed by this library using a `Map<String, String>`. Every resource that supports query parameters will have an overload method that takes the Map.
+qParams are managed by this library using a `Map<String, String>`. Every resource that supports query parameters will have an overload method that takes a Map.
 
 __Retrieve a list messages sent with a limit of 5:__
 ```java
