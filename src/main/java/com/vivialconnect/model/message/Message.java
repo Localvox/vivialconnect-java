@@ -379,7 +379,7 @@ public class Message extends VivialConnectResource{
     /**
      * Set the destination phone number to where the text message will be sent.
      *
-     * @param toNumber - Destination phone number for the text message in E.164 format (+country code +phone number)
+     * @param           toNumber - Destination phone number for the text message in E.164 format (+country code +phone number)
      */
     public void setToNumber(String toNumber){
         this.toNumber = toNumber;
@@ -392,9 +392,9 @@ public class Message extends VivialConnectResource{
     /**
      * Sets the origin phone number for the text message.
      *
-     * @param fromNumber Origination of the text message using the associated phone number
-     *                     you specify in E.164 format (+country code +phone number). It must match an associated number
-     *                     you have purchased for your account.
+     * @param           fromNumber Origination of the text message using the associated phone number
+     *                             you specify in E.164 format (+country code +phone number). It must match an associated number
+     *                             you have purchased for your account.
      */
     public void setFromNumber(String fromNumber){
         this.fromNumber = fromNumber;
@@ -448,8 +448,7 @@ public class Message extends VivialConnectResource{
     /**
      * Set the body of the message to be send
      * <p>
-     * This supports text, unicode characters, emojis or chinese letters 
-     * <p>
+     * This supports text, unicode characters, emojis or chinese letters
      * 
      * @return          message body
      *

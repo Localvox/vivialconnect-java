@@ -20,24 +20,21 @@ public class AccountTest extends BaseTestCase {
     public static void initializeClient() {
         VivialConnectClient.init(ACCOUNT_ID, API_KEY, API_SECRET);
     }
-    
-    
+
     @Before
     public void loadAccount() {
         if (testAccount == null) {
             testAccount = loadFixture("account", Account.class);
         }
     }
-    
-    
+
     @Test
     public void test_get_account() throws VivialConnectException {
         Account account = Account.getAccount();
 
         assertEquals(testAccount.getId(), account.getId());
     }
-    
-    
+
     @Test
     public void test_update_account() throws VivialConnectException {
         Account account = Account.getAccount();
@@ -50,7 +47,6 @@ public class AccountTest extends BaseTestCase {
         assertEquals(newCompanyName, account.getCompanyName());
         assertTrue(account.getDateModified().getTime() > modifiedDateBeforeUpdate.getTime());
     }
-    
 
     private String getNewCompanyName(Account account) {
         String testAccountCompanyName = testAccount.getCompanyName();
