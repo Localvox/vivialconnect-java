@@ -56,14 +56,12 @@ public class Attachment extends VivialConnectResource{
     private String fileName;
 
     /**
-     * Search for a text message attachment by it's ID using the API.
-     * <p>
-     * If the <code>Attachemnt</code> is not found, a VivialConnectException will be thrown.
-     * <p>
+     * Search for a message attachment given an id.
      * 
      * @param           messageId the messageId that contains the attachment
      * @param           attachmentId the media attachmentId
-     * @return          the attachment that was found given the parameters
+     * 
+     * @return          the attachment found, or null if not found
      * @throws          VivialConnectException if there is an API-level error
      * 
      *
@@ -73,9 +71,11 @@ public class Attachment extends VivialConnectResource{
     }
 
     /**
-     * Total number of attachment sent in the specified text message.
+     * Total number of attachment sent in the specified text message. If there are none, this method will return <code>0</code>
      * 
-     * @return          number of messages sent
+     * @param           messageId the messageId that contains the attachment
+     * 
+     * @return          number of attachment in message
      * @throws          VivialConnectException if there is an API-level error
      *
      */
@@ -84,12 +84,11 @@ public class Attachment extends VivialConnectResource{
     }
 
     /**
-     * Removes the attachment from the message using the API.
+     * Removes the attachment from the message.
      * <p>
-     * Method should be called with a <code>Attachment</code> reference or a VivialConnectException will be thrown.
-     * <p>
+     * Returns <code>true<code> if the attachment was successfully deleted.
      * 
-     * @return          HTTP status code
+     * @return          whether the attachment was deleted or not
      * @throws		VivialConnectException if there is an API-level error
      *
      */

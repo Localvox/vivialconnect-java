@@ -258,9 +258,9 @@ public class Contact extends VivialConnectResource{
     }
 
     /**
-     * Delete the current contact, using the API.
+     * Removes the contact from the account.
      * 
-     * @return          contact object
+     * @return          whether the contact was deleted or not
      * @throws		VivialConnectException if there is an API-level error
      *
      */
@@ -323,9 +323,7 @@ public class Contact extends VivialConnectResource{
     }
 
     /**
-     * Total number of contacts in the account specified.
-     * <p>
-     * If no contacts were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Total number of contacts in the account specified. If there are none, this method will return <code>0</code>.
      * 
      * @return          contact count
      * @throws		VivialConnectException if there is an API-level error

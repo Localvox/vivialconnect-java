@@ -80,9 +80,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
     /**
-     * Gets all connectors for this Account using the API.
-     * <p>
-     * If no Connectors were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Gets all connectors associated with the current account. If there are none, the method will return an empty {@link List}
      * 
      * @return          a list of connectors
      * @throws		VivialConnectException if there is an API-level error
@@ -94,9 +92,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
     /**
-     * Total number of connectors in the account specified.
-     * <p>
-     * If no connectors were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Total number of users in the account specified. If there are none, this method will return <code>0</code>.
      * 
      * @return          connector count
      * @throws		VivialConnectException if there is an API-level error
@@ -107,11 +103,9 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
     
     /**
-     * Total number of connectors within this Account using the API.
-     * <p>
-     * If no connector were found for this <code>Account</code>, a VivialConnectException will be thrown.
+     * Creates a new Connector resource for the account
      * 
-     * @return          number of connector sent
+     * @return          the Connector that was created
      * @throws		VivialConnectException if there is an API-level error
      *
      */
@@ -127,7 +121,13 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         return this;
     }
 
-
+    /**
+     * Updates the Connector resource for the account
+     * 
+     * @return          the Connector that was updated
+     * @throws		VivialConnectException if there is an API-level error
+     *
+     */
     public Connector update() throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("id", getId())

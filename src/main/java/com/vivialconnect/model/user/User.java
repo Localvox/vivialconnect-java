@@ -117,9 +117,7 @@ public class User extends VivialConnectResource{
     }
 
     /**
-     * Total number of users in the account specified.
-     * <p>
-     * If no users were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Total number of users in the account specified. If there are none, this method will return <code>0</code>.
      * 
      * @return          user count
      * @throws		VivialConnectException if there is an API-level error
