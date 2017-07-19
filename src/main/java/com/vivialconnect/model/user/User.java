@@ -88,7 +88,7 @@ public class User extends VivialConnectResource{
     /**
      * Gets all users for this Account using the API.
      * <p>
-     * If no User were found for this {@link Account}, a VivialConnectException will be thrown.
+     * If no User were found for this {@link Account}, the method will return an empty {@link List}
      * 
      * @return          a list of users
      * @throws		VivialConnectException if there is an API-level error
@@ -103,7 +103,7 @@ public class User extends VivialConnectResource{
     /**
      * Search and filter every user for this Account using the API.
      * <p>
-     * If no {@link User} were found for this {@link Account}, a VivialConnectException will be thrown.
+     * If no {@link User} were found for this {@link Account}, the method will return an empty {@link List}.
      * 
      * @param           queryParams a map of {@link String } key-value pairs
      * @return          a list of users
