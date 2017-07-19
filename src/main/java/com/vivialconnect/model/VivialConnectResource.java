@@ -37,6 +37,7 @@ import com.vivialconnect.model.error.VivialConnectException;
 import com.vivialconnect.model.format.JsonBodyBuilder;
 import com.vivialconnect.util.CryptoUtils;
 import com.vivialconnect.util.ReflectionUtils;
+import java.io.FileNotFoundException;
 
 public abstract class VivialConnectResource implements Serializable{
 
@@ -134,8 +135,13 @@ public abstract class VivialConnectResource implements Serializable{
             throw nce;
 	}
 	catch (Exception e){
-            throw handleException(e);
+            VivialConnectException vivialConnectException = handleException(e);
+            if (vivialConnectException.getResponseCode() != 404) {
+                throw vivialConnectException;
+            }
 	}
+        
+        return null;
     }
 
 

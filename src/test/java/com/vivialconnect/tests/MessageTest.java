@@ -96,6 +96,12 @@ public class MessageTest extends BaseTestCase {
     
     
     @Test
+    public void test_message_not_found() throws VivialConnectException {
+        assertNull(Message.getMessageById(1));
+    }
+    
+    
+    @Test
     public void test_redact_message() throws VivialConnectException {
         Message message = Message.getMessageById(messageId);
         

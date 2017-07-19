@@ -215,13 +215,11 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Search for a {@link Message} by its ID using the API.
-     * <p>
-     * If the {@link Message} is not found, a VivialConnectException will be thrown.
+     * Retrieves a single message given an id. If no message is found, a {@link VivialConnectException} will be throwns.
      * 
      * @param           messageId the id of the message to look up
      * 
-     * @return          the Message that was found given the id
+     * @return          the Message found
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getMessages()
@@ -232,11 +230,9 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Gets all messages sent with this Account using the API.
-     * <p>
-     * If no Message were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Gets all the messages associated with the current account
      * 
-     * @return          a list of message
+     * @return          a list of messages
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getMessageById(int)
@@ -246,13 +242,11 @@ public class Message extends VivialConnectResource{
         return getMessages(null);
     }
 
-
     /**
-     * Search and filter every message for this Account using the API.
-     * <p>
-     * If no {@link Message} were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Lists and filters the messages associated with the current account. If there are none, the method will return an empty {@link List}
      * 
      * @param           queryParameters a map of {@link String } key-value pairs
+     * 
      * @return          a list of messages
      * @throws		VivialConnectException if there is an API-level error
      * 
@@ -264,9 +258,7 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Total number of messages in the account specified.
-     * <p>
-     * If no messages were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Total number of messages in the account. If there are none, this method will return <code>0</code>.
      * 
      * @return          message count
      * @throws		VivialConnectException if there is an API-level error
@@ -277,11 +269,9 @@ public class Message extends VivialConnectResource{
     }
     
     /**
-     * Retrieve a list of attachments sent within this message.
-     * <p>
-     * If no User were found for this {@link Account}, a VivialConnectException will be thrown.
+     * Retrieves this message's media attachments. If the message has none, it will return an empty {@link List}.
      * 
-     * @return          a list of attachments
+     * @return          an attachment list
      * @throws		VivialConnectException if there is an API-level error
      *
      */
@@ -290,12 +280,9 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Redact the current message, using the API.
-     * <p>
-     * This will delete the message body for a message sent.
-     * <p>
+     * Redacts the text message by replacing the message body text with an empty value.
      * 
-     * @return          the current message
+     * @return          this Message instance with the body text redacted
      * @throws		VivialConnectException if there is an API-level error
      *
      */
@@ -390,29 +377,24 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Set the destination phone number for the text message to be send
-     * <p>
-     * This number should meet the +1########## format
-     * <p>
+     * Set the destination phone number to where the text message will be sent.
      *
-     *
+     * @param toNumber - Destination phone number for the text message in E.164 format (+country code +phone number)
      */
     public void setToNumber(String toNumber){
         this.toNumber = toNumber;
     }
-
 
     public String getFromNumber(){
         return fromNumber;
     }
 
     /**
-     * Set the origin phone number or connectorId for the text message to be send
-     * <p>
-     * This number must be registered as an associated number in your account and should meet the +1########## format.
-     * <p>
+     * Sets the origin phone number for the text message.
      *
-     *
+     * @param fromNumber Origination of the text message using the associated phone number
+     *                     you specify in E.164 format (+country code +phone number). It must match an associated number
+     *                     you have purchased for your account.
      */
     public void setFromNumber(String fromNumber){
         this.fromNumber = fromNumber;

@@ -55,6 +55,12 @@ public class NumberTest extends BaseTestCase {
     
     
     @Test
+    public void test_number_not_found() throws VivialConnectException {
+        assertNull(Number.getNumberById(1));
+    }
+    
+    
+    @Test
     public void test_find_available_numbers_by_area_code_with_limit() throws VivialConnectException {
         String areaCode = "302";
         
