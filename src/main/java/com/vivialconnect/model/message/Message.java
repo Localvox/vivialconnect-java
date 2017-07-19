@@ -215,11 +215,11 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Retrieves a single message given an id. If no message is found, a {@link VivialConnectException} will be throwns.
+     * Retrieves a single message given an id.
      * 
      * @param           messageId the id of the message to look up
      * 
-     * @return          the Message found
+     * @return          the Message found, or null if not found
      * @throws		VivialConnectException if there is an API-level error
      * 
      * @see 		#getMessages()
@@ -230,7 +230,7 @@ public class Message extends VivialConnectResource{
     }
 
     /**
-     * Gets all the messages associated with the current account
+     * Gets all the messages associated with the current account. If there are none, this method will return an empty { @link List }
      * 
      * @return          a list of messages
      * @throws		VivialConnectException if there is an API-level error
