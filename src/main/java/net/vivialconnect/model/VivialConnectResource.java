@@ -37,9 +37,8 @@ import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.format.JsonBodyBuilder;
 import net.vivialconnect.util.CryptoUtils;
 import net.vivialconnect.util.ReflectionUtils;
-import java.io.FileNotFoundException;
 
-public abstract class VivialConnectResource implements Serializable{
+public abstract class VivialConnectResource implements Serializable {
 
     private static final long serialVersionUID = -2726239361148612818L;
 
@@ -71,10 +70,10 @@ public abstract class VivialConnectResource implements Serializable{
 
     protected static String singleClassURL(Class<?> clazz){
         if (Account.class.equals(clazz)){
-            return String.format("%s/accounts/%d.json", VivialConnectClient.apiBaseUrl, VivialConnectClient.getAccountId());
+            return String.format("%s/accounts/%d.json", VivialConnectClient.getApiBaseUrl(), VivialConnectClient.getAccountId());
         }
 
-        return String.format("%s/accounts/%d/%s", VivialConnectClient.apiBaseUrl,
+        return String.format("%s/accounts/%d/%s", VivialConnectClient.getApiBaseUrl(),
                                                   VivialConnectClient.getAccountId(),
                                                   ReflectionUtils.className(clazz).toLowerCase());
     }
@@ -86,7 +85,7 @@ public abstract class VivialConnectResource implements Serializable{
 
 
     protected static String formatURLForResource(String resourceName){
-        return String.format("%s/accounts/%d/%s", VivialConnectClient.apiBaseUrl,
+        return String.format("%s/accounts/%d/%s", VivialConnectClient.getApiBaseUrl(),
 						  VivialConnectClient.getAccountId(),
                                                   resourceName);
     }

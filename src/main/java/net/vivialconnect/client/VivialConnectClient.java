@@ -7,7 +7,7 @@ public final class VivialConnectClient {
     private static String apiKey;
     private static String apiSecret;
 
-    public static String apiBaseUrl = "https://api.vivialconnect.net/api/v1.0";
+    private static String apiBaseUrl = "https://api.vivialconnect.net/api/v1.0";
 
     private VivialConnectClient() {
 
@@ -25,6 +25,29 @@ public final class VivialConnectClient {
         return accountId;
     }
 
+    public static String getApiBaseUrl() {
+        return apiBaseUrl;
+    }
+    
+    /**
+    * (FOR TESTING ONLY) If you'd like your API requests to hit your own
+    * (mocked) server, you can set this up here by overriding the base API URL.
+    * 
+     * @param apiBaseUrl
+    */
+    public static void overrideApiBaseUrl(String apiBaseUrl) {
+        VivialConnectClient.apiBaseUrl = apiBaseUrl;
+    }
+    
+    /**
+     * Initializes the client by setting the accountId, the apiKey, and the apiSecret.
+     * 
+     * @param accountId the VivialConnect account ID
+     * @param apiKey the VivialConnect API key
+     * @param apiSecret the VivialConnect API secret
+     * 
+     * @throws IllegalArgumentException if any of the arguments are invalid (ie, null or empty)
+     */
     public static void init(int accountId, String apiKey, String apiSecret) {
         validateInitialArguments(accountId, apiKey, apiSecret);
 

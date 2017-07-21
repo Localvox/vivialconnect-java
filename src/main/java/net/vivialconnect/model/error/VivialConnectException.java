@@ -19,9 +19,35 @@ public class VivialConnectException extends Exception{
     public VivialConnectException(Throwable cause){
         super(cause);
     }
-
-
-    public int getResponseCode(){
+    
+    /**
+     * Gets the error message.
+     * <p>
+     * If the error was one returned by the API, this method will return the string value
+     * of the "message" property in the API error response, such as the one shown below:
+     * <p>
+     * {
+     *     "message": "from_number invalid or not owned"
+     * }
+     * <p>
+     * However, if the error was as an underlying {@link Exception} (eg, an {@link IOException} if there was no Internet connection),
+     * this method will return the message of the underlying {@link Exception}.
+     * 
+     * @see #getCause()
+     * 
+     * @return the error message
+     */
+    @Override
+    public String getMessage() {
+        return super.getMessage();
+    }
+    
+    /**
+     * Gets the HTTP response code. 
+     * 
+     * @return the HTTP response code
+     */
+    public int getResponseCode() {
         return responseCode;
     }
 
