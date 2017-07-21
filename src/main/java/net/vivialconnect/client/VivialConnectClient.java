@@ -7,7 +7,7 @@ public final class VivialConnectClient {
     private static String apiKey;
     private static String apiSecret;
 
-    public static final String API_BASE = "https://api.vivialconnect.net/api/v1.0";
+    public static String apiBaseUrl = "https://api.vivialconnect.net/api/v1.0";
 
     private VivialConnectClient() {
 

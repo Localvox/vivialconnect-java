@@ -71,10 +71,10 @@ public abstract class VivialConnectResource implements Serializable{
 
     protected static String singleClassURL(Class<?> clazz){
         if (Account.class.equals(clazz)){
-            return String.format("%s/accounts/%d.json", VivialConnectClient.API_BASE, VivialConnectClient.getAccountId());
+            return String.format("%s/accounts/%d.json", VivialConnectClient.apiBaseUrl, VivialConnectClient.getAccountId());
         }
 
-        return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
+        return String.format("%s/accounts/%d/%s", VivialConnectClient.apiBaseUrl,
                                                   VivialConnectClient.getAccountId(),
                                                   ReflectionUtils.className(clazz).toLowerCase());
     }
@@ -86,7 +86,7 @@ public abstract class VivialConnectResource implements Serializable{
 
 
     protected static String formatURLForResource(String resourceName){
-        return String.format("%s/accounts/%d/%s", VivialConnectClient.API_BASE,
+        return String.format("%s/accounts/%d/%s", VivialConnectClient.apiBaseUrl,
 						  VivialConnectClient.getAccountId(),
                                                   resourceName);
     }
@@ -168,7 +168,7 @@ public abstract class VivialConnectResource implements Serializable{
 
     /* private static <T> T jerseyRequest(URL endpoint, RequestMethod method, Map<String, String> headers,
                                        Map<String, String> queryParams, String body, Class<T> clazz){
-        VivialRESTClient client = new VivialRESTClient(VivialConnectClient.API_BASE);
+        VivialRESTClient client = new VivialRESTClient(VivialConnectClient.apiBaseUrl);
         RequestBuilder builder = client.request().path("accounts/10128/messages.json");
 
 	for (String headerName : headers.keySet()){
