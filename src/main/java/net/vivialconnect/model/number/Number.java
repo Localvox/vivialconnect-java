@@ -256,14 +256,6 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
         return false;
     }
 
-    /**
-     * Purchases a new available phone number and if successful the number is added to your list of associated numbers for the account.
-     * 
-     * @return          associated number
-     * @throws		VivialConnectException if there is an API-level error
-     *
-     */
-    @Override
     public AssociatedNumber buy() throws VivialConnectException {
         JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number")
                                                  .addParamPair("phone_number", getPhoneNumber())

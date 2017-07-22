@@ -2,7 +2,7 @@ package net.vivialconnect.model.number;
 
 import net.vivialconnect.model.error.VivialConnectException;
 
-public interface AvailableNumber extends INumber{
+public interface AvailableNumber extends INumber {
     
     /**
      * Buys this number and adds it to your account.
@@ -10,8 +10,9 @@ public interface AvailableNumber extends INumber{
      * Take a look at the "See also" section to see which optional properties
      * can be set prior to purchasing this number.
      * <p>
-     * For more details on this endpoint's behavior, please refer to the
-     * VivialConnect "Purchase a Phone Number" API guide: https://www.vivialconnect.net/docs/quickstart/buynumber.html
+     * For more details on how to purchase a number, please refer to the
+     * VivialConnect <a href="https://www.vivialconnect.net/docs/quickstart/buynumber.html">"How to Purchase a Number"</a>
+     * API guide.
      * 
      * @see #setName(java.lang.String)
      * @see #setStatusTextUrl(java.lang.String)

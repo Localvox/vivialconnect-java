@@ -245,8 +245,37 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         this.callbacks = callbacks;
     }
 
-
-    public Connector addCallback(Callback callback){
+    /**
+     * Use this method to add callbacks which can later be saved to the server using {@link Connector#createCallbacks()}
+     * or {@link Connector#updateCallbacks()}. This method call can be chained in a builder-like fashion, like so:
+     * <pre>
+     * <code>
+     * class CallbackCreator {
+     *  
+     *  public void addAllCallbacks(Connector connector) {
+     *    Callback c1 = new Callback();
+     *    c1.setMessageType("text");
+     *    c1.setEventType("incoming");
+     * 
+     *    Callback c2 = new Callback();
+     *    c2.setMessageType("text");
+     *    c2.setEventType("status");   
+     * 
+     *    connector.addCallback(c1).addCallback(c2).createCallbacks();
+     *  }
+     * }
+     * </code>
+     * </pre>
+     * 
+     * @param callback the callback to be added
+     * @return this instance of {@link Connector}
+     * 
+     * @see Callback
+     * @see Connector#setCallbacks(java.util.List)
+     * @see Connector#createCallbacks()
+     * @see Connector#updateCallbacks()
+     */
+    public Connector addCallback(Callback callback) {
         if (callbacks == null){
             callbacks = new ArrayList<Callback>();
         }
@@ -256,8 +285,23 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         return this;
     }
 
-
-    public ConnectorWithCallbacks createCallbacks() throws VivialConnectException{
+    /**
+     * Overwrites and associates the list of callbacks added through {@link Connector#addCallback(net.vivialconnect.model.connector.Callback)} and
+     * {@link Connector#setCallbacks(java.util.List)} to this connector.
+     * <p>
+     * Returns an instance of the {@link ConnectorWithCallbacks} interface, which can be used to access the newly-created callbacks.
+     * <p>
+     * For more details, go to the VivialConnect API documentation's
+     * <a href="https://www.vivialconnect.net/docs/api.html#post--api-v1.0-accounts-(int-account_id)-connectors-(int-connector_id)-callbacks.json">callback section</a>.
+     * 
+     * @see Callback
+     * @see Connector#addCallback(net.vivialconnect.model.connector.Callback) 
+     * @see Connector#setCallbacks(java.util.List)
+     * 
+     * @return an instance {@link ConnectorWithCallbacks} holding the created list of callbacks
+     * @throws VivialConnectException if there is an API-level error
+     */
+    public ConnectorWithCallbacks createCallbacks() throws VivialConnectException {
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("callbacks", callbacks);
 
@@ -268,8 +312,32 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         return this;
     }
 
-
-    public ConnectorWithCallbacks updateCallbacks() throws VivialConnectException{
+    /**
+     * Updates the list of callbacks, editing any existing ones and adding any new ones, associated to
+     * this connector. Here's an example of how to edit an existing callback:
+     * <pre>
+     * <code>
+     * class CallbackUpdate {
+     *  
+     *  public void updateCallback(Connector connector, String newMessageType) {
+     *    Callback callback = connector.getCallbacks().get(0);
+     *    callback.setMesssageType(newMessageType);
+     *    
+     *    connector.updateCallbacks();
+     *  }
+     * }
+     * </code>
+     * </pre>
+     * Returns an instance of the {@link ConnectorWithCallbacks} interface, which can be used to access the updated callbacks.
+     * 
+     * @see Callback
+     * @see Connector#addCallback(net.vivialconnect.model.connector.Callback) 
+     * @see Connector#setCallbacks(java.util.List)
+     * 
+     * @return an instance {@link ConnectorWithCallbacks} holding the updated list of callbacks
+     * @throws VivialConnectException if there is an API-level error
+     */
+    public ConnectorWithCallbacks updateCallbacks() throws VivialConnectException {
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("callbacks", callbacks);
 
@@ -286,21 +354,48 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         this.callbacks = connectorWithCallbacks.getCallbacks();
     }
 
-
-    public ConnectorWithCallbacks deleteAllCallbacks() throws VivialConnectException{
+    /**
+     * Removes all the callbacks associated to this connector.
+     * 
+     * @see Callback
+     * @see Connector#addCallback(net.vivialconnect.model.connector.Callback) 
+     * @see Connector#setCallbacks(java.util.List)
+     * 
+     * @return an instance {@link ConnectorWithCallbacks} holding an empty list of callbacks
+     * @throws VivialConnectException
+     */
+    public ConnectorWithCallbacks deleteAllCallbacks() throws VivialConnectException {
         return deleteCallbacks(this.callbacks);
     }
 
-
-    public ConnectorWithCallbacks deleteSingleCallback(Callback callback) throws VivialConnectException{
+    /**
+     * Removes a single callback.
+     * 
+     * @param callback the callback to be removed
+     * 
+     * @see Callback
+     * 
+     * @return an instance {@link ConnectorWithCallbacks} holding the updated list of callbacks
+     * @throws VivialConnectException
+     */
+    public ConnectorWithCallbacks deleteSingleCallback(Callback callback) throws VivialConnectException {
         List<Callback> singleCallbackList = new ArrayList<Callback>(1);
         singleCallbackList.add(callback);
 
         return deleteCallbacks(singleCallbackList);
     }
 
-
-    public ConnectorWithCallbacks deleteCallbacks(List<Callback> callbacks) throws VivialConnectException{
+    /**
+     * Removes a series of callbacks
+     * 
+     * @param callbacks the callbacks to be removed
+     * 
+     * @see Callback
+     * 
+     * @return an instance {@link ConnectorWithCallbacks} holding the updated list of callbacks
+     * @throws VivialConnectException
+     */
+    public ConnectorWithCallbacks deleteCallbacks(List<Callback> callbacks) throws VivialConnectException {
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("callbacks", callbacks);
 
@@ -310,12 +405,12 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
 
 
     @Override
-    public List<PhoneNumber> getPhoneNumbers(){
+    public List<PhoneNumber> getPhoneNumbers() {
         return phoneNumbers;
     }
 
 
-    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers){
+    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
 
