@@ -30,11 +30,13 @@ public final class VivialConnectClient {
     }
     
     /**
-    * (FOR TESTING ONLY) If you'd like your API requests to hit your own
-    * (mocked) server, you can set this up here by overriding the base API URL.
-    * 
-     * @param apiBaseUrl
-    */
+     * Overrides the default base URL of the VivialConnect API.
+     * <p>
+     * (FOR TESTING PURPOSES ONLY) If you'd like your API requests to hit your own
+     * (mocked) server, you can set this up here by overriding the base API URL.
+     * 
+     * @param apiBaseUrl the URL the client will use for requests 
+     */
     public static void overrideApiBaseUrl(String apiBaseUrl) {
         VivialConnectClient.apiBaseUrl = apiBaseUrl;
     }
