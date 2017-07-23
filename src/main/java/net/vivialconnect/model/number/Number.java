@@ -136,12 +136,12 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * this class's set methods.
      * <p>
      * For more details on which properties can be updated, refer to the VivialConnect API documentation's
-     * <a href="https://www.vivialconnect.net/docs/api.html#accounts-int-account-id-numbers-int-id-json">number section.</a>
+     * <a href="https://www.vivialconnect.net/docs/api.html#put--api-v1.0-accounts-(int-account_id)-numbers-(int-id).json">number section.</a>
      * <p>
      * If the number you're trying to update does not exist, a {@link VivialConnectException}
      * holding a 404 response code will be thrown.
      * 
-     * @return this instance of {@link Number} with the updated properties
+     * @return this instance of {@link AssociatedNumber} with the updated properties
      * @throws VivialConnectException if there is an API-level error
      */
     @Override
