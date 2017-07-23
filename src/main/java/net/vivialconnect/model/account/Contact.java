@@ -116,6 +116,12 @@ public class Contact extends VivialConnectResource{
 
     /**
      * Creates a new contact using the provided fields.
+     * <p>
+     * This method throws an {@link IllegalStateException} if any of the required fields
+     * are not set.
+     * <p>
+     * For more details on which fields are required, refer to the VivialConnect API documentation's
+     * <a href="https://www.vivialconnect.net/docs/api.html#post--api-v1.0-accounts-(int-account_id)-contacts.json">contact section.</a>
      * 
      * @return this instance of {@link Contact} with the newly-created properties
      * @throws VivialConnectException if there is an API-level error
