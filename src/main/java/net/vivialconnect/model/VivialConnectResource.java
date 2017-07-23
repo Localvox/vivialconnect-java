@@ -135,7 +135,7 @@ public abstract class VivialConnectResource implements Serializable {
 	}
 	catch (Exception e){
             VivialConnectException vivialConnectException = handleException(e);
-            if (vivialConnectException.getResponseCode() != 404) {
+            if (vivialConnectException.getResponseCode() != 404 && RequestMethod.GET == method) {
                 throw vivialConnectException;
             }
 	}

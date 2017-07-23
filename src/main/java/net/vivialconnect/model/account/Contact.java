@@ -117,10 +117,10 @@ public class Contact extends VivialConnectResource{
     /**
      * Creates a new contact using the provided fields.
      * 
-     * @return          contact object
-     * @throws		VivialConnectException if there is an API-level error
+     * @return this instance of {@link Contact} with the newly-created properties
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#update()
+     * @see Contact#update()
      */
     public Contact create() throws VivialConnectException{
         verifyRequiredFields();
@@ -238,11 +238,17 @@ public class Contact extends VivialConnectResource{
     }
 
     /**
-     * Updated information for this contact using the API.
+     * Updates this contact by sending to the server the properties that were changed via
+     * this class's set methods.
+     * <p>
+     * For more details on which properties can be updated, refer to the VivialConnect API documentation's
+     * <a href="https://www.vivialconnect.net/docs/api.html#put--api-v1.0-accounts-(int-account_id)-contacts-(int-id).json">contact section.</a>
+     * <p>
+     * If the contact you're trying to update does not exist, a {@link VivialConnectException}
+     * holding a 404 response code will be thrown.
      * 
-     * @return          contact object
-     * @throws		VivialConnectException if there is an API-level error
-     * 
+     * @return this instance of {@link Contact} with the updated properties
+     * @throws VivialConnectException if there is an API-level error
      */
     public Contact update() throws VivialConnectException{
         verifyRequiredFields();
@@ -258,10 +264,13 @@ public class Contact extends VivialConnectResource{
     }
 
     /**
-     * Removes the contact from the account.
+     * Deletes this contact from the database, dissociating it from the account.
+     * <p>
+     * If the contact you're trying to delete does not exist, a {@link VivialConnectException}
+     * holding a 404 response code will be thrown.
      * 
-     * @return          whether the contact was deleted or not
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a boolean value, indicating whether the contact was deleted or not
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public boolean delete() throws VivialConnectException{
