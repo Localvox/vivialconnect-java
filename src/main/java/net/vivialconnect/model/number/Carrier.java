@@ -2,6 +2,13 @@ package net.vivialconnect.model.number;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Details about the phone carrier providing service to the phone number. Results include:
+ * 
+ * <p>country - Country where the carrier is located
+ * <p>name - Name of the carrier
+ * 
+ * */
 public class Carrier{
 	
     /**  Country where the carrier is located */

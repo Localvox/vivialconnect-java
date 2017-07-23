@@ -7,6 +7,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.vivialconnect.model.VivialConnectResource;
 import net.vivialconnect.model.error.VivialConnectException;
 
+/**
+ * This class holds Vivial Connect logs a variety of events.
+ * <p>
+ * Use the logs resources to pull information from our logs relating to your account activity.
+ * Access aggregated logs to view information about log activity over time.
+ * */
 public class Log extends VivialConnectResource {
 
     private static final long serialVersionUID = -1982193020990089235L;

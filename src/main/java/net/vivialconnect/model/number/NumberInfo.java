@@ -5,6 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import net.vivialconnect.model.VivialConnectResource;
 
+/**
+ * A class to hold information about the device type and carrier that is associated with a specific phone number.
+ * <p>
+ * This information can be useful for text messaging campaigns that target specific user experiences based on the
+ * user’s phone number information.
+ * */
 @JsonRootName(value = "number_info")
 public class NumberInfo extends VivialConnectResource{
 	

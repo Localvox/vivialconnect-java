@@ -2,6 +2,13 @@ package net.vivialconnect.model.number;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Details about the device type used by the phone number. Results include:
+ * 
+ * <p>model - Model name of the device
+ * <p>error - Information about errors in device lookup. For example, number is not mobile or carrier doesn’t support device lookup
+ * 
+ * */
 public class Device{
 	
     /** Information about errors in device lookup. For example, number is not mobile or carrier doesn’t support device lookup */

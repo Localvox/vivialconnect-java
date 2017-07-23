@@ -2,6 +2,13 @@ package net.vivialconnect.model.number;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Set of boolean flags indicating the following capabilities supported by the associated phone number:
+ * 
+ * <p>sms (True/False)
+ * <p>mms (True/False)
+ * 
+ * */
 public class Capabilities{
 
     @JsonProperty
