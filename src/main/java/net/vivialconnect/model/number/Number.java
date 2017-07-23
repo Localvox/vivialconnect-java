@@ -134,8 +134,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Updates information about the number.
      * 
-     * @return          associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return associated number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     @Override
@@ -192,8 +192,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Updates information about a phone number associated with your account
      * 
-     * @return          associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return associated number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     @Override
@@ -219,8 +219,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * Returns <code>true<code> if the number was successfully deleted.
      * 
-     * @return          whether the number was deleted or not
-     * @throws		VivialConnectException if there is an API-level error
+     * @return whether the number was deleted or not
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     @Override
@@ -239,8 +239,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * Returns <code>true<code> if the number was successfully deleted.
      * 
-     * @return          whether the number was deleted or not
-     * @throws		VivialConnectException if there is an API-level error
+     * @return whether the number was deleted or not
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     @Override
@@ -279,8 +279,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Purchases the specified phone number in this area code.
      * 
-     * @return          associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return associated number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams) throws VivialConnectException {
@@ -294,8 +294,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Purchases the specified phone number in this area code with a phone number type.
      * 
-     * @return          associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return associated number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException {
@@ -312,10 +312,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account},the method will return an empty {@link List}
      * 
-     * @return          a list of associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of associated number
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getAssociatedNumbers(Map)
+     * @see #getAssociatedNumbers(Map)
      */
     public static List<AssociatedNumber> getAssociatedNumbers() throws VivialConnectException {
         return getAssociatedNumbers(null);
@@ -326,11 +326,11 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no {@link AssociatedNumber} were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @param           queryParams a map of {@link String } key-value pairs
-     * @return          a list of associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @param queryParams a map of {@link String } key-value pairs
+     * @return a list of associated number
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getAssociatedNumbers()
+     * @see #getAssociatedNumbers()
      */
     public static List<AssociatedNumber> getAssociatedNumbers(Map<String, String> queryParams) throws VivialConnectException {
         return request(RequestMethod.GET, classURL(Number.class), null, queryParams, NumberCollection.class).getAssociatedNumbers();
@@ -341,10 +341,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @return          a list of available number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of available number
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#findAvailableNumbersInRegion(String, Map)
+     * @see #findAvailableNumbersInRegion(String, Map)
      */
     public static List<AvailableNumber> findAvailableNumbersInRegion(String region) throws VivialConnectException {
         return findAvailableNumbersInRegion(region, null);
@@ -355,8 +355,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @return          a list of available number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of available number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static List<AvailableNumber> findAvailableNumbersInRegion(String region, Map<String, String> queryParams) throws VivialConnectException {
@@ -368,8 +368,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @return          a list of available number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of available number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode) throws VivialConnectException {
@@ -381,8 +381,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @return          a list of available number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of available number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> queryParams) throws VivialConnectException {
@@ -394,8 +394,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @return          a list of available number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of available number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode) throws VivialConnectException {
@@ -407,8 +407,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @return          a list of available number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of available number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode, Map<String, String> queryParams) throws VivialConnectException {
@@ -418,10 +418,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Gets all the numbers associated with this account. If there are none, this method will return an empty { @link List }
      * 
-     * @return          a list of associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of associated number
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getLocalAssociatedNumbers(Map)
+     * @see #getLocalAssociatedNumbers(Map)
      */
     public static List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException {
         return getLocalAssociatedNumbers(null);
@@ -430,10 +430,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Lists and filters numbers associated with the current account. If there are none, the method will return an empty {@link List}
      * 
-     * @param           queryParams a map of {@link String } key-value pairs
+     * @param queryParams a map of {@link String } key-value pairs
      * 
-     * @return          a list of associated number
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of associated number
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static List<AssociatedNumber> getLocalAssociatedNumbers(Map<String, String> queryParams) throws VivialConnectException {
@@ -443,8 +443,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Total number of phone numbers in the account. If there are none, this method will return <code>0</code>.
      * 
-     * @return          number count
-     * @throws		VivialConnectException if there is an API-level error
+     * @return number count
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static int count() throws VivialConnectException {
@@ -454,8 +454,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Total number of local numbers in the account. If there are none, this method will return <code>0</code>.
      * 
-     * @return          local number count
-     * @throws		VivialConnectException if there is an API-level error
+     * @return local number count
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static int countLocal() throws VivialConnectException {
@@ -465,10 +465,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Retrieves a single associated number given an id.
      * 
-     * @param           numberId the id of the associated number to look up
+     * @param numberId the id of the associated number to look up
      * 
-     * @return          the AssociatedNumber found, or null if not found
-     * @throws		VivialConnectException if there is an API-level error
+     * @return the AssociatedNumber found, or null if not found
+     * @throws VivialConnectException if there is an API-level error
      * 
      */
     public static AssociatedNumber getNumberById(int numberId) throws VivialConnectException {
@@ -478,10 +478,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Retrieves a single local number given an id.
      * 
-     * @param           numberId the id of the local number to look up
+     * @param numberId the id of the local number to look up
      * 
-     * @return          the AssociatedNumber found, or null if not found
-     * @throws		VivialConnectException if there is an API-level error
+     * @return the AssociatedNumber found, or null if not found
+     * @throws VivialConnectException if there is an API-level error
      * 
      */
     public static AssociatedNumber getLocalNumberById(int numberId) throws VivialConnectException {
@@ -492,8 +492,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * Gets information about the device type and carrier that is associated with a specific phone number
      * 
      * 
-     * @return          number info, or null if not found
-     * @throws		VivialConnectException if there is an API-level error
+     * @return number info, or null if not found
+     * @throws VivialConnectException if there is an API-level error
      * 
      */
     @Override

@@ -125,12 +125,12 @@ public class Log extends VivialConnectResource {
      * <p>
      * StartTime and endTime should be formated in ISO 8601 format like YYYYMMDDThhmmssZ.
      * 
-     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @return          a list of log collection
-     * @throws          VivialConnectException if there is an API-level error
+     * @param startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @return a list of log collection
+     * @throws VivialConnectException if there is an API-level error
      *
-     * @see             #getLogs(Date, Date, Map)
+     * @see #getLogs(Date, Date, Map)
      */
     public static LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException {
         return getLogs(startTime, endTime, null);
@@ -141,14 +141,14 @@ public class Log extends VivialConnectResource {
      * <p>
      * StartTime and endTime should be formated in ISO 8601 format like YYYYMMDDThhmmssZ.
      *
-     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           queryParameters a map of {@link String } key-value pairs
+     * @param startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param queryParameters a map of {@link String } key-value pairs
      *
-     * @return          a list of log collection
-     * @throws          VivialConnectException if there is an API-level error
+     * @return a list of log collection
+     * @throws VivialConnectException if there is an API-level error
      *
-     * @see             #getLogs(Date, Date)
+     * @see #getLogs(Date, Date)
      */
     public static LogCollection getLogs(Date startTime, Date endTime, Map<String, String> queryParameters) throws VivialConnectException {
         queryParameters = buildQueryParams(startTime, endTime, null, queryParameters);
@@ -160,13 +160,13 @@ public class Log extends VivialConnectResource {
      * <p>
      * Use aggregated logs to view information about log activity over time.
      *
-     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           aggregatorType valid values are: minutes, hours, days, months, years
-     * @return          a list of log collection
-     * @throws          VivialConnectException if there is an API-level error
+     * @param startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param aggregatorType valid values are: minutes, hours, days, months, years
+     * @return a list of log collection
+     * @throws VivialConnectException if there is an API-level error
      *
-     * @see             #getAggregate(Date, Date, String, Map)
+     * @see #getAggregate(Date, Date, String, Map)
      */
     public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException {
         return getAggregate(startTime, endTime, aggregatorType, null);
@@ -178,15 +178,15 @@ public class Log extends VivialConnectResource {
      * Use aggregated logs to view information about log activity over time.
      * <p>
      *
-     * @param           startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param           aggregatorType valid values are: minutes, hours, days, months, years
-     * @param           queryParameters a map of {@link String } key-value pairs
+     * @param startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
+     * @param aggregatorType valid values are: minutes, hours, days, months, years
+     * @param queryParameters a map of {@link String } key-value pairs
      * 
-     * @return          a list of log collection
-     * @throws          VivialConnectException if there is an API-level error
+     * @return a list of log collection
+     * @throws VivialConnectException if there is an API-level error
      *
-     * @see             #getAggregate(Date, Date, String)
+     * @see #getAggregate(Date, Date, String)
      */
     public static LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType, Map<String, String> queryParameters) throws VivialConnectException {
         queryParameters = buildQueryParams(startTime, endTime, aggregatorType, queryParameters);

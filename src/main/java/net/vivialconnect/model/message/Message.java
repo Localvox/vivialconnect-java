@@ -150,15 +150,15 @@ public class Message extends VivialConnectResource{
      * In order to send an MMS, be sure to add media attachments to this message
      * using the {@link #addMediaUrl(String)} and {@link #setMediaUrls(List)} methods.
      *
-     * @return          the message that was just sent
-     * @throws		VivialConnectException if there is an API-level error
+     * @return the message that was just sent
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#setBody(String)
-     * @see 		#setFromNumber(String)
-     * @see 		#setToNumber(String)
-     * @see 		#setConnectorId(int)
-     * @see             #addMediaUrl(String)
-     * @see 		#setMediaUrls(List)
+     * @see #setBody(String)
+     * @see #setFromNumber(String)
+     * @see #setToNumber(String)
+     * @see #setConnectorId(int)
+     * @see #addMediaUrl(String)
+     * @see #setMediaUrls(List)
      * 
      */
     public Message send() throws VivialConnectException{
@@ -217,13 +217,13 @@ public class Message extends VivialConnectResource{
     /**
      * Retrieves a single message given an id.
      * 
-     * @param           messageId the id of the message to look up
+     * @param messageId the id of the message to look up
      * 
-     * @return          the Message found, or null if not found
-     * @throws		VivialConnectException if there is an API-level error
+     * @return the Message found, or null if not found
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getMessages()
-     * @see 		#getMessages(Map)
+     * @see #getMessages()
+     * @see #getMessages(Map)
      */
     public static Message getMessageById(Integer messageId) throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.valueOf(messageId)), null, null, Message.class);
@@ -232,11 +232,11 @@ public class Message extends VivialConnectResource{
     /**
      * Gets all the messages associated with the current account. If there are none, this method will return an empty { @link List }
      * 
-     * @return          a list of messages
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of messages
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getMessageById(int)
-     * @see 		#getMessages(Map) 
+     * @see #getMessageById(int)
+     * @see #getMessages(Map) 
      */
     public static List<Message> getMessages() throws VivialConnectException{
         return getMessages(null);
@@ -245,13 +245,13 @@ public class Message extends VivialConnectResource{
     /**
      * Lists and filters the messages associated with the current account. If there are none, the method will return an empty {@link List}
      * 
-     * @param           queryParameters a map of {@link String } key-value pairs
+     * @param queryParameters a map of {@link String } key-value pairs
      * 
-     * @return          a list of messages
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of messages
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getMessages()
-     * @see 		#getMessageById(int) 
+     * @see #getMessages()
+     * @see #getMessageById(int) 
      */
     public static List<Message> getMessages(Map<String, String> queryParameters) throws VivialConnectException{
         return request(RequestMethod.GET, classURL(Message.class), null, queryParameters, MessageCollection.class).getMessages();
@@ -260,8 +260,8 @@ public class Message extends VivialConnectResource{
     /**
      * Total number of messages in the account. If there are none, this method will return <code>0</code>.
      * 
-     * @return          message count
-     * @throws		VivialConnectException if there is an API-level error
+     * @return message count
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static int count() throws VivialConnectException{
@@ -271,8 +271,8 @@ public class Message extends VivialConnectResource{
     /**
      * Retrieves this message's media attachments. If the message has none, it will return an empty {@link List}.
      * 
-     * @return          an attachment list
-     * @throws		VivialConnectException if there is an API-level error
+     * @return an attachment list
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public List<Attachment> getAttachments() throws VivialConnectException{
@@ -282,8 +282,8 @@ public class Message extends VivialConnectResource{
     /**
      * Redacts the text message by replacing the message body text with an empty value.
      * 
-     * @return          this Message instance with the body text redacted
-     * @throws		VivialConnectException if there is an API-level error
+     * @return this Message instance with the body text redacted
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public Message redact() throws VivialConnectException{
@@ -379,7 +379,7 @@ public class Message extends VivialConnectResource{
     /**
      * Set the destination phone number to where the text message will be sent.
      *
-     * @param           toNumber - Destination phone number for the text message in E.164 format (+country code +phone number)
+     * @param toNumber - Destination phone number for the text message in E.164 format (+country code +phone number)
      */
     public void setToNumber(String toNumber){
         this.toNumber = toNumber;
@@ -392,7 +392,7 @@ public class Message extends VivialConnectResource{
     /**
      * Sets the origin phone number for the text message.
      *
-     * @param           fromNumber Origination of the text message using the associated phone number
+     * @param fromNumber Origination of the text message using the associated phone number
      *                             you specify in E.164 format (+country code +phone number). It must match an associated number
      *                             you have purchased for your account.
      */
@@ -450,7 +450,7 @@ public class Message extends VivialConnectResource{
      * <p>
      * This supports text, unicode characters, emojis or chinese letters
      * 
-     * @return          message body
+     * @return message body
      *
      */
     public void setBody(String body){

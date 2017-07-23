@@ -55,8 +55,8 @@ public class Account extends VivialConnectResource{
     /**
      * Retrieve the information for this Account.
      * 
-     * @return          account object
-     * @throws		VivialConnectException if there is an API-level error
+     * @return account object
+     * @throws VivialConnectException if there is an API-level error
      * 
      */
     public static Account getAccount() throws VivialConnectException{
@@ -66,9 +66,23 @@ public class Account extends VivialConnectResource{
     /**
      * Updates information about the account.
      * 
-     * @return          account object
-     * @throws		VivialConnectException if there is an API-level error
+     * @return account object
+     * @throws VivialConnectException if there is an API-level error
      *
+     */
+    
+    /**
+     * Updates this account by sending to the server the properties that were changed via
+     * this class's set methods.
+     * <p>
+     * For more details on which properties can be updated, refer to the VivialConnect API documentation's
+     * <a href="https://www.vivialconnect.net/docs/api.html#put--api-v1.0-accounts-(int-id).json">account section.</a>
+     * <p>
+     * If the account you're trying to update does not exist, a {@link VivialConnectException}
+     * holding a 404 response code will be thrown.
+     * 
+     * @return this instance of {@link Account} with the updated properties
+     * @throws VivialConnectException if there is an API-level error
      */
     public Account update() throws VivialConnectException{
         Account updatedAccount = request(RequestMethod.PUT, singleClassURL(Account.class),

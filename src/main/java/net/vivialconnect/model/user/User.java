@@ -73,13 +73,13 @@ public class User extends VivialConnectResource{
      * <p>
      * If the {@link User} is not found, a VivialConnectException will be thrown.
      * 
-     * @param           userId the id of the user to look up
+     * @param userId the id of the user to look up
      * 
-     * @return          the User that was found given the id
-     * @throws		VivialConnectException if there is an API-level error
+     * @return the User that was found given the id
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getUsers()
-     * @see 		#getUsers(Map)
+     * @see #getUsers()
+     * @see #getUsers(Map)
      */
     public static User getUserById(int userId) throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(User.class, String.valueOf(userId)), null, null, User.class);
@@ -90,11 +90,11 @@ public class User extends VivialConnectResource{
      * <p>
      * If no User were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @return          a list of users
-     * @throws		VivialConnectException if there is an API-level error
+     * @return a list of users
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getUserById(int)
-     * @see 		#getUsers(Map) 
+     * @see #getUserById(int)
+     * @see #getUsers(Map) 
      */
     public static List<User> getUsers() throws VivialConnectException{
         return getUsers(null);
@@ -105,12 +105,12 @@ public class User extends VivialConnectResource{
      * <p>
      * If no {@link User} were found for this {@link Account}, the method will return an empty {@link List}.
      * 
-     * @param           queryParams a map of {@link String } key-value pairs
-     * @return          a list of users
-     * @throws		VivialConnectException if there is an API-level error
+     * @param queryParams a map of {@link String } key-value pairs
+     * @return a list of users
+     * @throws VivialConnectException if there is an API-level error
      * 
-     * @see 		#getUsers()
-     * @see 		#getUserById(int) 
+     * @see #getUsers()
+     * @see #getUserById(int) 
      */
     public static List<User> getUsers(Map<String, String> queryParams) throws VivialConnectException{
         return request(RequestMethod.GET, classURL(User.class), null, queryParams, UserCollection.class).getUsers();
@@ -119,8 +119,8 @@ public class User extends VivialConnectResource{
     /**
      * Total number of users in the account specified. If there are none, this method will return <code>0</code>.
      * 
-     * @return          user count
-     * @throws		VivialConnectException if there is an API-level error
+     * @return user count
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public static int count() throws VivialConnectException{
@@ -132,8 +132,8 @@ public class User extends VivialConnectResource{
      * <p>
      * Returns <code>true<code> if the user was successfully deleted.
      * 
-     * @return          whether the user was deleted or not
-     * @throws		VivialConnectException if there is an API-level error
+     * @return whether the user was deleted or not
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public boolean delete() throws VivialConnectException{
@@ -151,8 +151,8 @@ public class User extends VivialConnectResource{
      * <p>
      * Returns <code>true<code> if the password was successfully updated.
      * 
-     * @return          whether the password was updated or not
-     * @throws		VivialConnectException if there is an API-level error
+     * @return whether the password was updated or not
+     * @throws VivialConnectException if there is an API-level error
      *
      */
     public boolean changePassword(String oldPassword, String newPassword) throws VivialConnectException{
