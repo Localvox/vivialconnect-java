@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import net.vivialconnect.model.ResourceCount;
 import net.vivialconnect.model.VivialConnectResource;
+import net.vivialconnect.model.account.Contact;
 import net.vivialconnect.model.error.NoContentException;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.format.JsonBodyBuilder;
@@ -122,11 +123,20 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
     /**
-     * Updates the Connector resource for the account
+     * Updates this connector.
+     * <p>
+     * The only property available for update is <tt>name</tt>. Therefore, be sure to call {@link #setName(String)}
+     * before calling this method if you want to update it. The <tt>id</tt> property should also be set.
+     * <p>
+     * Keep in mind that this method does not update neither the callbacks nor the phone numbers. To do that, you have
+     * to call {@link #updateCallbacks()} and/or {@link #updateAssociatedPhoneNumbers()}, which use separate resource
+     * endpoints of their own.
+     * <p>
+     * If the connector you're trying to update does not exist, a {@link VivialConnectException}
+     * holding a 404 response code will be thrown.
      * 
-     * @return the Connector that was updated
+     * @return this instance of {@link Connector} with the updated name
      * @throws VivialConnectException if there is an API-level error
-     *
      */
     public Connector update() throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
@@ -155,11 +165,14 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
 
 
     /**
-     * Removes the connector from the account.
+     * Deletes this connector.
      * <p>
-     * Returns <code>true<code> if the connector was successfully deleted.
+     * Returns <code>true</code> if the connector was successfully deleted.
+     * <p>
+     * If the contact you're trying to delete does not exist, a {@link VivialConnectException}
+     * holding a 404 response code will be thrown.
      * 
-     * @return whether the connector was deleted or not
+     * @return a boolean value, indicating whether the contact was deleted or not
      * @throws VivialConnectException if there is an API-level error
      *
      */
