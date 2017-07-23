@@ -56,8 +56,8 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     /**
      * A boolean that is true if the Connector has more than 50 associated numbers
      */
-    @JsonProperty("more_phone_numbers")
-    private boolean morePhoneNumbers;
+    @JsonProperty("more_numbers")
+    private boolean moreNumbers;
 
     static {
         classesWithoutRootValue.add(ConnectorCollection.class);
@@ -150,7 +150,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         this.callbacks = connector.getCallbacks();
         this.name = connector.getName();
         this.phoneNumbers = connector.getPhoneNumbers();
-        this.morePhoneNumbers = connector.isMorePhoneNumbers();
+        this.moreNumbers = connector.isMoreNumbers();
     }
 
 
@@ -414,12 +414,58 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         this.phoneNumbers = phoneNumbers;
     }
 
-
+    /**
+     * Adds a new phone number, given the phoneNumberId and phoneNumber arguments.
+     * <p>
+     * This method calls {@link Connector#addPhoneNumber(PhoneNumber)} underneath, but the arguments are taken
+     * separately.
+     * 
+     * @param phoneNumberId the id of the phone number to be added
+     * @param phoneNumber the phone number to be added
+     * 
+     * @return this instance of {@link Connector}
+     * 
+     * @see PhoneNumber
+     * @see Connector#addPhoneNumber(PhoneNumber)
+     * @see Connector#setPhoneNumbers(List)
+     * @see Connector#associatePhoneNumbers()
+     * @see Connector#updateAssociatedPhoneNumbers()
+     */
     public Connector addPhoneNumber(int phoneNumberId, String phoneNumber){
         return addPhoneNumber(new PhoneNumber(phoneNumberId, phoneNumber));
     }
-
-
+    
+    /**
+     * Use this method to add phone numbers which can later be saved to the server using {@link Connector#associatePhoneNumbers()}
+     * or {@link Connector#updateAssociatedPhoneNumbers()}. This method call can be chained in a builder-like fashion, like so:
+     * <pre>
+     * <code>
+     * class PhoneNumberCreator {
+     *  
+     *  public void addAllPhoneNumbers(Connector connector) {
+     *    PhoneNumber p1 = new PhoneNumber();
+     *    p1.setPhoneNumberId(29);
+     *    p1.setPhoneNumber("+13022136859");
+     * 
+     *    PhoneNumber p2 = new PhoneNumber();
+     *    p2.setPhoneNumberId(30);
+     *    p2.setPhoneNumber("+13022136850");   
+     * 
+     *    connector.addPhoneNumber(c1).addPhoneNumber(c2).createCallbacks();
+     *  }
+     * }
+     * </code>
+     * </pre>
+     * 
+     * @param phoneNumber the phone number to be added
+     * @return this instance of {@link Connector}
+     * 
+     * @see PhoneNumber
+     * @see Connector#addPhoneNumber(int, String)
+     * @see Connector#setPhoneNumbers(List)
+     * @see Connector#associatePhoneNumbers()
+     * @see Connector#updateAssociatedPhoneNumbers()
+     */
     public Connector addPhoneNumber(PhoneNumber phoneNumber){
         if (phoneNumbers == null){
             phoneNumbers = new ArrayList<PhoneNumber>();
@@ -429,9 +475,25 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         
         return this;
     }
-
-
-    public ConnectorWithPhoneNumbers createPhoneNumbers() throws VivialConnectException{
+    
+    /**
+     * Overwrites and associates the list of phone numbers added through {@link Connector#addPhoneNumber(PhoneNumber)} and
+     * {@link Connector#setPhoneNumbers(List)} to this connector.
+     * <p>
+     * Returns an instance of the {@link ConnectorWithPhoneNumbers} interface, which can be used to access the newly-associated phone numbers.
+     * <p>
+     * For more details, go to the VivialConnect API documentation's
+     * <a href="https://www.vivialconnect.net/docs/api.html#post--api-v1.0-accounts-(int-account_id)-connectors-(int-connector_id)-phone_numbers.json">phone number section</a>.
+     * 
+     * @see PhoneNumber
+     * @see Connector#addPhoneNumber(PhoneNumber) 
+     * @see Connector#addPhoneNumber(int, String)
+     * @see Connector#setPhoneNumbers(List)
+     * 
+     * @return an instance {@link ConnectorWithPhoneNumbers} holding the list of associated phone numbers
+     * @throws VivialConnectException if there is an API-level error
+     */
+    public ConnectorWithPhoneNumbers associatePhoneNumbers() throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("phone_numbers", phoneNumbers);
 
@@ -442,8 +504,31 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         return this;
     }
 
-
-    public ConnectorWithPhoneNumbers updatePhoneNumbers() throws VivialConnectException{
+    /**
+     * Updates the list of phone numbers, editing any existing ones and adding any new ones, associated to
+     * this connector. Here's an example of how to edit an associated phone number:
+     * <pre>
+     * <code>
+     * class PhoneNumberUpdate {
+     *  
+     *  public void updatePhoneNumbers(Connector connector) {
+     *    connector.addPhoneNumber(31, "+13022136851");
+     *    connector.updateAssociatedPhoneNumbers();
+     *  }
+     * }
+     * </code>
+     * </pre>
+     * Returns an instance of the {@link ConnectorWithPhoneNumbers} interface, which can be used to access the updated phone numbers.
+     * 
+     * @see PhoneNumber 
+     * @see Connector#addPhoneNumber(PhoneNumber)
+     * @see Connector#addPhoneNumber(int, String) 
+     * @see Connector#setPhoneNumbers(List)
+     * 
+     * @return an instance {@link ConnectorWithPhoneNumbers} holding the list of updated phone numbers
+     * @throws VivialConnectException if there is an API-level error
+     */
+    public ConnectorWithPhoneNumbers updateAssociatedPhoneNumbers() throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("phone_numbers", phoneNumbers);
 
@@ -454,12 +539,31 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         return this;
     }
 
-
+    /**
+     * Removes all the phone numbers associated to this connector.
+     * 
+     * @see PhoneNumber
+     * @see Connector#addPhoneNumber(PhoneNumber)
+     * @see Connector#addPhoneNumber(int, String) 
+     * @see Connector#setPhoneNumbers(List)
+     * 
+     * @return an instance {@link ConnectorWithPhoneNumbers} holding an empty list of phone numbers
+     * @throws VivialConnectException
+     */
     public ConnectorWithPhoneNumbers deleteAllPhoneNumbers() throws VivialConnectException{
         return deletePhoneNumbers(this.phoneNumbers);
     }
 
-
+    /**
+     * Removes a single phone number.
+     * 
+     * @param phoneNumber the phone number to be removed
+     * 
+     * @see PhoneNumber
+     * 
+     * @return an instance {@link ConnectorWithPhoneNumbers} holding the updated list of phone numbers
+     * @throws VivialConnectException
+     */
     public ConnectorWithPhoneNumbers deleteSinglePhoneNumber(PhoneNumber phoneNumber) throws VivialConnectException{
         List<PhoneNumber> singlePhoneNumberList = new ArrayList<PhoneNumber>(1);
         singlePhoneNumberList.add(phoneNumber);
@@ -467,7 +571,16 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
         return deletePhoneNumbers(singlePhoneNumberList);
     }
 
-
+    /**
+     * Removes a series of phone numbers
+     * 
+     * @param phoneNumbers the phone numbers to be removed
+     * 
+     * @see PhoneNumber
+     * 
+     * @return an instance {@link ConnectorWithPhoneNumbers} holding the updated list of phone numbers
+     * @throws VivialConnectException
+     */
     public ConnectorWithPhoneNumbers deletePhoneNumbers(List<PhoneNumber> phoneNumbers) throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
                                                  .addParamPair("phone_numbers", phoneNumbers);
@@ -483,12 +596,12 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
 
-    public boolean isMorePhoneNumbers(){
-        return morePhoneNumbers;
-    }
-
-
-    public void setMorePhoneNumbers(boolean morePhoneNumbers){
-        this.morePhoneNumbers = morePhoneNumbers;
-    }
+    public boolean isMoreNumbers(){
+		return moreNumbers;
+	}
+    
+    
+    public void setMoreNumbers(boolean moreNumbers){
+		this.moreNumbers = moreNumbers;
+	}
 }
