@@ -84,11 +84,12 @@ public class Attachment extends VivialConnectResource{
     }
 
     /**
-     * Removes the attachment from the message.
+     * Deletes this attachment from the database, dissociating it from the message.
      * <p>
-     * Returns <code>true<code> if the attachment was successfully deleted.
+     * If the attachment you're trying to delete does not exist, a {@link VivialConnectException}
+     * holding a 404 response code will be thrown.
      * 
-     * @return whether the attachment was deleted or not
+     * @return a boolean value, indicating whether the attachment was deleted or not
      * @throws VivialConnectException if there is an API-level error
      *
      */
