@@ -298,7 +298,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see Connector#addCallback(net.vivialconnect.model.connector.Callback) 
      * @see Connector#setCallbacks(java.util.List)
      * 
-     * @return an instance {@link ConnectorWithCallbacks} holding the created list of callbacks
+     * @return an instance {@link ConnectorWithCallbacks} holding the list of created callbacks
      * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithCallbacks createCallbacks() throws VivialConnectException {
@@ -334,7 +334,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see Connector#addCallback(net.vivialconnect.model.connector.Callback) 
      * @see Connector#setCallbacks(java.util.List)
      * 
-     * @return an instance {@link ConnectorWithCallbacks} holding the updated list of callbacks
+     * @return an instance {@link ConnectorWithCallbacks} holding the list of updated callbacks
      * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithCallbacks updateCallbacks() throws VivialConnectException {

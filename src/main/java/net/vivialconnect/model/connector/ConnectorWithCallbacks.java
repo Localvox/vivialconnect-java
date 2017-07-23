@@ -3,7 +3,7 @@ package net.vivialconnect.model.connector;
 import java.util.Date;
 import java.util.List;
 
-public interface ConnectorWithCallbacks{
+public interface ConnectorWithCallbacks {
 	
     Date getDateModified();
 	
