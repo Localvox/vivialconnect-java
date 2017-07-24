@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -116,12 +115,5 @@ public class NumberTest extends BaseTestCase {
     
     private void updateNumber(AssociatedNumber number) throws VivialConnectException {
     	getDataSource().updateNumber(number);
-    }
-    
-    private Map<String, String> withLimitOf(int limit) {
-    	Map<String, String> filters = new HashMap<String, String>();
-        filters.put("limit", String.valueOf(limit));
-        
-        return filters;
     }
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import net.vivialconnect.client.VivialConnectClient;
 import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.error.VivialConnectException;
+import net.vivialconnect.model.message.Message;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.Number;
@@ -78,5 +79,30 @@ public class VivialConnectServer implements DataSource {
     @Override
     public NumberInfo numberLookup(AssociatedNumber number) throws VivialConnectException {
     	return number.lookup();
+    }
+    
+    @Override
+    public List<Message> getMessages(Map<String, String> filters) throws VivialConnectException {
+    	return Message.getMessages(filters);
+    }
+    
+    @Override
+    public Message getMessageById(int messageId) throws VivialConnectException {
+    	return Message.getMessageById(messageId);
+    }
+    
+    @Override
+    public void sendMessage(Message message) throws VivialConnectException {
+    	message.send();
+    }
+    
+    @Override
+    public void redactMessage(Message message) throws VivialConnectException {
+    	message.redact();
+    }
+    
+    @Override
+    public int messageCount() throws VivialConnectException {
+    	return Message.count();
     }
 }

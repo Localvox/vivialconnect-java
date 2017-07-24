@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.vivialconnect.model.ResourceCount;
 import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.error.VivialConnectException;
+import net.vivialconnect.model.message.Message;
+import net.vivialconnect.model.message.MessageCollection;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.NumberCollection;
@@ -25,6 +27,9 @@ public class MockData implements DataSource {
 
     private List<AvailableNumber> availableNumbers;
     private List<AssociatedNumber> associatedNumbers;
+    
+    private List<Message> messages;
+    private int pendingCount = 0;
 
     @Override
     public Account getAccount() throws VivialConnectException {
@@ -39,17 +44,12 @@ public class MockData implements DataSource {
     @Override
     public AssociatedNumber getNumberById(int numberId) throws VivialConnectException {
         if (numberId < 1) {
-            String errorMessage = String.format("Invalid id param %d", numberId);
-
-            VivialConnectException vce = new VivialConnectException(errorMessage, new IOException());
-            vce.setResponseCode(400);
-
-            throw vce;
+            handleNotFound(numberId);
         }
 
         return findAssociatedNumber(numberId);
     }
-
+    
     private AssociatedNumber findAssociatedNumber(int numberId) {
         for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture()) {
             if (associatedNumber.getId() == numberId) {
@@ -112,6 +112,63 @@ public class MockData implements DataSource {
     	
     	return null;
     }
+    
+    @Override
+    public List<Message> getMessages(Map<String, String> filters) throws VivialConnectException {
+    	if (filters == null)
+		{
+			return loadMessagesFromFixture();
+		}
+    	
+    	return applyFilters(loadMessagesFromFixture(), filters);
+    }
+    
+    @Override
+    public Message getMessageById(int messageId) throws VivialConnectException {
+    	if (messageId < 1) {
+    		handleNotFound(messageId);
+		}
+    	
+    	for (Message message : loadMessagesFromFixture())
+		{
+			if (message.getId() == messageId) {
+				return message;
+			}
+		}
+    	
+    	return null;
+    }
+    
+    @Override
+    public void sendMessage(Message message) throws VivialConnectException {
+    	message.setId(getMessages(null).get(0).getId() + 1);
+    	message.setDirection("outbound-api");
+    	message.setStatus("accepted");
+    	
+    	Date dateCreated = new Date();
+    	message.setDateCreated(dateCreated);
+    	message.setDateModified(dateCreated);
+    	
+    	int numMedia = message.getMediaUrls().size();
+    	if (numMedia > 0) {
+    		message.setNumMedia(numMedia);
+    		message.setMessageType("local_mms");
+		}
+    	
+    	messages.add(0, message);
+    	pendingCount++;
+    }
+    
+    @Override
+    public void redactMessage(Message message) throws VivialConnectException {
+    	message.setBody("");
+    	message.setDateModified(new Date());
+    }
+    
+    @Override
+    public int messageCount() throws VivialConnectException {
+    	return loadFixture("message-count", ResourceCount.class, false).getCount() + pendingCount;
+    }
 
     private List<AssociatedNumber> loadAssociatedNumbersFromFixture() {
         if (associatedNumbers == null) {
@@ -127,6 +184,14 @@ public class MockData implements DataSource {
         }
 
         return availableNumbers;
+    }
+    
+    private List<Message> loadMessagesFromFixture() {
+    	if (messages == null) {
+			messages = loadFixture("messages", MessageCollection.class, false).getMessages();
+		}
+    	
+    	return messages;
     }
 
     private <T> List<T> applyFilters(List<T> elements, Map<String, String> filters) {
@@ -178,4 +243,13 @@ public class MockData implements DataSource {
 
         return mapper;
     }
+    
+    private void handleNotFound(int id) throws VivialConnectException {
+		String errorMessage = String.format("Invalid id param %d", id);
+
+		VivialConnectException vce = new VivialConnectException(errorMessage, new IOException());
+		vce.setResponseCode(400);
+
+		throw vce;
+	}
 }

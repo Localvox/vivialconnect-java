@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.error.VivialConnectException;
+import net.vivialconnect.model.message.Message;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.NumberInfo;
@@ -30,4 +31,14 @@ public interface DataSource {
 	void updateNumber(AssociatedNumber number) throws VivialConnectException;
 	
 	NumberInfo numberLookup(AssociatedNumber number) throws VivialConnectException;
+	
+	List<Message> getMessages(Map<String, String> filters) throws VivialConnectException;
+	
+	int messageCount() throws VivialConnectException;
+	
+	Message getMessageById(int messageId) throws VivialConnectException;
+	
+	void sendMessage(Message message) throws VivialConnectException;
+
+	void redactMessage(Message message) throws VivialConnectException;
 }
