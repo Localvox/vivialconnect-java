@@ -17,15 +17,14 @@ import net.vivialconnect.model.number.AssociatedNumber;
 
 public class MessageTest extends BaseTestCase {
 
-     
     private static String TO_NUMBER = "+18099667830";
     private static String MESSAGE_BODY = "Message from Vivial Connect Test Suite";
 
     @Test
     public void test_send_message() throws VivialConnectException {
-    	AssociatedNumber number = getDataSource().getAssociatedNumbers().get(0);
-    	String fromNumber = number.getPhoneNumber();
-    
+        AssociatedNumber number = getDataSource().getAssociatedNumbers().get(0);
+        String fromNumber = number.getPhoneNumber();
+
         Message message = new Message();
         message.setFromNumber(fromNumber);
         message.setToNumber(TO_NUMBER);
@@ -35,7 +34,7 @@ public class MessageTest extends BaseTestCase {
         assertEquals(0, message.getId());
 
         getDataSource().sendMessage(message);
-        
+
         assertTrue(message.getId() > 0);
         assertNotNull(message.getDateCreated());
         assertEquals(MESSAGE_BODY, message.getBody());
@@ -69,7 +68,7 @@ public class MessageTest extends BaseTestCase {
 
     @Test
     public void test_get_messages_with_limit() throws VivialConnectException {
-		assertEquals(getMessages(withLimitOf(1)).size(), 1);
+        assertEquals(getMessages(withLimitOf(1)).size(), 1);
     }
 
     @Test(expected = VivialConnectException.class)
@@ -87,34 +86,34 @@ public class MessageTest extends BaseTestCase {
         Message message = getMessageById();
 
         assertNotNull(message.getBody());
-        
+
         redactMessage(message);
-        
+
         assertEquals("", message.getBody());
         assertNotNull(message.getDateModified().getTime());
     }
-    
-    private List<Message> getMessages() throws VivialConnectException {
-    	return getMessages(null);
-    }
-    
-    private List<Message> getMessages(Map<String, String> filters) throws VivialConnectException {
-    	return getDataSource().getMessages(filters);
-	}
 
-	private Message getMessageById(int messageId) throws VivialConnectException {
-    	return getDataSource().getMessageById(messageId);
+    private List<Message> getMessages() throws VivialConnectException {
+        return getMessages(null);
     }
-    
+
+    private List<Message> getMessages(Map<String, String> filters) throws VivialConnectException {
+        return getDataSource().getMessages(filters);
+    }
+
+    private Message getMessageById(int messageId) throws VivialConnectException {
+        return getDataSource().getMessageById(messageId);
+    }
+
     private Message getMessageById() throws VivialConnectException {
-    	return getDataSource().getMessageById(getMessages().get(0).getId());
+        return getDataSource().getMessageById(getMessages().get(0).getId());
     }
-    
+
     private int messageCount() throws VivialConnectException {
-    	return getDataSource().messageCount();
+        return getDataSource().messageCount();
     }
-    
+
     private void redactMessage(Message message) throws VivialConnectException {
-    	getDataSource().redactMessage(message);
+        getDataSource().redactMessage(message);
     }
 }

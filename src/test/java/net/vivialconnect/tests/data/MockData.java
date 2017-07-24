@@ -27,7 +27,7 @@ public class MockData implements DataSource {
 
     private List<AvailableNumber> availableNumbers;
     private List<AssociatedNumber> associatedNumbers;
-    
+
     private List<Message> messages;
     private int pendingCount = 0;
 
@@ -44,12 +44,12 @@ public class MockData implements DataSource {
     @Override
     public AssociatedNumber getNumberById(int numberId) throws VivialConnectException {
         if (numberId < 1) {
-            handleNotFound(numberId);
+            handleInvalidId(numberId);
         }
 
         return findAssociatedNumber(numberId);
     }
-    
+
     private AssociatedNumber findAssociatedNumber(int numberId) {
         for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture()) {
             if (associatedNumber.getId() == numberId) {
@@ -69,105 +69,102 @@ public class MockData implements DataSource {
     public List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
         return applyFilters(loadAvailableNumbersFromFixture(), filters);
     }
-    
+
     @Override
     public int numberCount() throws VivialConnectException {
-    	return loadFixture("number-count", ResourceCount.class, false).getCount();
+        return loadFixture("number-count", ResourceCount.class, false).getCount();
     }
-    
+
     @Override
     public List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException {
-    	List<AssociatedNumber> localAssociatedNumbers = new ArrayList<AssociatedNumber>();
-    	for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture())
-		{
-			if (associatedNumber.getPhoneNumberType().equals("local")) {
-				localAssociatedNumbers.add(associatedNumber);
-			}
-		}
-    	
-    	return localAssociatedNumbers;
+        List<AssociatedNumber> localAssociatedNumbers = new ArrayList<AssociatedNumber>();
+        for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture()) {
+            if (associatedNumber.getPhoneNumberType().equals("local")) {
+                localAssociatedNumbers.add(associatedNumber);
+            }
+        }
+
+        return localAssociatedNumbers;
     }
-    
+
     @Override
     public void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
-    	if (!localNumber.getPhoneNumberType().equals("local")) {
-    		localNumber.setPhoneNumberType("local");
-			throw new UnsupportedOperationException("Number must be local");
-		}
-    	
-    	loadAssociatedNumbersFromFixture().remove(localNumber);
+        if (!localNumber.getPhoneNumberType().equals("local")) {
+            localNumber.setPhoneNumberType("local");
+            throw new UnsupportedOperationException("Number must be local");
+        }
+
+        loadAssociatedNumbersFromFixture().remove(localNumber);
     }
-    
+
     @Override
     public void updateNumber(AssociatedNumber number) throws VivialConnectException {
-    	number.setDateModified(new Date());
+        number.setDateModified(new Date());
     }
-    
+
     @Override
     public NumberInfo numberLookup(AssociatedNumber number) throws VivialConnectException {
-    	NumberInfo info = loadFixture("number-info", NumberInfo.class);
-    	if (info.getPhoneNumber().equals(number.getPhoneNumber().substring(1))) {
-			return info;
-		}
-    	
-    	return null;
+        NumberInfo info = loadFixture("number-info", NumberInfo.class);
+        if (info.getPhoneNumber().equals(number.getPhoneNumber().substring(1))) {
+            return info;
+        }
+
+        return null;
     }
-    
+
     @Override
     public List<Message> getMessages(Map<String, String> filters) throws VivialConnectException {
-    	if (filters == null)
-		{
-			return loadMessagesFromFixture();
-		}
-    	
-    	return applyFilters(loadMessagesFromFixture(), filters);
+        if (filters == null) {
+            return loadMessagesFromFixture();
+        }
+
+        return applyFilters(loadMessagesFromFixture(), filters);
     }
-    
+
     @Override
     public Message getMessageById(int messageId) throws VivialConnectException {
-    	if (messageId < 1) {
-    		handleNotFound(messageId);
-		}
-    	
-    	for (Message message : loadMessagesFromFixture())
-		{
-			if (message.getId() == messageId) {
-				return message;
-			}
-		}
-    	
-    	return null;
+        if (messageId < 1) {
+            handleInvalidId(messageId);
+        }
+
+        for (Message message : loadMessagesFromFixture()) {
+            if (message.getId() == messageId) {
+                return message;
+            }
+        }
+
+        return null;
     }
-    
+
     @Override
     public void sendMessage(Message message) throws VivialConnectException {
-    	message.setId(getMessages(null).get(0).getId() + 1);
-    	message.setDirection("outbound-api");
-    	message.setStatus("accepted");
-    	
-    	Date dateCreated = new Date();
-    	message.setDateCreated(dateCreated);
-    	message.setDateModified(dateCreated);
-    	
-    	int numMedia = message.getMediaUrls().size();
-    	if (numMedia > 0) {
-    		message.setNumMedia(numMedia);
-    		message.setMessageType("local_mms");
-		}
-    	
-    	messages.add(0, message);
-    	pendingCount++;
+        message.setId(getMessages(null).get(0).getId() + 1);
+        message.setDirection("outbound-api");
+        message.setStatus("accepted");
+
+        Date dateCreated = new Date();
+        message.setDateCreated(dateCreated);
+        message.setDateModified(dateCreated);
+
+        int numMedia = message.getMediaUrls().size();
+        if (numMedia > 0) {
+            message.setNumMedia(numMedia);
+            message.setMessageType("local_mms");
+        }
+
+        messages.add(0, message);
+        pendingCount++;
     }
-    
+
     @Override
     public void redactMessage(Message message) throws VivialConnectException {
-    	message.setBody("");
-    	message.setDateModified(new Date());
+        message.setBody("");
+        message.setDateModified(new Date());
     }
-    
+
     @Override
     public int messageCount() throws VivialConnectException {
-    	return loadFixture("message-count", ResourceCount.class, false).getCount() + pendingCount;
+        return loadFixture("message-count", ResourceCount.class, false).getCount() + pendingCount;
     }
 
     private List<AssociatedNumber> loadAssociatedNumbersFromFixture() {
@@ -185,13 +182,13 @@ public class MockData implements DataSource {
 
         return availableNumbers;
     }
-    
+
     private List<Message> loadMessagesFromFixture() {
-    	if (messages == null) {
-			messages = loadFixture("messages", MessageCollection.class, false).getMessages();
-		}
-    	
-    	return messages;
+        if (messages == null) {
+            messages = loadFixture("messages", MessageCollection.class, false).getMessages();
+        }
+
+        return messages;
     }
 
     private <T> List<T> applyFilters(List<T> elements, Map<String, String> filters) {
@@ -243,13 +240,13 @@ public class MockData implements DataSource {
 
         return mapper;
     }
-    
-    private void handleNotFound(int id) throws VivialConnectException {
-		String errorMessage = String.format("Invalid id param %d", id);
 
-		VivialConnectException vce = new VivialConnectException(errorMessage, new IOException());
-		vce.setResponseCode(400);
+    private void handleInvalidId(int id) throws VivialConnectException {
+        String errorMessage = String.format("Invalid id param %d", id);
 
-		throw vce;
-	}
+        VivialConnectException vce = new VivialConnectException(errorMessage, new IOException());
+        vce.setResponseCode(400);
+
+        throw vce;
+    }
 }

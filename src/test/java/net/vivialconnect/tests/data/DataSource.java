@@ -21,24 +21,24 @@ public interface DataSource {
     List<AssociatedNumber> getAssociatedNumbers() throws VivialConnectException;
 
     List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException;
-    
+
     int numberCount() throws VivialConnectException;
 
-	List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException;
-	
-	void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException;
-	
-	void updateNumber(AssociatedNumber number) throws VivialConnectException;
-	
-	NumberInfo numberLookup(AssociatedNumber number) throws VivialConnectException;
-	
-	List<Message> getMessages(Map<String, String> filters) throws VivialConnectException;
-	
-	int messageCount() throws VivialConnectException;
-	
-	Message getMessageById(int messageId) throws VivialConnectException;
-	
-	void sendMessage(Message message) throws VivialConnectException;
+    List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException;
 
-	void redactMessage(Message message) throws VivialConnectException;
+    void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException;
+
+    void updateNumber(AssociatedNumber number) throws VivialConnectException;
+
+    NumberInfo numberLookup(AssociatedNumber number) throws VivialConnectException;
+
+    List<Message> getMessages(Map<String, String> filters) throws VivialConnectException;
+
+    int messageCount() throws VivialConnectException;
+
+    Message getMessageById(int messageId) throws VivialConnectException;
+
+    void sendMessage(Message message) throws VivialConnectException;
+
+    void redactMessage(Message message) throws VivialConnectException;
 }

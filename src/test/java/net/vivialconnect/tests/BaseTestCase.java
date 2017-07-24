@@ -13,11 +13,11 @@ public class BaseTestCase {
     protected final DataSource getDataSource() {
         return DATA_SOURCE;
     }
-    
+
     protected Map<String, String> withLimitOf(int limit) {
-    	Map<String, String> filters = new HashMap<String, String>();
+        Map<String, String> filters = new HashMap<String, String>();
         filters.put("limit", String.valueOf(limit));
-        
+
         return filters;
     }
 }
