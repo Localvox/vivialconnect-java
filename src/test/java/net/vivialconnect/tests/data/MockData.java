@@ -19,98 +19,93 @@ import net.vivialconnect.model.number.NumberCollection;
 import net.vivialconnect.tests.BaseTestCase;
 
 public class MockData implements DataSource {
-	
-	private List<AvailableNumber> availableNumbers;
-	private List<AssociatedNumber> associatedNumbers;
 
-	@Override
-	public Account getAccount() throws VivialConnectException {
-		return loadFixture("account", Account.class);
-	}
+    private List<AvailableNumber> availableNumbers;
+    private List<AssociatedNumber> associatedNumbers;
 
-	@Override
-	public void updateAccount(Account account) throws VivialConnectException {
-		account.setDateModified(new Date());
-	}
-	
-	@Override
-	public AssociatedNumber getNumberById(int numberId) throws VivialConnectException {
-		if (numberId < 1) {
-			String errorMessage = String.format("Invalid id param %d", numberId);
-			
-			VivialConnectException vce = new VivialConnectException(errorMessage, new IOException());
-			vce.setResponseCode(400);
-			
-			throw vce;
-		}
-		
-		return findAssociatedNumber(numberId);
-	}
-	
-	private AssociatedNumber findAssociatedNumber(int numberId) {
-		for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture())
-		{
-			if (associatedNumber.getId() == numberId) {
-				return associatedNumber;
-			}
-		}
-		
-		return null;
-	}
+    @Override
+    public Account getAccount() throws VivialConnectException {
+        return loadFixture("account", Account.class);
+    }
 
-	@Override
-	public List<AssociatedNumber> getAssociatedNumbers() throws VivialConnectException {
-		return loadAssociatedNumbersFromFixture();
-	}
-	
-	@Override
-	public List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
-		return applyFilters(loadAvailableNumbersFromFixture(), filters);
-	}
-	
-	private List<AssociatedNumber> loadAssociatedNumbersFromFixture()
-	{
-		if (associatedNumbers == null)
-		{
-			associatedNumbers = loadFixture("associated-numbers", NumberCollection.class, false).getAssociatedNumbers();
-		}
-		
-		return associatedNumbers;
-	}
-	
-	private List<AvailableNumber> loadAvailableNumbersFromFixture() {
-		if (availableNumbers == null) {
-			availableNumbers = loadFixture("available-numbers", NumberCollection.class, false).getAvailableNumbers(); 
-		}
-		
-		return availableNumbers;
-	}
-	
-	private <T> List<T> applyFilters(List<T> elements, Map<String, String> filters) {
-		/* TODO: int page = getPage(filters); */
-		int limit = getLimit(filters);
-		if (limit > 0)
-		{
-			elements = elements.subList(0, limit);
-		}
-		
-		return elements;
-	}
-	
-	private int getLimit(Map<String, String> filters) {
-		String limit = filters.get("limit");
-		if (limit == null)
-		{
-			limit = "0";
-		}
-		
-		return Integer.parseInt(limit);
-	}
+    @Override
+    public void updateAccount(Account account) throws VivialConnectException {
+        account.setDateModified(new Date());
+    }
 
-	protected <T> T loadFixture(String filename, Class<T> type) {
+    @Override
+    public AssociatedNumber getNumberById(int numberId) throws VivialConnectException {
+        if (numberId < 1) {
+            String errorMessage = String.format("Invalid id param %d", numberId);
+
+            VivialConnectException vce = new VivialConnectException(errorMessage, new IOException());
+            vce.setResponseCode(400);
+
+            throw vce;
+        }
+
+        return findAssociatedNumber(numberId);
+    }
+
+    private AssociatedNumber findAssociatedNumber(int numberId) {
+        for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture()) {
+            if (associatedNumber.getId() == numberId) {
+                return associatedNumber;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<AssociatedNumber> getAssociatedNumbers() throws VivialConnectException {
+        return loadAssociatedNumbersFromFixture();
+    }
+
+    @Override
+    public List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
+        return applyFilters(loadAvailableNumbersFromFixture(), filters);
+    }
+
+    private List<AssociatedNumber> loadAssociatedNumbersFromFixture() {
+        if (associatedNumbers == null) {
+            associatedNumbers = loadFixture("associated-numbers", NumberCollection.class, false).getAssociatedNumbers();
+        }
+
+        return associatedNumbers;
+    }
+
+    private List<AvailableNumber> loadAvailableNumbersFromFixture() {
+        if (availableNumbers == null) {
+            availableNumbers = loadFixture("available-numbers", NumberCollection.class, false).getAvailableNumbers();
+        }
+
+        return availableNumbers;
+    }
+
+    private <T> List<T> applyFilters(List<T> elements, Map<String, String> filters) {
+        /* TODO: int page = getPage(filters); */
+        int limit = getLimit(filters);
+        if (limit > 0) {
+            elements = elements.subList(0, limit);
+        }
+
+        return elements;
+    }
+
+    private int getLimit(Map<String, String> filters) {
+        String limit = filters.get("limit");
+        if (limit == null) {
+            limit = "0";
+        }
+
+        return Integer.parseInt(limit);
+    }
+
+    protected <T> T loadFixture(String filename, Class<T> type) {
         return loadFixture(filename, type, true);
     }
-    
+
     protected <T> T loadFixture(String filename, Class<T> type, boolean unwrapRoot) {
         ClassLoader classLoader = BaseTestCase.class.getClassLoader();
         InputStream stream = classLoader.getResourceAsStream(String.format("%s.json", filename));
