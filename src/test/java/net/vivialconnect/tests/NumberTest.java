@@ -1,73 +1,54 @@
 package net.vivialconnect.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import net.vivialconnect.client.VivialConnectClient;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.Number;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class NumberTest extends BaseTestCase {
-
-    private AssociatedNumber number;
-
-    @BeforeClass
-    public static void initializeClient() {
-        VivialConnectClient.init(ACCOUNT_ID, API_KEY, API_SECRET);
-    }
-
-    @Before
-    public void loadNumber() {
-        if (number == null) {
-            number = (AssociatedNumber) loadFixture("associated-number", Number.class);
-        }
-    }
-
+	
     @Test
     public void test_get_associated_numbers() throws VivialConnectException {
-        assertTrue(Number.getAssociatedNumbers().size() > 0);
+        assertTrue(getAssociatedNumbers().size() > 0);
     }
-
-    @Test
+    
+    /* @Test
     public void test_get_associated_number() throws VivialConnectException {
         AssociatedNumber associatedNumber = Number.getNumberById(number.getId());
 
         assertEquals(number.getId(), associatedNumber.getId());
-    }
+    } */
 
     @Test(expected = VivialConnectException.class)
     public void test_get_associated_number_with_invalid_id_throws_vivial_connect_exception() throws VivialConnectException {
-        Number.getNumberById(0);
+        getNumberById(0);
     }
 
     @Test
     public void test_number_not_found() throws VivialConnectException {
-        assertNull(Number.getNumberById(1));
+        assertNull(getNumberById(1));
     }
 
     @Test
     public void test_find_available_numbers_by_area_code_with_limit() throws VivialConnectException {
-        String areaCode = "302";
-
-        Map<String, String> filters = new HashMap<String, String>();
-        filters.put("limit", "1");
-
-        List<AvailableNumber> availableNumbers = Number.findAvailableNumbersByAreaCode(areaCode, filters);
-
+        List<AvailableNumber> availableNumbers = findAvailableNumbersByAreaCode("302", withLimitOf(2));
+		
         if (availableNumbers.size() > 0) {
-            assertEquals(1, availableNumbers.size());
+            assertEquals(2, availableNumbers.size());
         }
     }
 
-    @Test
+    /* @Test
     public void test_get_local_associated_numbers() throws VivialConnectException {
         assertEquals("local", Number.getLocalAssociatedNumbers().get(0).getPhoneNumberType());
     }
@@ -108,5 +89,24 @@ public class NumberTest extends BaseTestCase {
     @Test
     public void test_number_lookup() throws VivialConnectException {
         assertEquals(number.getPhoneNumber().substring(1), Number.getNumberById(number.getId()).lookup().getPhoneNumber());
+    } */
+    
+    private List<AssociatedNumber> getAssociatedNumbers() throws VivialConnectException {
+    	return getDataSource().getAssociatedNumbers();
+    }
+    
+    private List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
+    	return getDataSource().findAvailableNumbersByAreaCode(areaCode, filters);
+    }
+    
+    private AssociatedNumber getNumberById(int numberId) throws VivialConnectException {
+    	return getDataSource().getNumberById(numberId);
+    }
+    
+    private Map<String, String> withLimitOf(int limit) {
+    	Map<String, String> filters = new HashMap<String, String>();
+        filters.put("limit", String.valueOf(limit));
+        
+        return filters;
     }
 }

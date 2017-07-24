@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class MessageTest extends BaseTestCase {
 
-    private static String FROM_NUMBER = "+13022136859";
+    /* private static String FROM_NUMBER = "+13022136859";
     private static String TO_NUMBER = "+18099667830";
     private static String MESSAGE_BODY = "Message from Vivial Connect Test Suite";
 
@@ -89,5 +89,5 @@ public class MessageTest extends BaseTestCase {
 
         assertEquals(MESSAGE_BODY, message.getBody());
         assertEquals("", message.redact().getBody());
-    }
+    } */
 }
