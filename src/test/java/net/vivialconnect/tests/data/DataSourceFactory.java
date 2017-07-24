@@ -3,12 +3,14 @@ package net.vivialconnect.tests.data;
 public class DataSourceFactory {
 
     public DataSource createDataSource() {
-        boolean useMockData = Boolean.getBoolean("vivialconnect.test.mock");
-
-        if (useMockData) {
-            return new MockData();
-        } else {
+        if (APIKeyIsPresent()) {
             return new VivialConnectServer();
+        } else {
+            return new MockData();
         }
+    }
+
+    private boolean APIKeyIsPresent() {
+        return System.getProperty("vivialconnect.test.api-key") != null;
     }
 }
