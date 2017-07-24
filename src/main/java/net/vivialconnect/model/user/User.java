@@ -3,10 +3,13 @@ package net.vivialconnect.model.user;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
 import net.vivialconnect.model.ResourceCount;
 import net.vivialconnect.model.VivialConnectResource;
+import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.error.NoContentException;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.format.JsonBodyBuilder;

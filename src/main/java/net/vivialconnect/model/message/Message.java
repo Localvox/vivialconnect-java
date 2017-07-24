@@ -225,7 +225,7 @@ public class Message extends VivialConnectResource{
      * @see #getMessages()
      * @see #getMessages(Map)
      */
-    public static Message getMessageById(Integer messageId) throws VivialConnectException{
+    public static Message getMessageById(int messageId) throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(Message.class, String.valueOf(messageId)), null, null, Message.class);
     }
 
@@ -449,8 +449,6 @@ public class Message extends VivialConnectResource{
      * Set the body of the message to be send
      * <p>
      * This supports text, unicode characters, emojis or chinese letters
-     * 
-     * @return message body
      *
      */
     public void setBody(String body){

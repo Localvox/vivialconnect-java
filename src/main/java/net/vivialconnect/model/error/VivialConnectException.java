@@ -1,6 +1,8 @@
 package net.vivialconnect.model.error;
 
-public class VivialConnectException extends Exception{
+import java.io.IOException;
+
+public class VivialConnectException extends Exception {
 
     private static final long serialVersionUID = -5461533988163106640L;
 
@@ -11,12 +13,12 @@ public class VivialConnectException extends Exception{
     }
 
 
-    public VivialConnectException(String message, Throwable cause){
+    public VivialConnectException(String message, Throwable cause) {
         super(message, cause);
     }
 
 
-    public VivialConnectException(Throwable cause){
+    public VivialConnectException(Throwable cause) {
         super(cause);
     }
     
