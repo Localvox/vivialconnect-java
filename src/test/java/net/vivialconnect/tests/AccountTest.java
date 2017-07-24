@@ -25,30 +25,27 @@ public class AccountTest extends BaseTestCase {
 
         String newCompanyName = getNewCompanyName(account);
         account.setCompanyName(newCompanyName);
-        
+
         updateAccount(account);
 
         assertEquals(newCompanyName, account.getCompanyName());
         assertTrue(account.getDateModified().getTime() > modifiedDateBeforeUpdate.getTime());
     }
-    
+
     private String getNewCompanyName(Account account) {
         String testAccountCompanyName = account.getCompanyName();
-        if (testAccountCompanyName.equals("Newtech SRL")) {
-        	return "Vivial Connect";
+        if (testAccountCompanyName.equals("Vivial Connect")) {
+            return "Newtech SRL";
+        } else {
+            return "Vivial Connect";
         }
-        else if (testAccountCompanyName.equals("Vivial Connect")) {
-			return "Newtech SRL";
-		}
-        
-        return testAccountCompanyName;
     }
-    
+
     private Account getAccount() throws VivialConnectException {
-    	return getDataSource().getAccount();
+        return getDataSource().getAccount();
     }
-    
+
     private void updateAccount(Account account) throws VivialConnectException {
-		getDataSource().updateAccount(account);
-	}
+        getDataSource().updateAccount(account);
+    }
 }
