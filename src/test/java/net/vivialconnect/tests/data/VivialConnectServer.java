@@ -9,6 +9,7 @@ import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.Number;
+import net.vivialconnect.model.number.NumberInfo;
 
 public class VivialConnectServer implements DataSource {
 
@@ -52,5 +53,30 @@ public class VivialConnectServer implements DataSource {
     @Override
     public List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
         return Number.findAvailableNumbersByAreaCode(areaCode, filters);
+    }
+    
+    @Override
+    public int numberCount() throws VivialConnectException {
+    	return Number.count();
+    }
+    
+    @Override
+    public List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException {
+    	return Number.getLocalAssociatedNumbers();
+    }
+    
+    @Override
+    public void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
+    	localNumber.deleteLocalNumber();
+    }
+    
+    @Override
+    public void updateNumber(AssociatedNumber number) throws VivialConnectException {
+    	number.update();
+    }
+    
+    @Override
+    public NumberInfo numberLookup(AssociatedNumber number) throws VivialConnectException {
+    	return number.lookup();
     }
 }

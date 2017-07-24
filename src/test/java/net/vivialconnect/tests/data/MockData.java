@@ -2,6 +2,7 @@ package net.vivialconnect.tests.data;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +12,13 @@ import org.apache.commons.io.IOUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.vivialconnect.model.ResourceCount;
 import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.NumberCollection;
+import net.vivialconnect.model.number.NumberInfo;
 import net.vivialconnect.tests.BaseTestCase;
 
 public class MockData implements DataSource {
@@ -65,6 +68,49 @@ public class MockData implements DataSource {
     @Override
     public List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
         return applyFilters(loadAvailableNumbersFromFixture(), filters);
+    }
+    
+    @Override
+    public int numberCount() throws VivialConnectException {
+    	return loadFixture("number-count", ResourceCount.class, false).getCount();
+    }
+    
+    @Override
+    public List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException {
+    	List<AssociatedNumber> localAssociatedNumbers = new ArrayList<AssociatedNumber>();
+    	for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture())
+		{
+			if (associatedNumber.getPhoneNumberType().equals("local")) {
+				localAssociatedNumbers.add(associatedNumber);
+			}
+		}
+    	
+    	return localAssociatedNumbers;
+    }
+    
+    @Override
+    public void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
+    	if (!localNumber.getPhoneNumberType().equals("local")) {
+    		localNumber.setPhoneNumberType("local");
+			throw new UnsupportedOperationException("Number must be local");
+		}
+    	
+    	loadAssociatedNumbersFromFixture().remove(localNumber);
+    }
+    
+    @Override
+    public void updateNumber(AssociatedNumber number) throws VivialConnectException {
+    	number.setDateModified(new Date());
+    }
+    
+    @Override
+    public NumberInfo numberLookup(AssociatedNumber number) throws VivialConnectException {
+    	NumberInfo info = loadFixture("number-info", NumberInfo.class);
+    	if (info.getPhoneNumber().equals(number.getPhoneNumber().substring(1))) {
+			return info;
+		}
+    	
+    	return null;
     }
 
     private List<AssociatedNumber> loadAssociatedNumbersFromFixture() {
