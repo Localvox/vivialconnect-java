@@ -33,10 +33,10 @@ public class NumberTest extends BaseTestCase {
         getNumberById(0);
     }
 
-    @Test
+    /* @Test
     public void test_number_not_found() throws VivialConnectException {
         assertNull(getNumberById(1));
-    }
+    } */
 
     @Test
     public void test_find_available_numbers_by_area_code_with_limit() throws VivialConnectException {

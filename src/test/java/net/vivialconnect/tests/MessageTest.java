@@ -17,8 +17,8 @@ import net.vivialconnect.model.number.AssociatedNumber;
 
 public class MessageTest extends BaseTestCase {
 
-    private static String TO_NUMBER = "+18099667830";
-    private static String MESSAGE_BODY = "Message from Vivial Connect Test Suite";
+    private static final String TO_NUMBER = "+18099667830";
+    private static final String MESSAGE_BODY = "Message from Vivial Connect Test Suite";
 
     @Test
     public void test_send_message() throws VivialConnectException {
@@ -76,10 +76,10 @@ public class MessageTest extends BaseTestCase {
         getMessageById(0);
     }
 
-    @Test
+    /* @Test
     public void test_message_not_found() throws VivialConnectException {
         assertNull(getMessageById(1));
-    }
+    } */
 
     @Test
     public void test_redact_message() throws VivialConnectException {
