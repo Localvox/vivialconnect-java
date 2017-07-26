@@ -290,6 +290,28 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Purchases the specified phone number in this area code.
      * 
+     * @param phoneNumber Phone number you want to purchase in E.164 format (+country code +phone number). For US numbers, the format will be +1xxxyyyzzzz.
+     * If you specify this parameter, the area_code parameter will be ignored.
+     * @param areaCode Three-digit US area code you want to specify for the phone number you want to purchase. The API will assign a random number within 
+     * the area code. You must specify this parameter if phone_number is not specified.
+     * @param optionalParams a map of {@link String } anf {@link Object } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>name</code> – New phone number as it is displayed to users. Default format: Friendly national format: (xxx) yyy-zzzz.
+     * <p>
+     * <code>status_text_url</code> – URL to receive message status callback requests for messages sent via the API using this associated phone number. 
+     * Max. length: 256 characters.
+     * <p>
+     * <code>connector_id</code> – Unique identifier of the connector this message was sent over, if any.
+     * <p>
+     * <code>incoming_text_url</code> – URL for receiving SMS messages to the associated phone number. Max. length: 256 characters.
+     * <p>
+     * <code>incoming_text_method</code> – HTTP method used for the incoming_text_url requests. Max. length: 8 characters. Possible values: GET or POST. Default value: POST.
+     * <p>
+     * <code>incoming_text_fallback_url</code> – URL for receiving SMS messages if incoming_text_url fails. Only valid if you provide a value for the incoming_text_url parameter. 
+     * Max. length: 256 characters.
+     * <p>
+     * <code>incoming_text_fallback_method</code> – HTTP method used for incoming_text_url_fallback requests. Max. length: 8 characters. Possible values: GET or POST. Default value: POST.
+     * 
      * @return associated number
      * @throws VivialConnectException if there is an API-level error
      *
@@ -304,6 +326,29 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
 
     /**
      * Purchases the specified phone number in this area code with a phone number type.
+     * 
+     * @param phoneNumber Phone number you want to purchase in E.164 format (+country code +phone number). For US numbers, the format will be +1xxxyyyzzzz.
+     * If you specify this parameter, the area_code parameter will be ignored.
+     * @param areaCode Three-digit US area code you want to specify for the phone number you want to purchase. The API will assign a random number within 
+     * the area code. You must specify this parameter if phone_number is not specified.
+     * @param phoneNumberType {@link String} with the phone number type i.e local
+     * @param optionalParams a map of {@link String } anf {@link Object } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>name</code> – New phone number as it is displayed to users. Default format: Friendly national format: (xxx) yyy-zzzz.
+     * <p>
+     * <code>status_text_url</code> – URL to receive message status callback requests for messages sent via the API using this associated phone number. 
+     * Max. length: 256 characters.
+     * <p>
+     * <code>connector_id</code> – Unique identifier of the connector this message was sent over, if any.
+     * <p>
+     * <code>incoming_text_url</code> – URL for receiving SMS messages to the associated phone number. Max. length: 256 characters.
+     * <p>
+     * <code>incoming_text_method</code> – HTTP method used for the incoming_text_url requests. Max. length: 8 characters. Possible values: GET or POST. Default value: POST.
+     * <p>
+     * <code>incoming_text_fallback_url</code> – URL for receiving SMS messages if incoming_text_url fails. Only valid if you provide a value for the incoming_text_url parameter. 
+     * Max. length: 256 characters.
+     * <p>
+     * <code>incoming_text_fallback_method</code> – HTTP method used for incoming_text_url_fallback requests. Max. length: 8 characters. Possible values: GET or POST. Default value: POST.
      * 
      * @return associated number
      * @throws VivialConnectException if there is an API-level error
