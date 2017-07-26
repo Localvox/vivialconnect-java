@@ -245,7 +245,11 @@ public class Message extends VivialConnectResource{
     /**
      * Lists and filters the messages associated with the current account. If there are none, the method will return an empty {@link List}
      * 
-     * @param queryParameters a map of {@link String } key-value pairs
+     * @param queryParameters a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>page</code> – Page number within the returned list of text messages. Default value: 1.
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
      * 
      * @return a list of messages
      * @throws VivialConnectException if there is an API-level error

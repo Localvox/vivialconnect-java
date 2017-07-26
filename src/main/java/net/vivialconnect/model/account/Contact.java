@@ -311,7 +311,11 @@ public class Contact extends VivialConnectResource{
      * <p>
      * If no {@link Contact} were found for this {@link Account}, a VivialConnectException will be thrown.
      * 
-     * @param queryParams a map of {@link String } key-value pairs
+     * @param queryParams a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>page</code> – Page number within the returned list of accounts. Default value: 1.
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
      * @return a list of contact
      * @throws VivialConnectException if there is an API-level error
      * 

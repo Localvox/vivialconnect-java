@@ -337,7 +337,21 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no {@link AssociatedNumber} were found for this {@link Account}, the method will return an empty {@link List}
      * 
-     * @param queryParams a map of {@link String } key-value pairs
+     * @param queryParams a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>page</code> – Page number within the returned list of associated phone numbers. Default value: 1.
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
+     * <p>
+     * <code>name</code> – Filters the results to include only phone numbers exactly matching the specified name.
+     * <p>
+     * <code>contains</code> – Filters the results to include only phone numbers that match a number pattern you specify. 
+     * The pattern can include digits and the following wildcard characters:
+     * <p>
+     * ? : matches any single digit
+     * <br>
+     * * : matches zero or more digits
+     * 
      * @return a list of associated number
      * @throws VivialConnectException if there is an API-level error
      * 
@@ -351,6 +365,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * Search for available phone numbers in a specific region using the API.
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
+     *
+     * @param region 2-letter {@link String } region (US state). 
      * 
      * @return a list of available number
      * @throws VivialConnectException if there is an API-level error
@@ -366,6 +382,27 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
+     * @param region 2-letter {@link String } region (US state). 
+     * @param queryParams a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
+     * <p>
+     * <code>contains</code> – Filters the results to include only phone numbers that match a number pattern you specify. 
+     * The pattern can include letters, digits, and the following wildcard characters:
+     * <p>
+     * ? : matches any single digit
+     * <br>
+     * : matches zero or more digits
+     * <p>
+     * <code>in_postal_code</code> – Filters the results to include only phone numbers in a specified 5-digit postal code.
+     * <p>
+     * <code>area_code</code> – Filters the results to include only phone numbers by US area code.
+     * <p>
+     * <code>in_city</code> – Filters the results to include only phone numbers in a specified city.
+     * <p>
+     * <code>local_number</code> – Filters the results to include only phone numbers that match the first three or more digits you 
+     * specify to immediately follow the area code. To use this parameter, you must also specify an area_code.
+     * 
      * @return a list of available number
      * @throws VivialConnectException if there is an API-level error
      *
@@ -379,6 +416,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
+     * @param areaCode {@link String } representing a US area code.
+     * 
      * @return a list of available number
      * @throws VivialConnectException if there is an API-level error
      *
@@ -391,6 +430,27 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * Search and filter available phone numbers in a specific area code using the API.
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
+     *
+     * @param areaCode {@link String } representing a US area code.
+     * @param queryParams a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
+     * <p>
+     * <code>contains</code> – Filters the results to include only phone numbers that match a number pattern you specify. 
+     * The pattern can include letters, digits, and the following wildcard characters:
+     * <p>
+     * ? : matches any single digit
+     * <br>
+     * : matches zero or more digits
+     * <p>
+     * <code>in_postal_code</code> – Filters the results to include only phone numbers in a specified 5-digit postal code.
+     * <p>
+     * <code>in_region</code> – Filters the results include only phone numbers in a specified 2-letter region (US state).
+     * <p>
+     * <code>in_city</code> – Filters the results to include only phone numbers in a specified city.
+     * <p>
+     * <code>local_number</code> – Filters the results to include only phone numbers that match the first three or more digits you 
+     * specify to immediately follow the area code. To use this parameter, you must also specify an area_code.
      * 
      * @return a list of available number
      * @throws VivialConnectException if there is an API-level error
@@ -405,6 +465,8 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
      * 
+     * @param postalCode 5-digit {@link String } postal code.
+     * 
      * @return a list of available number
      * @throws VivialConnectException if there is an API-level error
      *
@@ -417,6 +479,27 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      * Search and filter available phone numbers in a specific postal code using the API.
      * <p>
      * If no numbers were found for this {@link Account}, the method will return an empty {@link List}
+     * 
+     * @param postalCode 5-digit {@link String } postal code.
+     * @param queryParams a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
+     * <p>
+     * <code>contains</code> – Filters the results to include only phone numbers that match a number pattern you specify. 
+     * The pattern can include letters, digits, and the following wildcard characters:
+     * <p>
+     * ? : matches any single digit
+     * <br>
+     * : matches zero or more digits
+     * <p>
+     * <code>area_code</code> – Filters the results to include only phone numbers by US area code.
+     * <p>
+     * <code>in_region</code> – Filters the results include only phone numbers in a specified 2-letter region (US state).
+     * <p>
+     * <code>in_city</code> – Filters the results to include only phone numbers in a specified city.
+     * <p>
+     * <code>local_number</code> – Filters the results to include only phone numbers that match the first three or more digits you 
+     * specify to immediately follow the area code. To use this parameter, you must also specify an area_code.
      * 
      * @return a list of available number
      * @throws VivialConnectException if there is an API-level error
@@ -441,7 +524,20 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Lists and filters numbers associated with the current account. If there are none, the method will return an empty {@link List}
      * 
-     * @param queryParams a map of {@link String } key-value pairs
+     * @param queryParams a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>page</code> – Page number within the returned list of associated phone numbers. Default value: 1.
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
+     * <p>
+     * <code>name</code> – Filters the results to include only phone numbers exactly matching the specified name.
+     * <p>
+     * <code>contains</code> – Filters the results to include only phone numbers that match a number pattern you specify. 
+     * The pattern can include digits and the following wildcard characters:
+     * <p>
+     * ? : matches any single digit
+     * <br>
+     * * : matches zero or more digits
      * 
      * @return a list of associated number
      * @throws VivialConnectException if there is an API-level error

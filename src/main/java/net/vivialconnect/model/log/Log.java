@@ -143,7 +143,18 @@ public class Log extends VivialConnectResource {
      *
      * @param startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
-     * @param queryParameters a map of {@link String } key-value pairs
+     * @param queryParameters a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>log_type</code> – The log type as a string. Log-types are typically of the form ITEM_TYPE.ACTION, 
+     * where ITEM_TYPE is the type of item that was affected and ACTION is what happened to it. For example: message.queued.
+     * <p>
+     * <code>item_id</code> – Unique id of item that was affected.
+     * <p>
+     * <code>operator_id</code> – Unique id of operator that caused this log.
+     * <p>
+     * <code>limit</code> – Used for pagination: number of log records to return. Maximum value: 150.
+     * <p>
+     * <code>start_key</code> – Used for pagination: value of last_key from previous response
      *
      * @return a list of log collection
      * @throws VivialConnectException if there is an API-level error
@@ -181,7 +192,16 @@ public class Log extends VivialConnectResource {
      * @param startTime start date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param endTime end date and time in ISO 8601 format like YYYYMMDDThhmmssZ
      * @param aggregatorType valid values are: minutes, hours, days, months, years
-     * @param queryParameters a map of {@link String } key-value pairs
+     * @param queryParameters a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>log_type</code> – The log type as a string. Log-types are typically of the form ITEM_TYPE.ACTION, where ITEM_TYPE is the 
+     * type of item that was affected and ACTION is what happened to it. For example: message.queued.
+     * <p>
+     * <code>operator_id</code> – Unique id of operator that caused this log.
+     * <p>
+     * <code>limit</code> – Used for pagination. Number of log records to return. Maximum value: 150.
+     * <p>
+     * <code>start_key</code> – Used for pagination. Value of last_key from previous response
      * 
      * @return a list of log collection
      * @throws VivialConnectException if there is an API-level error

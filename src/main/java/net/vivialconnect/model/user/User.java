@@ -108,7 +108,12 @@ public class User extends VivialConnectResource{
      * <p>
      * If no {@link User} were found for this {@link Account}, the method will return an empty {@link List}.
      * 
-     * @param queryParams a map of {@link String } key-value pairs
+     * @param queryParams a map of {@link String } key-value pairs used to filter results, possible values are:
+     * <p>
+     * <code>page</code> – Page number within the returned list of associated phone numbers. Default value: 1.
+     * <p>
+     * <code>limit</code> – Number of results to return per page. Default value: 50. Maximum value: 150.
+     * 
      * @return a list of users
      * @throws VivialConnectException if there is an API-level error
      * 
@@ -154,6 +159,9 @@ public class User extends VivialConnectResource{
      * Updates the user's password.
      * <p>
      * Returns <code>true<code> if the password was successfully updated.
+     * 
+     * @param oldPassword {@link String } representing actual password for this user
+     * @param newPassword {@link String } representing new password to be updated
      * 
      * @return whether the password was updated or not
      * @throws VivialConnectException if there is an API-level error

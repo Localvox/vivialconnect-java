@@ -94,7 +94,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
     }
 
     /**
-     * Total number of users in the account specified. If there are none, this method will return <code>0</code>.
+     * Total number of connectors in the account specified. If there are none, this method will return <code>0</code>.
      * 
      * @return connector count
      * @throws VivialConnectException if there is an API-level error
