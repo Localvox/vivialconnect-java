@@ -97,8 +97,9 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     /**
      * Set of boolean flags indicating the following capabilities supported by the associated phone number
      */
-    @JsonProperty
-    private Capabilities capabilities;
+    
+    /*@JsonProperty
+    private Capabilities capabilities;*/
 
     /**
      * City where the available phone number is located
@@ -189,7 +190,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
         this.incomingTextFallbackUrl = number.getIncomingTextFallbackUrl();
         this.incomingTextFallbackMethod = number.getIncomingTextFallbackMethod();
         this.voiceForwardingNumber = number.getVoiceForwardingNumber();
-        this.capabilities = number.getCapabilities();
+        /* this.capabilities = number.getCapabilities(); */
         this.city = number.getCity();
         this.region = number.getRegion();
         this.lata = number.getLata();
@@ -819,7 +820,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     }
 
 
-    @Override
+    /* @Override
     public Capabilities getCapabilities(){
         return capabilities;
     }
@@ -828,7 +829,7 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
     @Override
     public void setCapabilities(Capabilities capabilities){
         this.capabilities = capabilities;
-    }
+    } */
 
 
     @Override

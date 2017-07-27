@@ -454,6 +454,7 @@ public class Message extends VivialConnectResource{
      * <p>
      * This supports text, unicode characters, emojis or chinese letters
      *
+     * @param body the body of the message
      */
     public void setBody(String body){
         /* Escape Non-ASCII characters in order to support things like emojis and Chinese characters */

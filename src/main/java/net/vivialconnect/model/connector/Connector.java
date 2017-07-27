@@ -376,7 +376,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see Connector#setCallbacks(java.util.List)
      * 
      * @return an instance {@link ConnectorWithCallbacks} holding an empty list of callbacks
-     * @throws VivialConnectException
+     * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithCallbacks deleteAllCallbacks() throws VivialConnectException {
         return deleteCallbacks(this.callbacks);
@@ -390,7 +390,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see Callback
      * 
      * @return an instance {@link ConnectorWithCallbacks} holding the updated list of callbacks
-     * @throws VivialConnectException
+     * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithCallbacks deleteSingleCallback(Callback callback) throws VivialConnectException {
         List<Callback> singleCallbackList = new ArrayList<Callback>(1);
@@ -407,7 +407,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see Callback
      * 
      * @return an instance {@link ConnectorWithCallbacks} holding the updated list of callbacks
-     * @throws VivialConnectException
+     * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithCallbacks deleteCallbacks(List<Callback> callbacks) throws VivialConnectException {
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)
@@ -562,7 +562,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see Connector#setPhoneNumbers(List)
      * 
      * @return an instance {@link ConnectorWithPhoneNumbers} holding an empty list of phone numbers
-     * @throws VivialConnectException
+     * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithPhoneNumbers deleteAllPhoneNumbers() throws VivialConnectException{
         return deletePhoneNumbers(this.phoneNumbers);
@@ -576,7 +576,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see PhoneNumber
      * 
      * @return an instance {@link ConnectorWithPhoneNumbers} holding the updated list of phone numbers
-     * @throws VivialConnectException
+     * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithPhoneNumbers deleteSinglePhoneNumber(PhoneNumber phoneNumber) throws VivialConnectException{
         List<PhoneNumber> singlePhoneNumberList = new ArrayList<PhoneNumber>(1);
@@ -593,7 +593,7 @@ public class Connector extends VivialConnectResource implements ConnectorWithCal
      * @see PhoneNumber
      * 
      * @return an instance {@link ConnectorWithPhoneNumbers} holding the updated list of phone numbers
-     * @throws VivialConnectException
+     * @throws VivialConnectException if there is an API-level error
      */
     public ConnectorWithPhoneNumbers deletePhoneNumbers(List<PhoneNumber> phoneNumbers) throws VivialConnectException{
         JsonBodyBuilder builder = JsonBodyBuilder.forClass(Connector.class)

@@ -50,10 +50,10 @@ public interface AssociatedNumber extends INumber{
     void setVoiceForwardingNumber(String voiceForwardingNumber);
 
 
-    Capabilities getCapabilities();
+    /* Capabilities getCapabilities();
 
 
-    void setCapabilities(Capabilities capabilities);
+    void setCapabilities(Capabilities capabilities); */
 
 
     boolean isActive();

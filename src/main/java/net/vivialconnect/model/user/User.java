@@ -158,7 +158,7 @@ public class User extends VivialConnectResource{
     /**
      * Updates the user's password.
      * <p>
-     * Returns <code>true<code> if the password was successfully updated.
+     * Returns <code>true</code> if the password was successfully updated.
      * 
      * @param oldPassword {@link String } representing actual password for this user
      * @param newPassword {@link String } representing new password to be updated
