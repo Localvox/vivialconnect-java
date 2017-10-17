@@ -33,8 +33,9 @@
       <developer>
         <email>support@support.vivialconnect.net</email>
         <name>Vivial Connect</name>
+        <organization>Vivial Connect</organization>
+        <organizationUrl>https://www.vivialconnect.net</organizationUrl>
         <url>https://github.com/vivialconnect</url>
-        <id>vivialconnect</id>
       </developer>
     </developers>
 
