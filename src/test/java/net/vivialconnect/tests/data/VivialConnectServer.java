@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.vivialconnect.client.VivialConnectClient;
 import net.vivialconnect.model.account.Account;
+import net.vivialconnect.model.account.Contact;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
 import net.vivialconnect.model.number.AssociatedNumber;
@@ -47,8 +48,23 @@ public class VivialConnectServer implements DataSource {
     }
 
     @Override
+    public AssociatedNumber getLocalNumberById(int numberId) throws VivialConnectException {
+        return Number.getLocalNumberById(numberId);
+    }
+
+    @Override
     public List<AssociatedNumber> getAssociatedNumbers() throws VivialConnectException {
         return Number.getAssociatedNumbers();
+    }
+
+    @Override
+    public List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException {
+        return Number.getLocalAssociatedNumbers();
+    }
+
+    @Override
+    public List<AvailableNumber> findAvailableNumbersInRegion(String region, Map<String, String> filters) throws VivialConnectException {
+        return Number.findAvailableNumbersInRegion(region, filters);
     }
 
     @Override
@@ -57,13 +73,28 @@ public class VivialConnectServer implements DataSource {
     }
 
     @Override
+    public List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode, Map<String, String> filters) throws VivialConnectException {
+        return Number.findAvailableNumbersByPostalCode(postalCode, filters);
+    }
+
+    @Override
     public int numberCount() throws VivialConnectException {
         return Number.count();
     }
 
     @Override
-    public List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException {
-        return Number.getLocalAssociatedNumbers();
+    public int numberCountLocal() throws VivialConnectException {
+        return Number.countLocal();
+    }
+
+    @Override
+    public AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException {
+        return Number.buy(phoneNumber, areaCode, phoneNumberType, optionalParams);
+    }
+
+    @Override
+    public AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams) throws VivialConnectException {
+        return Number.buyLocalNumber(phoneNumber, areaCode, optionalParams);
     }
 
     @Override
@@ -74,6 +105,11 @@ public class VivialConnectServer implements DataSource {
     @Override
     public void updateNumber(AssociatedNumber number) throws VivialConnectException {
         number.update();
+    }
+
+    @Override
+    public void updateLocalNumber(AssociatedNumber number) throws VivialConnectException {
+        number.updateLocalNumber();
     }
 
     @Override
@@ -104,5 +140,16 @@ public class VivialConnectServer implements DataSource {
     @Override
     public int messageCount() throws VivialConnectException {
         return Message.count();
+    }
+
+    @Override
+    public Contact createContact(Contact contact) throws VivialConnectException {
+        contact.create();
+        return contact;
+    }
+
+    @Override
+    public List<Contact> getContacts() throws VivialConnectException {
+        return Contact.getContacts();
     }
 }

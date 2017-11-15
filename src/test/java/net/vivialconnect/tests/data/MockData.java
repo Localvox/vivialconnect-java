@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.vivialconnect.model.ResourceCount;
 import net.vivialconnect.model.account.Account;
+import net.vivialconnect.model.account.Contact;
+import net.vivialconnect.model.account.ContactCollection;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
 import net.vivialconnect.model.message.MessageCollection;
@@ -27,6 +29,7 @@ public class MockData implements DataSource {
 
     private List<AvailableNumber> availableNumbers;
     private List<AssociatedNumber> associatedNumbers;
+    private List<Contact> contacts;
 
     private List<Message> messages;
     private int pendingCount = 0;
@@ -50,6 +53,15 @@ public class MockData implements DataSource {
         return findAssociatedNumber(numberId);
     }
 
+    @Override
+    public AssociatedNumber getLocalNumberById(int numberId) throws VivialConnectException {
+        if (numberId < 1) {
+            handleInvalidId(numberId);
+        }
+
+        return findAssociatedNumber(numberId);
+    }
+
     private AssociatedNumber findAssociatedNumber(int numberId) {
         for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture()) {
             if (associatedNumber.getId() == numberId) {
@@ -66,16 +78,6 @@ public class MockData implements DataSource {
     }
 
     @Override
-    public List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
-        return applyFilters(loadAvailableNumbersFromFixture(), filters);
-    }
-
-    @Override
-    public int numberCount() throws VivialConnectException {
-        return loadFixture("number-count", ResourceCount.class, false).getCount();
-    }
-
-    @Override
     public List<AssociatedNumber> getLocalAssociatedNumbers() throws VivialConnectException {
         List<AssociatedNumber> localAssociatedNumbers = new ArrayList<AssociatedNumber>();
         for (AssociatedNumber associatedNumber : loadAssociatedNumbersFromFixture()) {
@@ -85,6 +87,41 @@ public class MockData implements DataSource {
         }
 
         return localAssociatedNumbers;
+    }
+
+    @Override
+    public List<AvailableNumber> findAvailableNumbersInRegion(String region, Map<String, String> filters) throws VivialConnectException {
+        return applyFilters(loadAvailableNumbersFromFixture(), filters);
+    }
+
+    @Override
+    public List<AvailableNumber> findAvailableNumbersByAreaCode(String areaCode, Map<String, String> filters) throws VivialConnectException {
+        return applyFilters(loadAvailableNumbersFromFixture(), filters);
+    }
+
+    @Override
+    public List<AvailableNumber> findAvailableNumbersByPostalCode(String postalCode, Map<String, String> filters) throws VivialConnectException {
+        return applyFilters(loadAvailableNumbersFromFixture(), filters);
+    }
+
+    @Override
+    public int numberCount() throws VivialConnectException {
+        return loadFixture("number-count", ResourceCount.class, false).getCount();
+    }
+
+    @Override
+    public int numberCountLocal() throws VivialConnectException {
+        return loadFixture("number-count-local", ResourceCount.class, false).getCount();
+    }
+
+    @Override
+    public AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException {
+        return loadAssociatedNumbersFromFixture().get(0);
+    }
+
+    @Override
+    public AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams) throws VivialConnectException {
+        return loadAssociatedNumbersFromFixture().get(0);
     }
 
     @Override
@@ -99,6 +136,11 @@ public class MockData implements DataSource {
 
     @Override
     public void updateNumber(AssociatedNumber number) throws VivialConnectException {
+        number.setDateModified(new Date());
+    }
+
+    @Override
+    public void updateLocalNumber(AssociatedNumber number) throws VivialConnectException {
         number.setDateModified(new Date());
     }
 
@@ -248,5 +290,19 @@ public class MockData implements DataSource {
         vce.setResponseCode(400);
 
         throw vce;
+    }
+
+    @Override
+    public Contact createContact(Contact contact) throws VivialConnectException {
+        return contact;
+    }
+
+    @Override
+    public List<Contact> getContacts() throws VivialConnectException {
+        if (contacts == null) {
+            contacts = loadFixture("contacts", ContactCollection.class, false).getContacts();
+        }
+
+        return contacts;
     }
 }

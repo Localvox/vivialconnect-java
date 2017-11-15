@@ -146,6 +146,7 @@ public abstract class VivialConnectResource implements Serializable {
 
     private static VivialConnectException handleException(Exception e){
         VivialConnectException vce = null;
+        System.out.println(e.toString());
 
 	if (VivialConnectException.class.isAssignableFrom(e.getClass())){
             vce = (VivialConnectException) e;
@@ -267,11 +268,12 @@ public abstract class VivialConnectResource implements Serializable {
 
         try{
             connection = prepareConnection(endpoint, method);
+            // System.out.println(method + " " + endpoint);
             setHeaders(connection, headers);
             setBody(connection, body);
 
             String response = doRequest(connection);
-            //System.out.println(response);
+            // System.out.println("Response:\n" + response);
 
             return unmarshallResponse(response, responseClass);
         }finally{
@@ -317,6 +319,7 @@ public abstract class VivialConnectResource implements Serializable {
             reader = createBufferedReader(inputStream);
 
             String response = readResponse(reader);
+            // System.out.println(connection.getResponseCode());
             if (connection.getResponseCode() == 204 /* No Content */){
                 throw new NoContentException();
             }
