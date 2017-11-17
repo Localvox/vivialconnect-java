@@ -19,6 +19,8 @@ import net.vivialconnect.model.account.ContactCollection;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
 import net.vivialconnect.model.message.MessageCollection;
+import net.vivialconnect.model.message.Attachment;
+import net.vivialconnect.model.message.AttachmentCollection;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.NumberCollection;
@@ -26,6 +28,8 @@ import net.vivialconnect.model.number.NumberInfo;
 import net.vivialconnect.model.user.User;
 import net.vivialconnect.model.user.UserCollection;
 import net.vivialconnect.tests.BaseTestCase;
+import net.vivialconnect.model.log.Log;
+import net.vivialconnect.model.log.LogCollection;
 
 public class MockData implements DataSource {
 
@@ -33,8 +37,9 @@ public class MockData implements DataSource {
     private List<AssociatedNumber> associatedNumbers;
     private List<Contact> contacts;
     private List<User> users;
-
+    private List<Attachment> attachments;
     private List<Message> messages;
+    private LogCollection logs;
     private int pendingCount = 0;
 
     @Override
@@ -202,14 +207,55 @@ public class MockData implements DataSource {
     }
 
     @Override
+    public int messageCount() throws VivialConnectException {
+        return loadFixture("message-count", ResourceCount.class, false).getCount() + pendingCount;
+    }
+
+    @Override
     public void redactMessage(Message message) throws VivialConnectException {
         message.setBody("");
         message.setDateModified(new Date());
     }
 
+    private List<Attachment> loadAttachmentsFromFixture() {
+        if (attachments == null) {
+            attachments = loadFixture("attachments", AttachmentCollection.class, false).getAttachments();
+        }
+
+        return attachments;
+    }
+
     @Override
-    public int messageCount() throws VivialConnectException {
-        return loadFixture("message-count", ResourceCount.class, false).getCount() + pendingCount;
+    public List<Attachment> getAttachments(Message message) throws VivialConnectException {
+        return loadAttachmentsFromFixture();
+    }
+
+    @Override
+    public Attachment getAttachmentById(int messageId, int attachmentId) throws VivialConnectException {
+        Message message = getMessageById(messageId);
+        List<Attachment> attachments = getAttachments(message);
+
+        if (attachmentId < 1) {
+            handleInvalidId(attachmentId);
+        }
+
+        for (Attachment attachment : attachments) {
+            if (attachment.getId() == attachmentId) {
+                return attachment;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public int attachmentCount(int messageId) throws VivialConnectException {
+        return loadFixture("attachment-count", ResourceCount.class, false).getCount();
+    }
+
+    @Override
+    public boolean deleteAttachment(Attachment attachment) throws VivialConnectException {
+        return true;
     }
 
     private List<AssociatedNumber> loadAssociatedNumbersFromFixture() {
@@ -389,5 +435,24 @@ public class MockData implements DataSource {
         }
 
         return users;
+    }
+
+    @Override
+    public LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException {
+        LogCollection logs = loadLogsFromFixture();
+        return logs;
+    }
+
+    @Override
+    public LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException {
+        return loadFixture("logs-aggregate-hours", LogCollection.class, false);
+    }
+
+    private LogCollection loadLogsFromFixture() {
+        if (logs == null) {
+            logs = loadFixture("logs", LogCollection.class, false);
+        }
+
+        return logs;
     }
 }

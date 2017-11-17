@@ -90,85 +90,85 @@ public class NumberTest extends BaseTestCase {
         assertEquals(getLocalAssociatedNumbers().size(), getDataSource().numberCountLocal());
     }
 
-    // @Test
-    // public void test_buy_available_number() throws VivialConnectException {
-    //     int numbersToTry = 5;
-    //     List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
-    //             "NC", withLimitOf(numbersToTry));
+    @Test
+    public void test_buy_available_number() throws VivialConnectException {
+        int numbersToTry = 5;
+        List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
+                "NC", withLimitOf(numbersToTry));
 
-    //     if (availableNumbers.size() > 0) {
-    //         assertEquals(numbersToTry, availableNumbers.size());
-    //     }
+        if (availableNumbers.size() > 0) {
+            assertEquals(numbersToTry, availableNumbers.size());
+        }
 
-    //     AvailableNumber availableNumber = null;
-    //     AssociatedNumber boughtNumber = null;
-    //     int numIndex = 0;
+        AvailableNumber availableNumber = null;
+        AssociatedNumber boughtNumber = null;
+        int numIndex = 0;
 
-    //     do { // Try multiple numbers due to the BW bug causing unavailable numbers to show up as available
-    //         availableNumber = availableNumbers.get(numIndex);
-    //         System.out.println(availableNumber.getPhoneNumber());
-    //         boughtNumber = availableNumber.buy();
-    //         numIndex++;
-    //     } while (boughtNumber == null && numIndex < numbersToTry);
+        do { // Try multiple numbers due to the BW bug causing unavailable numbers to show up as available
+            availableNumber = availableNumbers.get(numIndex);
+            System.out.println(availableNumber.getPhoneNumber());
+            boughtNumber = availableNumber.buy();
+            numIndex++;
+        } while (boughtNumber == null && numIndex < numbersToTry);
 
-    //     assertNotNull(boughtNumber);
-    //     assertEquals(availableNumber.getPhoneNumber(), boughtNumber.getPhoneNumber());
-    //     assertTrue(boughtNumber.delete());
-    // }
+        assertNotNull(boughtNumber);
+        assertEquals(availableNumber.getPhoneNumber(), boughtNumber.getPhoneNumber());
+        assertTrue(boughtNumber.delete());
+    }
 
-    // @Test
-    // public void test_buy_number() throws VivialConnectException {
-    //     int numbersToTry = 5;
-    //     List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
-    //             "NC", withLimitOf(numbersToTry));
+    @Test
+    public void test_buy_number() throws VivialConnectException {
+        int numbersToTry = 5;
+        List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
+                "NC", withLimitOf(numbersToTry));
 
-    //     if (availableNumbers.size() > 0) {
-    //         assertEquals(numbersToTry, availableNumbers.size());
-    //     }
+        if (availableNumbers.size() > 0) {
+            assertEquals(numbersToTry, availableNumbers.size());
+        }
 
-    //     AvailableNumber availableNumber = null;
-    //     AssociatedNumber boughtNumber = null;
-    //     int numIndex = 0;
+        AvailableNumber availableNumber = null;
+        AssociatedNumber boughtNumber = null;
+        int numIndex = 0;
 
-    //     do { // Try multiple numbers due to the BW bug causing unavailable numbers to show up as available
-    //         availableNumber = availableNumbers.get(numIndex);
-    //         String areaCode = availableNumber.getPhoneNumber().substring(2, 5);
-    //         boughtNumber = getDataSource().buy(availableNumber.getPhoneNumber(),
-    //                         areaCode, availableNumber.getPhoneNumberType(), null);
-    //         numIndex++;
-    //     } while (boughtNumber == null && numIndex < numbersToTry);
+        do { // Try multiple numbers due to the BW bug causing unavailable numbers to show up as available
+            availableNumber = availableNumbers.get(numIndex);
+            String areaCode = availableNumber.getPhoneNumber().substring(2, 5);
+            boughtNumber = getDataSource().buy(availableNumber.getPhoneNumber(),
+                            areaCode, availableNumber.getPhoneNumberType(), null);
+            numIndex++;
+        } while (boughtNumber == null && numIndex < numbersToTry);
 
-    //     assertNotNull(boughtNumber);
-    //     assertEquals(availableNumber.getPhoneNumber(), boughtNumber.getPhoneNumber());
-    //     assertTrue(boughtNumber.delete());
-    // }
+        assertNotNull(boughtNumber);
+        assertEquals(availableNumber.getPhoneNumber(), boughtNumber.getPhoneNumber());
+        assertTrue(boughtNumber.delete());
+    }
 
-    // @Test
-    // public void test_buy_local_number() throws VivialConnectException {
-    //     int numbersToTry = 5;
+    @Test
+    public void test_buy_local_number() throws VivialConnectException {
+        int numbersToTry = 5;
 
-    //     List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
-    //             "NC", withLimitOf(numbersToTry));
+        List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
+                "NC", withLimitOf(numbersToTry));
 
-    //     if (availableNumbers.size() > 0) {
-    //         assertEquals(numbersToTry, availableNumbers.size());
-    //     }
+        if (availableNumbers.size() > 0) {
+            assertEquals(numbersToTry, availableNumbers.size());
+        }
 
-    //     AvailableNumber availableNumber = null;
-    //     AssociatedNumber boughtNumber = null;
-    //     int numIndex = 0;
+        AvailableNumber availableNumber = null;
+        AssociatedNumber boughtNumber = null;
+        int numIndex = 0;
 
-    //     do { // Try multiple numbers due to the BW bug causing unavailable numbers to show up as available
-    //         availableNumber = availableNumbers.get(numIndex);
-    //         String areaCode = availableNumber.getPhoneNumber().substring(2, 5);
-    //         boughtNumber = getDataSource().buyLocalNumber(availableNumber.getPhoneNumber(), areaCode, null);
-    //         numIndex++;
-    //     } while (boughtNumber == null && numIndex < numbersToTry);
+        do { // Try multiple numbers due to the BW bug causing unavailable numbers to show up as available
+            availableNumber = availableNumbers.get(numIndex);
+            String areaCode = availableNumber.getPhoneNumber().substring(2, 5);
+            boughtNumber = getDataSource().buyLocalNumber(availableNumber.getPhoneNumber(), areaCode, null);
+            numIndex++;
+        } while (boughtNumber == null && numIndex < numbersToTry);
 
-    //     assertNotNull(boughtNumber);
-    //     assertEquals(availableNumber.getPhoneNumber(), boughtNumber.getPhoneNumber());
-    //     assertTrue(boughtNumber.deleteLocalNumber());
-    // }
+        assertNotNull(boughtNumber);
+        assertEquals(availableNumber.getPhoneNumber(), boughtNumber.getPhoneNumber());
+        assertTrue(boughtNumber.deleteLocalNumber());
+    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void test_delete_local_number_with_non_local_type_throws_unsupported_operation_exception() throws VivialConnectException {

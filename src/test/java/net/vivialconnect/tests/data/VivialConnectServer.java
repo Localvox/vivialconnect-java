@@ -1,5 +1,6 @@
 package net.vivialconnect.tests.data;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,12 +9,15 @@ import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.account.Contact;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
+import net.vivialconnect.model.message.Attachment;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.Number;
 import net.vivialconnect.model.number.NumberInfo;
 import net.vivialconnect.model.user.User;
 import net.vivialconnect.model.format.JsonBodyBuilder;
+import net.vivialconnect.model.log.Log;
+import net.vivialconnect.model.log.LogCollection;
 
 // Test-only subclass of user for creating new users through the API
 class AdminUser extends User {
@@ -156,6 +160,26 @@ public class VivialConnectServer implements DataSource {
     }
 
     @Override
+    public List<Attachment> getAttachments(Message message) throws VivialConnectException {
+        return message.getAttachments();
+    }
+
+    @Override
+    public Attachment getAttachmentById(int messageId, int attachmentId) throws VivialConnectException{
+        return Attachment.getAttachmentById(messageId, attachmentId);
+    }
+
+    @Override
+    public int attachmentCount(int messageId) throws VivialConnectException{
+        return Attachment.count(messageId);
+    }
+
+    @Override
+    public boolean deleteAttachment(Attachment attachment) throws VivialConnectException{
+        return attachment.delete();
+    }
+
+    @Override
     public Contact createContact(Contact contact) throws VivialConnectException {
         return contact.create();
     }
@@ -214,4 +238,15 @@ public class VivialConnectServer implements DataSource {
     public int userCount() throws VivialConnectException {
         return User.count();
     }
+
+    @Override
+    public LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException {
+        return Log.getLogs(startTime, endTime);
+    }
+
+    @Override
+    public LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException {
+        return Log.getAggregate(startTime, endTime, aggregatorType);
+    }
+
 }

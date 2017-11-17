@@ -2,15 +2,19 @@ package net.vivialconnect.tests.data;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.account.Contact;
 import net.vivialconnect.model.user.User;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
+import net.vivialconnect.model.message.Attachment;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.NumberInfo;
+import net.vivialconnect.model.log.Log;
+import net.vivialconnect.model.log.LogCollection;
 
 public interface DataSource {
 
@@ -64,6 +68,16 @@ public interface DataSource {
 
     void redactMessage(Message message) throws VivialConnectException;
 
+    List<Attachment> getAttachments(Message message) throws VivialConnectException;
+
+    // Attachment
+
+    Attachment getAttachmentById(int messageId, int attachmentId) throws VivialConnectException;
+
+    int attachmentCount(int messageId) throws VivialConnectException;
+
+    boolean deleteAttachment(Attachment attachment) throws VivialConnectException;
+
     //Contact
 
     Contact createContact(Contact contact) throws VivialConnectException;
@@ -91,4 +105,10 @@ public interface DataSource {
     User getUserById(int userId) throws VivialConnectException;
 
     int userCount() throws VivialConnectException;
+
+    // Logs
+
+    LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException;
+
+    LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException;
 }
