@@ -269,6 +269,7 @@ public abstract class VivialConnectResource implements Serializable {
         try{
             connection = prepareConnection(endpoint, method);
             // System.out.println(method + " " + endpoint);
+            // System.out.println(body);
             setHeaders(connection, headers);
             setBody(connection, body);
 

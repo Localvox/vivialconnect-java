@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.account.Contact;
+import net.vivialconnect.model.user.User;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
 import net.vivialconnect.model.number.AssociatedNumber;
@@ -67,5 +68,27 @@ public interface DataSource {
 
     Contact createContact(Contact contact) throws VivialConnectException;
 
+    Contact updateContact(Contact contact) throws VivialConnectException;
+
+    boolean deleteContact(Contact contact) throws VivialConnectException;
+
     List<Contact> getContacts() throws VivialConnectException;
+
+    Contact getContactById(int contactId) throws VivialConnectException;
+
+    int contactCount() throws VivialConnectException;
+
+    //User
+
+    User createUser(Map<String, Object> attributes) throws VivialConnectException;
+
+    boolean deleteUser(User user) throws VivialConnectException;
+
+    boolean updateUserPassword(User user, String oldPassword, String newPassword) throws VivialConnectException;
+
+    List<User> getUsers() throws VivialConnectException;
+
+    User getUserById(int userId) throws VivialConnectException;
+
+    int userCount() throws VivialConnectException;
 }

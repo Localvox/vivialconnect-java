@@ -23,6 +23,8 @@ import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.NumberCollection;
 import net.vivialconnect.model.number.NumberInfo;
+import net.vivialconnect.model.user.User;
+import net.vivialconnect.model.user.UserCollection;
 import net.vivialconnect.tests.BaseTestCase;
 
 public class MockData implements DataSource {
@@ -30,6 +32,7 @@ public class MockData implements DataSource {
     private List<AvailableNumber> availableNumbers;
     private List<AssociatedNumber> associatedNumbers;
     private List<Contact> contacts;
+    private List<User> users;
 
     private List<Message> messages;
     private int pendingCount = 0;
@@ -298,11 +301,93 @@ public class MockData implements DataSource {
     }
 
     @Override
+    public Contact updateContact(Contact contact) throws VivialConnectException {
+        return contact;
+    }
+
+    @Override
+    public boolean deleteContact(Contact contact) throws VivialConnectException {
+        return true;
+    }
+
+    @Override
+    public Contact getContactById(int contactId) throws VivialConnectException {
+        if (contactId < 1) {
+            handleInvalidId(contactId);
+        }
+
+        for (Contact contact : loadContactsFromFixture()) {
+            if (contact.getId() == contactId) {
+                return contact;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public List<Contact> getContacts() throws VivialConnectException {
+        return loadContactsFromFixture();
+    }
+
+    @Override
+    public int contactCount() throws VivialConnectException {
+        return loadFixture("contact-count", ResourceCount.class, false).getCount();
+    }
+
+    private List<Contact> loadContactsFromFixture() {
         if (contacts == null) {
             contacts = loadFixture("contacts", ContactCollection.class, false).getContacts();
         }
 
         return contacts;
+    }
+
+    @Override
+    public User createUser(Map<String, Object> attributes) throws VivialConnectException {
+        return getUsers().get(0);
+    }
+
+    @Override
+    public boolean deleteUser(User user) throws VivialConnectException {
+        return true;
+    }
+
+    @Override
+    public boolean updateUserPassword(User user, String oldPassword, String newPassword) throws VivialConnectException {
+        return true;
+    }
+
+    @Override
+    public List<User> getUsers() throws VivialConnectException {
+        return loadUsersFromFixture();
+    }
+
+    @Override
+    public User getUserById(int userId) throws VivialConnectException {
+        if (userId < 1) {
+            handleInvalidId(userId);
+        }
+
+        for (User user : loadUsersFromFixture()) {
+            if (user.getId() == userId) {
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public int userCount() throws VivialConnectException {
+        return loadFixture("user-count", ResourceCount.class, false).getCount();
+    }
+
+    private List<User> loadUsersFromFixture() {
+        if (users == null) {
+            users = loadFixture("users", UserCollection.class, false).getUsers();
+        }
+
+        return users;
     }
 }

@@ -12,6 +12,19 @@ import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.Number;
 import net.vivialconnect.model.number.NumberInfo;
+import net.vivialconnect.model.user.User;
+import net.vivialconnect.model.format.JsonBodyBuilder;
+
+// Test-only subclass of user for creating new users through the API
+class AdminUser extends User {
+    public static User createUser(Map<String, Object> attributes) throws VivialConnectException {
+        JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("user");
+        if (attributes != null) {
+            builder = builder.addParams(attributes);
+        }
+        return request(RequestMethod.POST, classURL(User.class), builder.build(), null, User.class);
+    }
+}
 
 public class VivialConnectServer implements DataSource {
 
@@ -144,12 +157,61 @@ public class VivialConnectServer implements DataSource {
 
     @Override
     public Contact createContact(Contact contact) throws VivialConnectException {
-        contact.create();
-        return contact;
+        return contact.create();
+    }
+
+    @Override
+    public Contact updateContact(Contact contact) throws VivialConnectException {
+        return contact.update();
+    }
+
+    @Override
+    public boolean deleteContact(Contact contact) throws VivialConnectException {
+        return contact.delete();
     }
 
     @Override
     public List<Contact> getContacts() throws VivialConnectException {
         return Contact.getContacts();
+    }
+
+    @Override
+    public Contact getContactById(int contactId) throws VivialConnectException {
+        return Contact.getContactById(contactId);
+    }
+
+    @Override
+    public int contactCount() throws VivialConnectException {
+        return Contact.count();
+    }
+
+    @Override
+    public User createUser(Map<String, Object> attributes) throws VivialConnectException {
+        return AdminUser.createUser(attributes);
+    }
+
+    @Override
+    public boolean deleteUser(User user) throws VivialConnectException {
+        return user.delete();
+    }
+
+    @Override
+    public boolean updateUserPassword(User user, String oldPassword, String newPassword) throws VivialConnectException {
+        return user.changePassword(oldPassword, newPassword);
+    }
+
+    @Override
+    public List<User> getUsers() throws VivialConnectException {
+        return User.getUsers();
+    }
+
+    @Override
+    public User getUserById(int userId) throws VivialConnectException {
+        return User.getUserById(userId);
+    }
+
+    @Override
+    public int userCount() throws VivialConnectException {
+        return User.count();
     }
 }
