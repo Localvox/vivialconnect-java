@@ -15,6 +15,11 @@ import net.vivialconnect.model.number.AvailableNumber;
 import net.vivialconnect.model.number.NumberInfo;
 import net.vivialconnect.model.log.Log;
 import net.vivialconnect.model.log.LogCollection;
+import net.vivialconnect.model.connector.Connector;
+import net.vivialconnect.model.connector.Callback;
+import net.vivialconnect.model.connector.PhoneNumber;
+import net.vivialconnect.model.connector.ConnectorWithCallbacks;
+import net.vivialconnect.model.connector.ConnectorWithPhoneNumbers;
 
 public interface DataSource {
 
@@ -111,4 +116,45 @@ public interface DataSource {
     LogCollection getLogs(Date startTime, Date endTime) throws VivialConnectException;
 
     LogCollection getAggregate(Date startTime, Date endTime, String aggregatorType) throws VivialConnectException;
+
+    // Connectors
+
+    Connector createConnector() throws VivialConnectException;
+
+    Connector getConnectorById(int connectorId) throws VivialConnectException;
+
+    List<Connector> getConnectors() throws VivialConnectException;
+
+    int connectorCount()  throws VivialConnectException;
+
+    Connector updateConnector(Connector connector) throws VivialConnectException;
+
+    boolean deleteConnector(Connector connector) throws VivialConnectException;
+
+    ConnectorWithCallbacks createCallbacks(Connector connector) throws VivialConnectException;
+
+    ConnectorWithCallbacks updateCallbacks(Connector connector) throws VivialConnectException;
+
+    ConnectorWithCallbacks deleteAllCallbacks(Connector connector) throws VivialConnectException;
+
+    ConnectorWithCallbacks deleteSingleCallback(Connector connector, Callback callback) throws VivialConnectException;
+
+    ConnectorWithCallbacks deleteCallbacks(Connector connector, List<Callback> callbacks) throws VivialConnectException;
+
+    ConnectorWithCallbacks getCallbacks(int connectorId) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers associatePhoneNumbers(Connector connector) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers updateAssociatedPhoneNumbers(Connector connector) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers deleteAllPhoneNumbers(Connector connector) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers deleteSinglePhoneNumber(Connector connector, PhoneNumber phoneNumber) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers deletePhoneNumbers(Connector connector, List<PhoneNumber> phoneNumbers) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId) throws VivialConnectException;
+
+    int phoneNumberCount(int connectorId) throws VivialConnectException;
+
 }

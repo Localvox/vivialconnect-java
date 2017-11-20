@@ -106,7 +106,6 @@ public class NumberTest extends BaseTestCase {
 
         do { // Try multiple numbers due to the BW bug causing unavailable numbers to show up as available
             availableNumber = availableNumbers.get(numIndex);
-            System.out.println(availableNumber.getPhoneNumber());
             boughtNumber = availableNumber.buy();
             numIndex++;
         } while (boughtNumber == null && numIndex < numbersToTry);

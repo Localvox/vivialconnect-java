@@ -7,14 +7,17 @@ public class ListFormatter implements JsonValueFormatter{
     private StringBuilder builder;
 
 
-    public ListFormatter(){
-        this.builder = new StringBuilder();
-        this.builder.append("[");
-    }
+    // public ListFormatter(){
+    //     this.builder = new StringBuilder();
+    //     this.builder.append("[");
+    // }
 
 
     @Override
     public String formatValue(Object value){
+        this.builder = new StringBuilder();
+        this.builder.append("[");
+
         List list = (List) value;
 
         for (Object object : list){

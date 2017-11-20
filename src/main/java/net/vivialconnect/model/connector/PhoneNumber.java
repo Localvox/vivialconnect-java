@@ -29,7 +29,7 @@ public class PhoneNumber extends VivialConnectResource{
     }
 
 
-    public static ConnectorWithCallbacks getPhoneNumbers(int connectorId) throws VivialConnectException{
+    public static ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId) throws VivialConnectException{
         return request(RequestMethod.GET, classURLWithSuffix(Connector.class, String.format("%d/phone_numbers", connectorId)), null, null, Connector.class);
     }
 

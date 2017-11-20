@@ -18,6 +18,11 @@ import net.vivialconnect.model.user.User;
 import net.vivialconnect.model.format.JsonBodyBuilder;
 import net.vivialconnect.model.log.Log;
 import net.vivialconnect.model.log.LogCollection;
+import net.vivialconnect.model.connector.Connector;
+import net.vivialconnect.model.connector.Callback;
+import net.vivialconnect.model.connector.PhoneNumber;
+import net.vivialconnect.model.connector.ConnectorWithCallbacks;
+import net.vivialconnect.model.connector.ConnectorWithPhoneNumbers;
 
 // Test-only subclass of user for creating new users through the API
 class AdminUser extends User {
@@ -249,4 +254,100 @@ public class VivialConnectServer implements DataSource {
         return Log.getAggregate(startTime, endTime, aggregatorType);
     }
 
+    @Override
+    public Connector createConnector() throws VivialConnectException {
+        Connector connector = new Connector();
+        connector.create();
+        return connector;
+    }
+
+    @Override
+    public Connector getConnectorById(int connectorId) throws VivialConnectException {
+        return Connector.getConnectorById(connectorId);
+    }
+
+    @Override
+    public List<Connector> getConnectors() throws VivialConnectException {
+        return Connector.getConnectors();
+    }
+
+    @Override
+    public int connectorCount()  throws VivialConnectException {
+        return Connector.count();
+    }
+
+    @Override
+    public Connector updateConnector(Connector connector) throws VivialConnectException {
+        return connector.update();
+    }
+
+    @Override
+    public boolean deleteConnector(Connector connector) throws VivialConnectException {
+        return connector.delete();
+    }
+
+    @Override
+    public ConnectorWithCallbacks createCallbacks(Connector connector) throws VivialConnectException {
+        return connector.createCallbacks();
+    }
+
+    @Override
+    public ConnectorWithCallbacks updateCallbacks(Connector connector) throws VivialConnectException {
+        return connector.updateCallbacks();
+    }
+
+    @Override
+    public ConnectorWithCallbacks deleteAllCallbacks(Connector connector) throws VivialConnectException {
+        return connector.deleteAllCallbacks();
+    }
+
+    @Override
+    public ConnectorWithCallbacks deleteSingleCallback(Connector connector, Callback callback) throws VivialConnectException {
+        return connector.deleteSingleCallback(callback);
+    }
+
+    @Override
+    public ConnectorWithCallbacks deleteCallbacks(Connector connector, List<Callback> callbacks) throws VivialConnectException {
+        return connector.deleteCallbacks(callbacks);
+    }
+
+    @Override
+    public ConnectorWithCallbacks getCallbacks(int connectorId) throws VivialConnectException {
+        return Callback.getCallbacks(connectorId);
+    }
+
+    @Override
+    public ConnectorWithPhoneNumbers associatePhoneNumbers(Connector connector) throws VivialConnectException {
+        return connector.associatePhoneNumbers();
+    }
+
+    @Override
+    public ConnectorWithPhoneNumbers updateAssociatedPhoneNumbers(Connector connector) throws VivialConnectException {
+        return connector.updateAssociatedPhoneNumbers();
+    }
+
+    @Override
+    public ConnectorWithPhoneNumbers deleteAllPhoneNumbers(Connector connector) throws VivialConnectException {
+        return connector.deleteAllPhoneNumbers();
+    }
+
+    @Override
+    public ConnectorWithPhoneNumbers deleteSinglePhoneNumber(Connector connector, PhoneNumber phoneNumber) throws VivialConnectException {
+        return connector.deleteSinglePhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public ConnectorWithPhoneNumbers deletePhoneNumbers(Connector connector, List<PhoneNumber> phoneNumbers) throws VivialConnectException {
+        return connector.deletePhoneNumbers(phoneNumbers);
+    }
+
+    @Override
+    public ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId) throws VivialConnectException {
+        return PhoneNumber.getPhoneNumbers(connectorId);
+    }
+
+    @Override
+    public int phoneNumberCount(int connectorId) throws VivialConnectException {
+        return PhoneNumber.count(connectorId);
+    }
 }

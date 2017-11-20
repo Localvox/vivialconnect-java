@@ -274,7 +274,7 @@ public abstract class VivialConnectResource implements Serializable {
             setBody(connection, body);
 
             String response = doRequest(connection);
-            // System.out.println("Response:\n" + response);
+            // System.out.println("Response:\n" + response + '\n');
 
             return unmarshallResponse(response, responseClass);
         }finally{
