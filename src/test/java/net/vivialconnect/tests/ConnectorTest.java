@@ -160,6 +160,8 @@ public class ConnectorTest extends BaseTestCase {
         Connector connector = connectors.get(connectors.size() - 1);
 
         List<AssociatedNumber> associatedNumbers = getDataSource().getAssociatedNumbers();
+        // Should have at least two associated numbers for this test
+        assertTrue(associatedNumbers.size() > 2);
         AssociatedNumber lastNumber = associatedNumbers.get(associatedNumbers.size() - 1);
 
         PhoneNumber number = new PhoneNumber(lastNumber.getId(), lastNumber.getPhoneNumber());
@@ -170,10 +172,11 @@ public class ConnectorTest extends BaseTestCase {
         List<PhoneNumber> numbers = connWithNumbers.getPhoneNumbers();
         assertTrue(numbers.size() > 0);
         assertEquals(numbers.size(), getDataSource().phoneNumberCount(connWithNumbers.getId()));
+        assertEquals(numbers.get(0).getPhoneNumber(), lastNumber.getPhoneNumber());
     }
 
     @Test
-    public void test_k_update_numbers() throws VivialConnectException {
+    public void test_k_update_numbers() throws VivialConnectException, InterruptedException {
         List<Connector> connectors = getDataSource().getConnectors();
         Connector connector = connectors.get(connectors.size() - 1);
 
@@ -184,61 +187,79 @@ public class ConnectorTest extends BaseTestCase {
         ArrayList<PhoneNumber> newNumbers = new ArrayList<PhoneNumber>();
         newNumbers.add(number);
         connector.setPhoneNumbers(newNumbers);
+        assertEquals(connector.getPhoneNumbers().size(), 1);
+        assertEquals(connector.getPhoneNumbers().get(0).getPhoneNumber(), associatedNumber.getPhoneNumber());
 
         Connector connWithNumbers = (Connector)getDataSource().updateAssociatedPhoneNumbers(connector);
         assertEquals(connector.getId(), connWithNumbers.getId());
-        assertEquals(connWithNumbers.getPhoneNumbers().get(0).getPhoneNumber(), associatedNumber.getPhoneNumber());
+        assertEquals(connWithNumbers.getPhoneNumbers().size(), 2);
+
+        Connector otherConn = (Connector)getDataSource().getPhoneNumbers(connector.getId());
+        assertEquals(otherConn.getPhoneNumbers().size(), 2);
+        for (int i = 0; i < 2; i++) {
+            assertEquals(otherConn.getPhoneNumbers().get(i).getPhoneNumberId(),
+                         connWithNumbers.getPhoneNumbers().get(i).getPhoneNumberId());
+            assertEquals(otherConn.getPhoneNumbers().get(i).getPhoneNumber(),
+                         connWithNumbers.getPhoneNumbers().get(i).getPhoneNumber());
+        }
+
+        connector.setPhoneNumbers(newNumbers);
+        connWithNumbers = (Connector)getDataSource().associatePhoneNumbers(connector);
+        assertEquals(connWithNumbers.getPhoneNumbers().size(), 1);
+
+        TimeUnit.SECONDS.sleep(1);
     }
 
-    // @Test
-    // public void test_l_deleting_numbers() throws VivialConnectException {
-    //     List<Connector> connectors = getDataSource().getConnectors();
-    //     Connector connector = connectors.get(connectors.size() - 1);
+    @Test
+    public void test_l_delete_all_numbers() throws VivialConnectException {
+        List<Connector> connectors = getDataSource().getConnectors();
+        Connector connector = connectors.get(connectors.size() - 1);
+        List<PhoneNumber> numbers = connector.getPhoneNumbers();
+        assertTrue(numbers.size() > 0);
 
-    //     List<PhoneNumber> numbers = connector.getPhoneNumbers();
-    //     assertEquals(numbers.size(), 1);
+        ConnectorWithPhoneNumbers updatedConnector = getDataSource().deleteAllPhoneNumbers(connector);
 
-    //     PhoneNumber newNumber = new PhoneNumber();
-    //     newNumber.setPhoneNumber("+30000000000");
-    //     connector.addPhoneNumber(newNumber);
+        numbers = updatedConnector.getPhoneNumbers();
+        assertEquals(numbers.size(), 0);
+    }
 
-    //     newNumber = new PhoneNumber();
-    //     newNumber.setPhoneNumber("+40000000000");
-    //     connector.addPhoneNumber(newNumber);
+    @Test
+    public void test_m_deleting_numbers() throws VivialConnectException, InterruptedException {
+        List<Connector> connectors = getDataSource().getConnectors();
+        Connector connector = connectors.get(connectors.size() - 1);
 
-    //     Connector connWithNumbers = (Connector)getDataSource().updateAssociatedPhoneNumbers(connector);
+        List<AssociatedNumber> associatedNumbers = getDataSource().getAssociatedNumbers();
+        AssociatedNumber lastNumber = associatedNumbers.get(associatedNumbers.size() - 1);
 
-    //     numbers = connWithNumbers.getPhoneNumbers();
-    //     List<PhoneNumber> altNumbers = getDataSource().getPhoneNumbers(connWithNumbers.getId()).getPhoneNumbers();
-    //     assertEquals(numbers.size(), 3);
-    //     assertEquals(altNumbers.size(), 3);
-    //     for (int i = 0; i < numbers.size(); i++) {
-    //         assertEquals(numbers.get(i).getPhoneNumber(), altNumbers.get(i).getPhoneNumber());
-    //     }
+        PhoneNumber number = new PhoneNumber(lastNumber.getId(), lastNumber.getPhoneNumber());
 
-    //     connWithNumbers = (Connector)getDataSource().deleteSinglePhoneNumber(connector, numbers.get(2));
-    //     numbers = connWithNumbers.getPhoneNumbers();
-    //     assertEquals(numbers.size(), 2);
+        connector.addPhoneNumber(number);
+        Connector connWithNumbers = (Connector)getDataSource().updateAssociatedPhoneNumbers(connector);
+        List<PhoneNumber> numbers = connWithNumbers.getPhoneNumbers();
+        assertEquals(numbers.size(), 1);
 
-    //     List<PhoneNumber> toDelete = new ArrayList<PhoneNumber>();
-    //     toDelete.add(numbers.get(1));
-    //     connWithNumbers = (Connector)getDataSource().deletePhoneNumbers(connector, toDelete);
-    //     numbers = connWithNumbers.getPhoneNumbers();
-    //     assertEquals(numbers.size(), 1);
-    // }
+        connWithNumbers = (Connector)getDataSource().deleteSinglePhoneNumber(connector, numbers.get(0));
+        numbers = connWithNumbers.getPhoneNumbers();
+        assertEquals(numbers.size(), 0);
 
-    // @Test
-    // public void test_m_delete_all_numbers() throws VivialConnectException {
-    //     List<Connector> connectors = getDataSource().getConnectors();
-    //     Connector connector = connectors.get(connectors.size() - 1);
-    //     List<PhoneNumber> numbers = connector.getPhoneNumbers();
-    //     assertTrue(numbers.size() > 0);
+        TimeUnit.SECONDS.sleep(1);
 
-    //     ConnectorWithPhoneNumbers updatedConnector = getDataSource().deleteAllPhoneNumbers(connector);
+        connector.addPhoneNumber(number);
+        connWithNumbers = (Connector)getDataSource().updateAssociatedPhoneNumbers(connector);
+        numbers = connWithNumbers.getPhoneNumbers();
+        assertEquals(numbers.size(), 1);
 
-    //     numbers = updatedConnector.getPhoneNumbers();
-    //     assertEquals(numbers.size(), 0);
-    // }
+        List<PhoneNumber> toDelete = new ArrayList<PhoneNumber>();
+        toDelete.add(number);
+        connWithNumbers = (Connector)getDataSource().deletePhoneNumbers(connector, toDelete);
+        numbers = connWithNumbers.getPhoneNumbers();
+        assertEquals(numbers.size(), 0);
+
+        connector.addPhoneNumber(number);
+        connWithNumbers = (Connector)getDataSource().updateAssociatedPhoneNumbers(connector);
+        numbers = connWithNumbers.getPhoneNumbers();
+        assertEquals(numbers.size(), 1);
+    }
 
     @Test
     public void test_n_delete_connector() throws VivialConnectException {
