@@ -122,9 +122,9 @@
             <systemPropertyVariables>
               <propertyName></propertyName>
             </systemPropertyVariables>
-            <includes>
+            <!-- <includes>
               <include>**/ConnectorTest.java</include>
-            </includes>
+            </includes> -->
           </configuration>
         </plugin>
       </plugins>

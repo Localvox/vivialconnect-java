@@ -110,6 +110,11 @@ public class VivialConnectServer implements DataSource {
     }
 
     @Override
+    public AssociatedNumber buyAvailable(AvailableNumber number) throws VivialConnectException {
+        return number.buy();
+    }
+
+    @Override
     public AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException {
         return Number.buy(phoneNumber, areaCode, phoneNumberType, optionalParams);
     }
@@ -120,8 +125,13 @@ public class VivialConnectServer implements DataSource {
     }
 
     @Override
-    public void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
-        localNumber.deleteLocalNumber();
+    public boolean delete(AssociatedNumber localNumber) throws VivialConnectException {
+        return localNumber.delete();
+    }
+
+    @Override
+    public boolean deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
+        return localNumber.deleteLocalNumber();
     }
 
     @Override

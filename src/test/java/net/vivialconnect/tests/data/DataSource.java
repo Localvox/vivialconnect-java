@@ -49,11 +49,15 @@ public interface DataSource {
 
     int numberCountLocal() throws VivialConnectException;
 
+    AssociatedNumber buyAvailable(AvailableNumber number) throws VivialConnectException;
+
     AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException;
 
     AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams) throws VivialConnectException;
 
-    void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException;
+    boolean delete(AssociatedNumber localNumber) throws VivialConnectException;
+
+    boolean deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException;
 
     void updateNumber(AssociatedNumber number) throws VivialConnectException;
 

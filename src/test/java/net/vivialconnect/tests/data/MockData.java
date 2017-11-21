@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.lang.Integer;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
 
@@ -15,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.vivialconnect.model.ResourceCount;
 import net.vivialconnect.model.account.Account;
 import net.vivialconnect.model.account.Contact;
+import net.vivialconnect.model.user.Role;
 import net.vivialconnect.model.account.ContactCollection;
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
@@ -23,6 +27,7 @@ import net.vivialconnect.model.message.Attachment;
 import net.vivialconnect.model.message.AttachmentCollection;
 import net.vivialconnect.model.number.AssociatedNumber;
 import net.vivialconnect.model.number.AvailableNumber;
+import net.vivialconnect.model.number.Number;
 import net.vivialconnect.model.number.NumberCollection;
 import net.vivialconnect.model.number.NumberInfo;
 import net.vivialconnect.model.user.User;
@@ -48,7 +53,12 @@ public class MockData implements DataSource {
     private List<Connector> connectors;
     private Connector connector;
     private LogCollection logs;
+    private int numberCountMod = 0;
     private int pendingCount = 0;
+    private int connectorCountMod = 0;
+
+    private Random random = new Random();
+    private HashMap<Integer, ArrayList<PhoneNumber>> connectorNumbers = new HashMap<Integer, ArrayList<PhoneNumber>>();
 
     @Override
     public Account getAccount() throws VivialConnectException {
@@ -122,32 +132,61 @@ public class MockData implements DataSource {
 
     @Override
     public int numberCount() throws VivialConnectException {
-        return loadFixture("number-count", ResourceCount.class, false).getCount();
+        return loadFixture("number-count", ResourceCount.class, false).getCount() + numberCountMod;
     }
 
     @Override
     public int numberCountLocal() throws VivialConnectException {
-        return loadFixture("number-count-local", ResourceCount.class, false).getCount();
+        return loadFixture("number-count-local", ResourceCount.class, false).getCount() + numberCountMod;
+    }
+
+    @Override
+    public AssociatedNumber buyAvailable(AvailableNumber number) throws VivialConnectException {
+        AssociatedNumber boughtNumber = new Number();
+        boughtNumber.setPhoneNumber(number.getPhoneNumber());
+        boughtNumber.setPhoneNumberType(number.getPhoneNumberType());
+        numberCountMod++;
+        associatedNumbers.add(boughtNumber);
+        return boughtNumber;
     }
 
     @Override
     public AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException {
-        return loadAssociatedNumbersFromFixture().get(0);
+        AssociatedNumber number = new Number();
+        number.setPhoneNumber(phoneNumber);
+        number.setPhoneNumberType(phoneNumberType);
+        numberCountMod++;
+        associatedNumbers.add(number);
+        return number;
     }
 
     @Override
     public AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams) throws VivialConnectException {
-        return loadAssociatedNumbersFromFixture().get(0);
+        AssociatedNumber number = new Number();
+        number.setPhoneNumber(phoneNumber);
+        number.setPhoneNumberType("local");
+        numberCountMod++;
+        associatedNumbers.add(number);
+        return number;
     }
 
     @Override
-    public void deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
+    public boolean delete(AssociatedNumber localNumber) throws VivialConnectException {
+        loadAssociatedNumbersFromFixture().remove(localNumber);
+        numberCountMod--;
+        return true;
+    }
+
+    @Override
+    public boolean deleteLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
         if (!localNumber.getPhoneNumberType().equals("local")) {
             localNumber.setPhoneNumberType("local");
             throw new UnsupportedOperationException("Number must be local");
         }
 
         loadAssociatedNumbersFromFixture().remove(localNumber);
+        numberCountMod--;
+        return true;
     }
 
     @Override
@@ -156,8 +195,12 @@ public class MockData implements DataSource {
     }
 
     @Override
-    public void updateLocalNumber(AssociatedNumber number) throws VivialConnectException {
-        number.setDateModified(new Date());
+    public void updateLocalNumber(AssociatedNumber localNumber) throws VivialConnectException {
+        if (!localNumber.getPhoneNumberType().equals("local")) {
+            localNumber.setPhoneNumberType("local");
+            throw new UnsupportedOperationException("Number must be local");
+        }
+        localNumber.setDateModified(new Date());
     }
 
     @Override
@@ -401,7 +444,49 @@ public class MockData implements DataSource {
 
     @Override
     public User createUser(Map<String, Object> attributes) throws VivialConnectException {
-        return getUsers().get(0);
+        User user = new User();
+
+        if (attributes.containsKey("id")) {
+            user.setId(((Integer)attributes.get("id")).intValue());
+        }
+        if (attributes.containsKey("date_created")) {
+            user.setDateCreated((Date)attributes.get("date_created"));
+        }
+        if (attributes.containsKey("date_modified")) {
+            user.setDateModified((Date)attributes.get("date_modified"));
+        }
+        if (attributes.containsKey("account_id")) {
+            user.setAccountId(((Integer)attributes.get("account_id")).intValue());
+        }
+        if (attributes.containsKey("active")) {
+            user.setActive(((Boolean)attributes.get("active")).booleanValue());
+        }
+        if (attributes.containsKey("verified")) {
+            user.setVerified(((Boolean)attributes.get("verified")).booleanValue());
+        }
+        if (attributes.containsKey("api_key")) {
+            user.setApiKey((String)attributes.get("api_key"));
+        }
+        if (attributes.containsKey("timezone")) {
+            user.setTimezone((String)attributes.get("timezone"));
+        }
+        if (attributes.containsKey("username")) {
+            user.setUsername((String)attributes.get("username"));
+        }
+        if (attributes.containsKey("first_name")) {
+            user.setFirstName((String)attributes.get("first_name"));
+        }
+        if (attributes.containsKey("last_name")) {
+            user.setLastName((String)attributes.get("last_name"));
+        }
+        if (attributes.containsKey("email")) {
+            user.setEmail((String)attributes.get("email"));
+        }
+        if (attributes.containsKey("roles")) {
+            user.setRoles((List<Role>)attributes.get("roles"));
+        }
+
+        return user;
     }
 
     @Override
@@ -473,12 +558,29 @@ public class MockData implements DataSource {
 
     @Override
     public Connector createConnector() throws VivialConnectException {
-        return getConnectors().get(0);
+        List<Connector> connectors = getConnectors();
+        Connector newConnector = new Connector();
+        Connector oldConnector = connectors.get(0);
+        newConnector.setId(random.nextInt(65536));
+        newConnector.setDateCreated(oldConnector.getDateCreated());
+        newConnector.setDateModified(oldConnector.getDateModified());
+        newConnector.setAccountId(oldConnector.getAccountId());
+        newConnector.setActive(oldConnector.isActive());
+        newConnector.setName(oldConnector.getName());
+        newConnector.setCallbacks(new ArrayList<Callback>());
+        newConnector.setPhoneNumbers(new ArrayList<PhoneNumber>());
+        connectorCountMod++;
+        connectors.add(newConnector);
+        return newConnector;
     }
 
     @Override
     public boolean deleteConnector(Connector conn) throws VivialConnectException {
-        return true;
+        if (getConnectors().remove(conn)) {
+            connectorCountMod--;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -508,7 +610,7 @@ public class MockData implements DataSource {
 
     @Override
     public int connectorCount() throws VivialConnectException {
-        return loadFixture("connector-count", ResourceCount.class, false).getCount();
+        return loadFixture("connector-count", ResourceCount.class, false).getCount() + connectorCountMod;
     }
 
     private List<Connector> loadConnectorsFromFixture() {
@@ -521,32 +623,35 @@ public class MockData implements DataSource {
 
     @Override
     public ConnectorWithCallbacks createCallbacks(Connector conn) throws VivialConnectException {
-        return connector;
+        return conn;
     }
 
     @Override
     public ConnectorWithCallbacks updateCallbacks(Connector conn) throws VivialConnectException {
-        return connector;
+        return conn;
     }
 
     @Override
     public ConnectorWithCallbacks deleteAllCallbacks(Connector conn) throws VivialConnectException {
-        return connector;
+        conn.getCallbacks().clear();
+        return conn;
     }
 
     @Override
     public ConnectorWithCallbacks deleteSingleCallback(Connector conn, Callback callback) throws VivialConnectException {
-        return connector;
+        conn.getCallbacks().remove(callback);
+        return conn;
     }
 
     @Override
     public ConnectorWithCallbacks deleteCallbacks(Connector conn, List<Callback> callbacks) throws VivialConnectException {
-        return connector;
+        conn.getCallbacks().removeAll(callbacks);
+        return conn;
     }
 
     @Override
     public ConnectorWithCallbacks getCallbacks(int connectorId) throws VivialConnectException {
-        return loadConnectorFromFixture();
+        return getConnectorById(connectorId);
     }
 
     private Connector loadConnectorFromFixture() {
@@ -558,37 +663,74 @@ public class MockData implements DataSource {
     }
 
     @Override
-    public ConnectorWithPhoneNumbers associatePhoneNumbers(Connector connector) throws VivialConnectException {
-        return connector;
+    public ConnectorWithPhoneNumbers associatePhoneNumbers(Connector conn) throws VivialConnectException {
+        Integer id = Integer.valueOf(conn.getId());
+        connectorNumbers.put(id, new ArrayList(conn.getPhoneNumbers()));
+
+        return conn;
     }
 
     @Override
-    public ConnectorWithPhoneNumbers updateAssociatedPhoneNumbers(Connector connector) throws VivialConnectException {
-        return connector;
+    public ConnectorWithPhoneNumbers updateAssociatedPhoneNumbers(Connector conn) throws VivialConnectException {
+        Integer id = Integer.valueOf(conn.getId());
+        if (connectorNumbers.containsKey(id)) {
+            ArrayList<PhoneNumber> curNumbers = connectorNumbers.get(id);
+            for (PhoneNumber pn : conn.getPhoneNumbers()) {
+                if (!curNumbers.contains(pn)) {
+                    curNumbers.add(pn);
+                }
+            }
+            conn.setPhoneNumbers((ArrayList<PhoneNumber>)curNumbers.clone());
+        }
+        else {
+            connectorNumbers.put(id, new ArrayList(conn.getPhoneNumbers()));
+        }
+
+        return conn;
     }
 
     @Override
-    public ConnectorWithPhoneNumbers deleteAllPhoneNumbers(Connector connector) throws VivialConnectException {
-        return connector;
+    public ConnectorWithPhoneNumbers deleteAllPhoneNumbers(Connector conn) throws VivialConnectException {
+        Integer id = Integer.valueOf(conn.getId());
+        if (connectorNumbers.containsKey(id)) {
+            connectorNumbers.get(id).clear();
+        }
+        conn.getPhoneNumbers().clear();
+        return conn;
     }
 
     @Override
-    public ConnectorWithPhoneNumbers deleteSinglePhoneNumber(Connector connector, PhoneNumber phoneNumber) throws VivialConnectException {
-        return connector.deleteSinglePhoneNumber(phoneNumber);
+    public ConnectorWithPhoneNumbers deleteSinglePhoneNumber(Connector conn, PhoneNumber phoneNumber) throws VivialConnectException {
+        Integer id = Integer.valueOf(conn.getId());
+        if (connectorNumbers.containsKey(id)) {
+            connectorNumbers.get(id).remove(phoneNumber);
+        }
+        conn.getPhoneNumbers().remove(phoneNumber);
+        return conn;
     }
 
     @Override
-    public ConnectorWithPhoneNumbers deletePhoneNumbers(Connector connector, List<PhoneNumber> phoneNumbers) throws VivialConnectException {
-        return connector.deletePhoneNumbers(phoneNumbers);
+    public ConnectorWithPhoneNumbers deletePhoneNumbers(Connector conn, List<PhoneNumber> phoneNumbers) throws VivialConnectException {
+        Integer id = Integer.valueOf(conn.getId());
+        if (connectorNumbers.containsKey(id)) {
+            connectorNumbers.get(id).removeAll(phoneNumbers);
+        }
+        conn.getPhoneNumbers().removeAll(phoneNumbers);
+        return conn;
     }
 
     @Override
     public ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId) throws VivialConnectException {
-        return loadConnectorFromFixture();
+        return getConnectorById(connectorId);
     }
 
     @Override
     public int phoneNumberCount(int connectorId) throws VivialConnectException {
-        return loadFixture("phone-number-count", ResourceCount.class, false).getCount();
+        Integer id = Integer.valueOf(connectorId);
+        if (connectorNumbers.containsKey(id)) {
+            return connectorNumbers.get(id).size();
+        }
+
+        return 0;
     }
 }

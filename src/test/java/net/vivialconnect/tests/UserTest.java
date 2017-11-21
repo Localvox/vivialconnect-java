@@ -44,7 +44,7 @@ public class UserTest extends BaseTestCase {
     @Test
     public void test_create_and_delete_user() throws VivialConnectException {
         Map<String, Object> attributes = new HashMap<String, Object>();
-        attributes.put("account_id", "1");
+        attributes.put("account_id", 1);
         attributes.put("username", "someUser");
         attributes.put("first_name", "Jake");
         attributes.put("last_name", "User");

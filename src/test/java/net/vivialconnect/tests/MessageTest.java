@@ -46,11 +46,10 @@ public class MessageTest extends BaseTestCase {
         assertNotEquals("delivered", message.getStatus());
 
         // Have to sleep, the attachments don't show up immediately for some reason
-        TimeUnit.SECONDS.sleep(15);
+        TimeUnit.SECONDS.sleep(20);
 
         // Check attachment count
         List<Attachment> attachments = getDataSource().getAttachments(message);
-        System.out.println(attachments.toString());
         assertEquals(attachments.size(), getDataSource().attachmentCount(message.getId()));
 
         Attachment attachment = attachments.get(0);

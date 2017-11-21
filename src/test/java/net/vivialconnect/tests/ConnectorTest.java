@@ -161,7 +161,7 @@ public class ConnectorTest extends BaseTestCase {
 
         List<AssociatedNumber> associatedNumbers = getDataSource().getAssociatedNumbers();
         // Should have at least two associated numbers for this test
-        assertTrue(associatedNumbers.size() > 2);
+        assertTrue(associatedNumbers.size() >= 2);
         AssociatedNumber lastNumber = associatedNumbers.get(associatedNumbers.size() - 1);
 
         PhoneNumber number = new PhoneNumber(lastNumber.getId(), lastNumber.getPhoneNumber());
