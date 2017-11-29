@@ -146,7 +146,6 @@ public abstract class VivialConnectResource implements Serializable {
 
     private static VivialConnectException handleException(Exception e){
         VivialConnectException vce = null;
-        System.out.println(e.toString());
 
 	if (VivialConnectException.class.isAssignableFrom(e.getClass())){
             vce = (VivialConnectException) e;
