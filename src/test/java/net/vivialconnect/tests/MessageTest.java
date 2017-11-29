@@ -90,11 +90,6 @@ public class MessageTest extends BaseTestCase {
         getMessageById(0);
     }
 
-    //  @Test
-    // public void test_message_not_found() throws VivialConnectException {
-    //     assertNull(getMessageById(1));
-    // }
-
     @Test
     public void test_redact_message() throws VivialConnectException {
         Message message = getMessageById();

@@ -58,20 +58,4 @@ public class UserTest extends BaseTestCase {
 
         assertTrue(getDataSource().deleteUser(newUser));
     }
-
-    // Disabled until User.changePassword works
-
-    // @Test
-    // public void test_update_user_password() throws VivialConnectException {
-    //     List<User> users = getDataSource().getUsers();
-    //     User user = users.get(0);
-
-    //     boolean passwordChanged;
-
-    //     passwordChanged = getDataSource().updateUserPassword(user, "moosetalk470", "sO4_p12Qan");
-    //     assertTrue(passwordChanged);
-    //     // Change back
-    //     passwordChanged = getDataSource().updateUserPassword(user, "sO4_p12Qan", "moosetalk470");
-    //     assertTrue(passwordChanged);
-    // }
 }
