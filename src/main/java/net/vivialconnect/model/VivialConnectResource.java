@@ -268,13 +268,10 @@ public abstract class VivialConnectResource implements Serializable {
 
         try{
             connection = prepareConnection(endpoint, method);
-            // System.out.println(method + " " + endpoint);
-            // System.out.println(body);
             setHeaders(connection, headers);
             setBody(connection, body);
 
             String response = doRequest(connection);
-            // System.out.println("Response:\n" + response + '\n');
 
             return unmarshallResponse(response, responseClass);
         }finally{
@@ -320,7 +317,6 @@ public abstract class VivialConnectResource implements Serializable {
             reader = createBufferedReader(inputStream);
 
             String response = readResponse(reader);
-            // System.out.println(connection.getResponseCode());
             if (connection.getResponseCode() == 204 /* No Content */){
                 throw new NoContentException();
             }
