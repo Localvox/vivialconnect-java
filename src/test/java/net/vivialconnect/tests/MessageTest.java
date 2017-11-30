@@ -8,11 +8,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
 import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.message.Message;
+import net.vivialconnect.model.message.Attachment;
 import net.vivialconnect.model.number.AssociatedNumber;
 
 public class MessageTest extends BaseTestCase {
@@ -21,7 +23,7 @@ public class MessageTest extends BaseTestCase {
     private static final String MESSAGE_BODY = "Message from Vivial Connect Test Suite";
 
     @Test
-    public void test_send_message() throws VivialConnectException {
+    public void test_send_message_with_attachments() throws VivialConnectException, InterruptedException {
         AssociatedNumber number = getDataSource().getAssociatedNumbers().get(0);
         String fromNumber = number.getPhoneNumber();
 
@@ -42,6 +44,18 @@ public class MessageTest extends BaseTestCase {
         assertEquals(TO_NUMBER, message.getToNumber());
         assertEquals("local_mms", message.getMessageType());
         assertNotEquals("delivered", message.getStatus());
+
+        // Have to sleep, the attachments don't show up immediately for some reason
+        TimeUnit.SECONDS.sleep(20);
+
+        // Check attachment count
+        List<Attachment> attachments = getDataSource().getAttachments(message);
+        assertEquals(attachments.size(), getDataSource().attachmentCount(message.getId()));
+
+        Attachment attachment = attachments.get(0);
+        assertEquals(attachment.getId(), getDataSource().getAttachmentById(message.getId(), attachment.getId()).getId());
+
+        assertTrue(getDataSource().deleteAttachment(attachment));
     }
 
     @Test
@@ -75,11 +89,6 @@ public class MessageTest extends BaseTestCase {
     public void test_get_message_with_invalid_id_throws_vivial_connect_exception() throws VivialConnectException {
         getMessageById(0);
     }
-
-    /* @Test
-    public void test_message_not_found() throws VivialConnectException {
-        assertNull(getMessageById(1));
-    } */
 
     @Test
     public void test_redact_message() throws VivialConnectException {

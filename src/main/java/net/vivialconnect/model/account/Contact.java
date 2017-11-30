@@ -241,6 +241,8 @@ public class Contact extends VivialConnectResource{
         this.state = contact.getState();
         this.title = contact.getTitle();
         this.workPhone = contact.getWorkPhone();
+
+        ifParamValidAddToBuilder(jsonBodyBuilder, "id", getId());
     }
 
     /**

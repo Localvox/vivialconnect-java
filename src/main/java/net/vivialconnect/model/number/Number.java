@@ -318,7 +318,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      *
      */
     public static AssociatedNumber buyLocalNumber(String phoneNumber, String areaCode, Map<String, Object> optionalParams) throws VivialConnectException {
-        JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number").addParams(optionalParams);
+        JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number");
+        if (optionalParams != null) {
+            builder = builder.addParams(optionalParams);
+        }
         ifParamValidAddToBuilder(builder, "phone_number", phoneNumber);
         ifParamValidAddToBuilder(builder, "area_code", areaCode);
 
@@ -356,7 +359,10 @@ public class Number extends VivialConnectResource implements AssociatedNumber, A
      *
      */
     public static AssociatedNumber buy(String phoneNumber, String areaCode, String phoneNumberType, Map<String, Object> optionalParams) throws VivialConnectException {
-        JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number").addParams(optionalParams);
+        JsonBodyBuilder builder = JsonBodyBuilder.withCustomClassName("phone_number");
+        if (optionalParams != null) {
+            builder = builder.addParams(optionalParams);
+        }
         ifParamValidAddToBuilder(builder, "phone_number", phoneNumber);
         ifParamValidAddToBuilder(builder, "area_code", areaCode);
         ifParamValidAddToBuilder(builder, "phone_number_type", phoneNumberType);
