@@ -28,7 +28,8 @@ public class LogTest extends BaseTestCase {
         startTime.add(Calendar.DAY_OF_YEAR, -7); // Get logs for last week
 
         List<Log> logs = getDataSource().getLogs(startTime.getTime(), endTime.getTime()).getLogs();
-        
+
+        assertNotNull(logs);
         assertTrue(logs.size() > 0);
         Log firstLog = logs.get(0);
         assertEquals(firstLog.getLogId().length(), 56);
@@ -42,6 +43,7 @@ public class LogTest extends BaseTestCase {
 
         List<Log> logs = getDataSource().getAggregate(startTime.getTime(), endTime.getTime(), "hours").getLogs();
         
+        assertNotNull(logs);
         assertTrue(logs.size() > 0);
         Log firstLog = logs.get(0);
         assertEquals(firstLog.getLogTimestamp().length(), 10);

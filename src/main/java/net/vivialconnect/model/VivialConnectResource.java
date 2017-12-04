@@ -129,18 +129,14 @@ public abstract class VivialConnectResource implements Serializable {
 
             return request(endpoint, method, headers, queryParams, body, responseClass);
             /* return jerseyRequest(endpoint, method, headers, queryParams, body, responseClass); */
-	}
-	catch (NoContentException nce){
+        }
+        catch (NoContentException nce){
             throw nce;
-	}
-	catch (Exception e){
+        }
+        catch (Exception e){
             VivialConnectException vivialConnectException = handleException(e);
-            if (vivialConnectException.getResponseCode() != 404 && RequestMethod.GET == method) {
-                throw vivialConnectException;
-            }
-	}
-        
-        return null;
+            throw vivialConnectException;
+        }
     }
 
 

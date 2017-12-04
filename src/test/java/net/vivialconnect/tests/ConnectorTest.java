@@ -82,7 +82,7 @@ public class ConnectorTest extends BaseTestCase {
     }
 
     @Test
-    public void test_g_update_callback() throws VivialConnectException {
+    public void test_g_update_callback() throws VivialConnectException, InterruptedException {
         List<Connector> connectors = getDataSource().getConnectors();
         Connector connector = connectors.get(connectors.size() - 1);
 
@@ -94,10 +94,12 @@ public class ConnectorTest extends BaseTestCase {
         Connector connWithCallbacks = (Connector)getDataSource().updateCallbacks(connector);
         assertEquals(connector.getId(), connWithCallbacks.getId());
         assertEquals(connWithCallbacks.getCallbacks().get(0).getUrl(), "http://some.other.url");
+
+        TimeUnit.SECONDS.sleep(1);
     }
 
     @Test
-    public void test_h_deleting_callbacks() throws VivialConnectException {
+    public void test_h_deleting_callbacks() throws VivialConnectException, InterruptedException {
         List<Connector> connectors = getDataSource().getConnectors();
         Connector connector = connectors.get(connectors.size() - 1);
 
@@ -139,6 +141,8 @@ public class ConnectorTest extends BaseTestCase {
         connWithCallbacks = (Connector)getDataSource().deleteCallbacks(connector, toDelete);
         callbacks = connWithCallbacks.getCallbacks();
         assertEquals(callbacks.size(), 1);
+
+        TimeUnit.SECONDS.sleep(1);
     }
 
     @Test

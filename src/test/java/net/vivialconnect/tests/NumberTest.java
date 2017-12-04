@@ -17,6 +17,8 @@ import net.vivialconnect.model.number.AvailableNumber;
 
 public class NumberTest extends BaseTestCase {
 
+    private static final String buyTestRegion = "SC";
+
     @Test
     public void test_get_associated_numbers() throws VivialConnectException {
         assertTrue(getDataSource().getAssociatedNumbers().size() > 0);
@@ -94,7 +96,7 @@ public class NumberTest extends BaseTestCase {
     public void test_buy_available_number() throws VivialConnectException {
         int numbersToTry = 5;
         List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
-                "NC", withLimitOf(numbersToTry));
+                buyTestRegion, withLimitOf(numbersToTry));
 
         if (availableNumbers.size() > 0) {
             assertEquals(numbersToTry, availableNumbers.size());
@@ -119,7 +121,7 @@ public class NumberTest extends BaseTestCase {
     public void test_buy_number() throws VivialConnectException {
         int numbersToTry = 5;
         List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
-                "NC", withLimitOf(numbersToTry));
+                buyTestRegion, withLimitOf(numbersToTry));
 
         if (availableNumbers.size() > 0) {
             assertEquals(numbersToTry, availableNumbers.size());
@@ -147,7 +149,7 @@ public class NumberTest extends BaseTestCase {
         int numbersToTry = 5;
 
         List<AvailableNumber> availableNumbers = getDataSource().findAvailableNumbersInRegion(
-                "NC", withLimitOf(numbersToTry));
+                buyTestRegion, withLimitOf(numbersToTry));
 
         if (availableNumbers.size() > 0) {
             assertEquals(numbersToTry, availableNumbers.size());
