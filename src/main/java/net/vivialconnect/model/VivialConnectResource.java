@@ -37,6 +37,7 @@ import net.vivialconnect.model.error.VivialConnectException;
 import net.vivialconnect.model.format.JsonBodyBuilder;
 import net.vivialconnect.util.CryptoUtils;
 import net.vivialconnect.util.ReflectionUtils;
+import net.vivialconnect.util.ProjectProperties;
 
 public abstract class VivialConnectResource implements Serializable {
 
@@ -126,6 +127,19 @@ public abstract class VivialConnectResource implements Serializable {
             headers.put("Authorization", authoritzationHeader);
             headers.put("X-Auth-Date", requestTimestamp);
             headers.put("X-Auth-SignedHeaders", signedHeaders);
+            String appVersion = ProjectProperties.getProperty("application.version");
+            headers.put("User-Agent", "VivialConnect JavaClient " + appVersion);
+
+            Map<String, String> xUserAgent = new HashMap<String, String>();
+            xUserAgent.put("client_version", appVersion);
+            xUserAgent.put("lang", "Java");
+            xUserAgent.put("lang_version", System.getProperty("java.version"));
+            xUserAgent.put("publisher", "vivialconnect");
+            xUserAgent.put("platform", System.getProperty("os.name") + " " +
+                                       System.getProperty("os.version") + " " +
+                                       System.getProperty("os.arch"));
+            ObjectMapper mapper = new ObjectMapper();
+            headers.put("X-VivialConnect-User-Agent", mapper.writeValueAsString(xUserAgent));
 
             return request(endpoint, method, headers, queryParams, body, responseClass);
             /* return jerseyRequest(endpoint, method, headers, queryParams, body, responseClass); */
@@ -423,7 +437,7 @@ public abstract class VivialConnectResource implements Serializable {
     private static void disconnect(HttpURLConnection connection){
         if (connection != null){
             connection.disconnect();
-	}
+	   }
     }
 
 

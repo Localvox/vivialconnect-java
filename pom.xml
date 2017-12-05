@@ -49,6 +49,7 @@
       <jersey.version>1.8</jersey.version>
       <commonsio.version>2.4</commonsio.version>
       <surefire.version>2.16</surefire.version>
+      <spring.version>5.0.2</spring.version>
     </properties>
 
     <dependencies>
@@ -85,9 +86,20 @@
         <version>${commonsio.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}.RELEASE</version>
+      </dependency>
     </dependencies>
 
     <build>
+      <resources>
+          <resource>
+              <directory>src/main/resources</directory>
+              <filtering>true</filtering>
+          </resource>
+      </resources>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -123,7 +135,7 @@
               <propertyName></propertyName>
             </systemPropertyVariables>
             <!-- <includes>
-              <include>**/ConnectorTest.java</include>
+              <include>**/LogTest.java</include>
             </includes> -->
           </configuration>
         </plugin>
