@@ -49,7 +49,6 @@
       <jersey.version>1.8</jersey.version>
       <commonsio.version>2.4</commonsio.version>
       <surefire.version>2.16</surefire.version>
-      <spring.version>5.0.2</spring.version>
     </properties>
 
     <dependencies>
@@ -85,11 +84,6 @@
         <artifactId>org.apache.commons.io</artifactId>
         <version>${commonsio.version}</version>
         <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}.RELEASE</version>
       </dependency>
     </dependencies>
 
