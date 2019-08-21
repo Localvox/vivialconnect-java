@@ -721,6 +721,11 @@ public class MockData implements DataSource {
     }
 
     @Override
+    public ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId, int page) throws VivialConnectException {
+        return null;
+    }
+
+    @Override
     public int phoneNumberCount(int connectorId) throws VivialConnectException {
         Integer id = Integer.valueOf(connectorId);
         if (connectorNumbers.containsKey(id)) {

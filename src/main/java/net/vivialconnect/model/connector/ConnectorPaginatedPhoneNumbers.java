@@ -2,7 +2,7 @@ package net.vivialconnect.model.connector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ConnectorPaginatedPhoneNumbers {
+class ConnectorPaginatedPhoneNumbers {
 
     @JsonProperty("connector")
     private Connector connector;
@@ -20,42 +20,21 @@ public class ConnectorPaginatedPhoneNumbers {
     private int previous;
 
     public Connector getConnector() {
-        return connector;
+        return setupConnector(connector);
     }
 
-    public void setConnector(Connector connector) {
-        this.connector = connector;
+    private Connector setupConnector(Connector connector){
+
+        if(connector != null){
+
+            connector.setPages(pages);
+            connector.setPreviousPage(previous);
+            connector.setNextPage(next);
+            connector.setPhoneNumbersCount(count);
+
+        }
+
+        return  connector;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getNext() {
-        return next;
-    }
-
-    public void setNext(int next) {
-        this.next = next;
-    }
-
-    public int getPages() {
-        return pages;
-    }
-
-    public void setPages(int pages) {
-        this.pages = pages;
-    }
-
-    public int getPrevious() {
-        return previous;
-    }
-
-    public void setPrevious(int previous) {
-        this.previous = previous;
-    }
 }

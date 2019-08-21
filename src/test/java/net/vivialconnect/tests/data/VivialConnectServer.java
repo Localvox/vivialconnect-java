@@ -360,6 +360,11 @@ public class VivialConnectServer implements DataSource {
     }
 
     @Override
+    public ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId, int page) throws VivialConnectException {
+        return PhoneNumber.getPhoneNumbers(connectorId,page);
+    }
+
+    @Override
     public int phoneNumberCount(int connectorId) throws VivialConnectException {
         return PhoneNumber.count(connectorId);
     }

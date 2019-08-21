@@ -161,6 +161,8 @@ public interface DataSource {
 
     ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId) throws VivialConnectException;
 
+    ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId,int page) throws VivialConnectException;
+
     int phoneNumberCount(int connectorId) throws VivialConnectException;
 
 
