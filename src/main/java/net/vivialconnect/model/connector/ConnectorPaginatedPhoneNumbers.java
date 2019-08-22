@@ -2,7 +2,7 @@ package net.vivialconnect.model.connector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-class ConnectorPaginatedPhoneNumbers {
+public class ConnectorPaginatedPhoneNumbers {
 
     @JsonProperty("connector")
     private Connector connector;

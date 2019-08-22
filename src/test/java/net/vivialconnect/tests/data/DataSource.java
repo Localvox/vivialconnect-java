@@ -153,6 +153,8 @@ public interface DataSource {
 
     ConnectorWithPhoneNumbers updateAssociatedPhoneNumbers(Connector connector) throws VivialConnectException;
 
+    ConnectorWithPhoneNumbers updateConnectorWithPhoneNumbers(Connector connector) throws VivialConnectException;
+
     ConnectorWithPhoneNumbers deleteAllPhoneNumbers(Connector connector) throws VivialConnectException;
 
     ConnectorWithPhoneNumbers deleteSinglePhoneNumber(Connector connector, PhoneNumber phoneNumber) throws VivialConnectException;
@@ -162,6 +164,10 @@ public interface DataSource {
     ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId) throws VivialConnectException;
 
     ConnectorWithPhoneNumbers getPhoneNumbers(int connectorId,int page) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers previousPage(Connector connector) throws VivialConnectException;
+
+    ConnectorWithPhoneNumbers nextPage(Connector connector) throws VivialConnectException;
 
     int phoneNumberCount(int connectorId) throws VivialConnectException;
 
